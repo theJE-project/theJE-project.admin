@@ -8,15 +8,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
-import com.example.gogguchips.api.categroies.*;
+import com.example.gogguchips.api.categories.*;
 
 @SpringBootApplication
 @MapperScan({
 		"com.example.gogguchips.mapper",
-		"com.example.gogguchips.api.categroies"
+		"com.example.gogguchips.api.categories"
 })
 
 public class GogguchipsApplication {
@@ -37,18 +36,18 @@ public class GogguchipsApplication {
 
 	@RestController
 	static class ApiController {
-		private final categroies categroiesMapper;
+		private final categories categoriesMapper;
 
 		@Autowired
-		public ApiController(categroies categoryMapper) {
-			this.categroiesMapper = categoryMapper;
+		public ApiController(categories categoryMapper) {
+			this.categoriesMapper = categoryMapper;
 		}
 
 		@GetMapping("/api/categories")
-		public List<categroiesData> getCategories() {
-			List<categroiesData> parents = categroiesMapper.parent();
-			for (categroiesData parent : parents) {
-				List<categroiesData> children = categroiesMapper.children(parent.getId());
+		public List<categoriesData> getCategories() {
+			List<categoriesData> parents = categoriesMapper.parent();
+			for (categoriesData parent : parents) {
+				List<categoriesData> children = categoriesMapper.children(parent.getId());
 				parent.setChildren(children);
 			}
 			return parents;

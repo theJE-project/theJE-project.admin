@@ -1,16 +1,16 @@
-package com.example.gogguchips.api.categroies;
+package com.example.gogguchips.api.categories;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class categroiesData {
+public class categoriesData {
     private Long id;
     private Long parent;
     private String name;
     private String url;
     private String BOARD_TYPE;
     private String CREATED_AT;
-    private List<categroiesData> children;
+    private List<categoriesData> children;
 }
