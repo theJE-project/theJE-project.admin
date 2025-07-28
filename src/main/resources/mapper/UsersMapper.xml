@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.gogguchips.api.users.UsersMapper">
+    <insert id="insertUser" parameterType="com.example.gogguchips.api.users.UsersData">
+        INSERT INTO USERS
+        (ID, ACCOUNT, PASSWORD, LOCATIONS, ROLE, NAME, EMAIL, IMG, IS_ALERT)
+        VALUES
+        (#{id}, #{account}, #{password}, #{locations}, #{role}, #{name}, #{email}, #{img}, #{isAlert})
+    </insert>
+    <select id="selectUserByAccount" parameterType="string" resultType="com.example.gogguchips.api.users.UsersData">
+        SELECT * FROM USERS WHERE ACCOUNT = #{account}
+    </select>
+</mapper>

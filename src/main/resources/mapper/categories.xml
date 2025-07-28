@@ -2,10 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.gogguchips.api.categories.categories">
-    <select id="parent" resultType="com.example.gogguchips.api.categories.categoriesData">
-        SELECT * FROM CATEGORIES WHERE PARENT IS NULL
-    </select>
-    <select id="children" parameterType="long" resultType="com.example.gogguchips.api.categories.categoriesData">
-        SELECT * FROM CATEGORIES WHERE PARENT = #{id}
+    <select id="allSelect" resultType="com.example.gogguchips.api.categories.categoriesData">
+        SELECT * FROM CATEGORIES
     </select>
 </mapper>

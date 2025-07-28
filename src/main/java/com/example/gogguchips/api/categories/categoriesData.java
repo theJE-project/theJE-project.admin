@@ -12,5 +12,4 @@ public class categoriesData {
     private String url;
     private String BOARD_TYPE;
     private String CREATED_AT;
-    private List<categoriesData> children;
 }
