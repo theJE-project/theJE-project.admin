@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface UsersMapper {
     void insertUser(UsersData user);
-//    UsersData selectUserByEmail(String email);
+    UsersData selectUserById(String id);
     UsersData selectUserByAccount(String account);
+    UsersData selectUserByEmail(String email);
 }

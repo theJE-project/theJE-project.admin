@@ -18,25 +18,37 @@ public class UsersService {
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
 
-    private final Map<String, UsersData> pendingUsers = new ConcurrentHashMap<>();
+    private final Map<String, PendingUserData> pendingUsers = new ConcurrentHashMap<>();
 
     // 생성 및 이메일 인증 보내기 매서드 여결
-    public boolean registerUser(UsersData user) {
+    public String registerUser(UsersData user) {
         try {
+            // 계정 중복 체크
+            UsersData existingUserByAccount = usersMapper.selectUserByAccount(user.getAccount());
+            if (existingUserByAccount != null) {
+                return "중복된 아이디명이 있습니다.";
+            }
+
+            // 이메일 중복 체크 (usersMapper에 이메일 조회 쿼리 메서드 필요)
+            UsersData existingUserByEmail = usersMapper.selectUserByEmail(user.getEmail());
+            if (existingUserByEmail != null) {
+                return "이미 가입된 이메일 입니다.";
+            }
             user.setId(UUID.randomUUID().toString());
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             String token = UUID.randomUUID().toString();
-            pendingUsers.put(token, user);
+            pendingUsers.put(token, new PendingUserData(user));
             sendVerificationEmail(user.getEmail(), token);
-            return true;
+            return null;
         } catch(Exception e){
-            return false;
+            e.printStackTrace();
+            return "회원가입중 알 수 없는 오류가 발생하였습니다.";
         }
     }
 
     // 인증메일 보내기
     private void sendVerificationEmail(String email, String token) {
-        String link = "http://localhost:8080/api/auth/verify-email?token=" + token;
+        String link = "http://localhost:5173/#/login/redirect?token=" + token;
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("이메일 인증");
@@ -46,16 +58,32 @@ public class UsersService {
 
     // 이메일 인증 확인
     public UsersData verifyEmailToken(String token) {
-        UsersData user = pendingUsers.get(token);
-        if (user != null) {
+        PendingUserData pending = pendingUsers.get(token);
+        if (pending != null) {
             pendingUsers.remove(token);
-            usersMapper.insertUser(user);
-            return user;
+            usersMapper.insertUser(pending.getUser());
+            return pending.getUser();
         }
         return null;
     }
     // 유저 조회
-    public UsersData findByAccount(String account) {
-        return usersMapper.selectUserByAccount(account);
+    public UsersData findById(String id) {
+        return usersMapper.selectUserById(id);
+    }
+
+    public UsersData findByAccount(String account){
+        return  usersMapper.selectUserByAccount(account);
+    }
+
+    public String login(String account, String password) {
+        try {
+            UsersData user = usersMapper.selectUserByAccount(account);
+            System.out.println(user);
+            if (user == null) return "존재하지 않는 계정입니다.";
+            if (!passwordEncoder.matches(password, user.getPassword())) return "비밀번호가 일치하지 않습니다.";
+            return null;
+        } catch (Exception e) {
+            return "로그인 중 알 수 없는 오류가 발생했습니다.";
+        }
     }
 }
