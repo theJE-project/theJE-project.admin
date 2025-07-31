@@ -30,9 +30,14 @@ public class UsersController {
 	}
 	
 	@GetMapping("/{id}")
-    public ResponseEntity<UsersDto> getById(@PathVariable("/{id}") Long id) {
-        UsersDto dto = service.getById(id);
-        return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
+	public ResponseEntity<UsersResponsDto> getById(@PathVariable String id) {
+		UsersDto dto = service.getById(id);
+		System.out.println(dto);
+		if (dto == null) {
+			return ResponseEntity.notFound().build();
+		}
+		UsersResponsDto response = new UsersResponsDto(dto);
+		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping // 유저 회원 가입

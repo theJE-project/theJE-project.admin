@@ -9,7 +9,7 @@ import java.util.List;
 public interface UsersMapper {
     List<UsersDto> getAll();
 
-	UsersDto getById(Long id);
+	UsersDto getById(String id);
     UsersDto getByAccount(String account);
     UsersDto getByEmail(String email);
 

@@ -28,7 +28,7 @@ public class UsersService {
         return mapper.getAll();
     }
 
-    public UsersDto getById(Long id) {
+    public UsersDto getById(String id) {
         return mapper.getById(id);
     }
 
