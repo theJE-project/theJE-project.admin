@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threeteam.sns.mapper.MusicsMapper">
+    
+    <select id="getAll" resultType="com.threeteam.sns.dto.MusicsDto">
+			SELECT * FROM musics
+	</select>
+    	
+    <select id="getById" parameterType="long" resultType="com.threeteam.sns.dto.MusicsDto">
+			SELECT * FROM musics WHERE id = #{id}
+	</select>
+    	
+    <insert id="insert" parameterType="com.threeteam.sns.dto.MusicsDto">
+        INSERT INTO musics ( created_at
+        <if test="id != null">, id</if>
+        <if test="board != null">, board</if>
+        <if test="board_types != null">, board_types</if>
+        <if test="url != null">, url</if>
+        ) VALUES ( NOW()
+        <if test="id != null">, #{id}</if>
+        <if test="board != null">, #{board}</if>
+        <if test="board_types != null">, #{board_types}</if>
+        <if test="url != null">, #{url}</if>
+        )
+    </insert>
+    	
+    <update id="update" parameterType="com.threeteam.sns.dto.MusicsDto">
+        UPDATE musics SET updated_at = NOW()
+        <if test="board != null">, board = #{board}</if>
+        <if test="board_types != null">, board_types = #{board_types}</if>
+        <if test="url != null">, url = #{url}</if>
+         WHERE id = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="long">
+			DELETE FROM musics WHERE id = {id})
+	</delete>
+    	
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threeteam.sns.mapper.BoardTypesMapper">
+    
+    <select id="getAll" resultType="com.threeteam.sns.dto.BoardTypesDto">
+			SELECT * FROM board_types
+	</select>
+    	
+    <select id="getById" parameterType="long" resultType="com.threeteam.sns.dto.BoardTypesDto">
+			SELECT * FROM board_types WHERE id = #{id}
+	</select>
+    	
+    <insert id="insert" parameterType="com.threeteam.sns.dto.BoardTypesDto">
+        INSERT INTO board_types ( created_at
+        <if test="id != null">, id</if>
+        <if test="name != null">, name</if>
+        ) VALUES ( NOW()
+        <if test="id != null">, #{id}</if>
+        <if test="name != null">, #{name}</if>
+        )
+    </insert>
+    	
+    <update id="update" parameterType="com.threeteam.sns.dto.BoardTypesDto">
+        UPDATE board_types SET updated_at = NOW()
+        <if test="name != null">, name = #{name}</if>
+         WHERE id = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="long">
+			DELETE FROM board_types WHERE id = {id})
+	</delete>
+    	
+</mapper>

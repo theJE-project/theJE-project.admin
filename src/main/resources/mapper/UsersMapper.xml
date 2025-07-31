@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threeteam.sns.mapper.UsersMapper">
+    
+    <select id="getAll" resultType="com.threeteam.sns.dto.UsersDto">
+			SELECT * FROM users
+	</select>
+    	
+    <select id="getById" parameterType="long" resultType="com.threeteam.sns.dto.UsersDto">
+			SELECT * FROM users WHERE id = #{id}
+	</select>
+    	
+    <insert id="insert" parameterType="com.threeteam.sns.dto.UsersDto">
+        INSERT INTO users ( created_at
+        <if test="id != null">, id</if>
+        <if test="account != null">, account</if>
+        <if test="password != null">, password</if>
+        <if test="role != null">, role</if>
+        <if test="name != null">, name</if>
+        <if test="email != null">, email</if>
+        <if test="img != null">, img</if>
+        <if test="is_alert != null">, is_alert</if>
+        ) VALUES ( NOW()
+        <if test="id != null">, #{id}</if>
+        <if test="account != null">, #{account}</if>
+        <if test="password != null">, #{password}</if>
+        <if test="role != null">, #{role}</if>
+        <if test="name != null">, #{name}</if>
+        <if test="email != null">, #{email}</if>
+        <if test="img != null">, #{img}</if>
+        <if test="is_alert != null">, #{is_alert}</if>
+        )
+    </insert>
+    	
+    <update id="update" parameterType="com.threeteam.sns.dto.UsersDto">
+        UPDATE users SET updated_at = NOW()
+        <if test="account != null">, account = #{account}</if>
+        <if test="password != null">, password = #{password}</if>
+        <if test="role != null">, role = #{role}</if>
+        <if test="name != null">, name = #{name}</if>
+        <if test="email != null">, email = #{email}</if>
+        <if test="img != null">, img = #{img}</if>
+        <if test="is_alert != null">, is_alert = #{is_alert}</if>
+         WHERE id = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="long">
+			DELETE FROM users WHERE id = {id})
+	</delete>
+    	
+</mapper>

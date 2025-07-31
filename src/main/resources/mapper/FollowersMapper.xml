@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threeteam.sns.mapper.FollowersMapper">
+    
+    <select id="getAll" resultType="com.threeteam.sns.dto.FollowersDto">
+			SELECT * FROM followers
+	</select>
+    	
+    <select id="getById" parameterType="long" resultType="com.threeteam.sns.dto.FollowersDto">
+			SELECT * FROM followers WHERE id = #{id}
+	</select>
+    	
+    <insert id="insert" parameterType="com.threeteam.sns.dto.FollowersDto">
+        INSERT INTO followers ( created_at
+        <if test="id != null">, id</if>
+        <if test="follower != null">, follower</if>
+        <if test="followee != null">, followee</if>
+        ) VALUES ( NOW()
+        <if test="id != null">, #{id}</if>
+        <if test="follower != null">, #{follower}</if>
+        <if test="followee != null">, #{followee}</if>
+        )
+    </insert>
+    	
+    <update id="update" parameterType="com.threeteam.sns.dto.FollowersDto">
+        UPDATE followers SET updated_at = NOW()
+        <if test="follower != null">, follower = #{follower}</if>
+        <if test="followee != null">, followee = #{followee}</if>
+         WHERE id = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="long">
+			DELETE FROM followers WHERE id = {id})
+	</delete>
+    	
+</mapper>

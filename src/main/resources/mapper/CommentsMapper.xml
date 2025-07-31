@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.threeteam.sns.mapper.CommentsMapper">
+    
+    <select id="getAll" resultType="com.threeteam.sns.dto.CommentsDto">
+			SELECT * FROM comments
+	</select>
+    	
+    <select id="getById" parameterType="long" resultType="com.threeteam.sns.dto.CommentsDto">
+			SELECT * FROM comments WHERE id = #{id}
+	</select>
+    	
+    <insert id="insert" parameterType="com.threeteam.sns.dto.CommentsDto">
+        INSERT INTO comments ( created_at
+        <if test="id != null">, id</if>
+        <if test="parent != null">, parent</if>
+        <if test="users != null">, users</if>
+        <if test="board != null">, board</if>
+        <if test="board_types != null">, board_types</if>
+        <if test="content != null">, content</if>
+        <if test="updated_at != null">, updated_at</if>
+        <if test="is_delete != null">, is_delete</if>
+        ) VALUES ( NOW()
+        <if test="id != null">, #{id}</if>
+        <if test="parent != null">, #{parent}</if>
+        <if test="users != null">, #{users}</if>
+        <if test="board != null">, #{board}</if>
+        <if test="board_types != null">, #{board_types}</if>
+        <if test="content != null">, #{content}</if>
+        <if test="updated_at != null">, #{updated_at}</if>
+        <if test="is_delete != null">, #{is_delete}</if>
+        )
+    </insert>
+    	
+    <update id="update" parameterType="com.threeteam.sns.dto.CommentsDto">
+        UPDATE comments SET updated_at = NOW()
+        <if test="parent != null">, parent = #{parent}</if>
+        <if test="users != null">, users = #{users}</if>
+        <if test="board != null">, board = #{board}</if>
+        <if test="board_types != null">, board_types = #{board_types}</if>
+        <if test="content != null">, content = #{content}</if>
+        <if test="is_delete != null">, is_delete = #{is_delete}</if>
+         WHERE id = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="long">
+			DELETE FROM comments WHERE id = {id})
+	</delete>
+    	
+</mapper>

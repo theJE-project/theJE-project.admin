@@ -1,0 +1,31 @@
+########## application.properties
+- MySQL 설정 url, username, password
+
+########## 기본 URL 주소
+http://localhost:8888/
+
+########## 기본 API 주소
+/api/테이블명
+/api/boardTypes
+/api/categories
+/api/comments
+/api/communities
+/api/followers
+/api/images
+/api/likes
+/api/musics
+/api/notifications
+/api/users
+
+########## CRUD
+http://localhost:8888/api/테이블명
+GET - SELECT
+POST - INSERT
+http://localhost:8888/api/테이블명/id
+GET - SELECT
+PUT - UPDATE
+DELETE - DELETE
+
+########## Mapper.xml
+CRUD 작업시, json에 입력값만 넣어도 null 조건으로 INSERT, UPDATE 처리해두어서,
+불필요하게 null이나 빈값으로 추가로 json에 데이터 안넣어도되게 해두었음.

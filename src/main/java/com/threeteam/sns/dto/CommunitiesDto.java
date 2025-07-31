@@ -1,0 +1,136 @@
+package com.threeteam.sns.dto;
+
+import java.util.Objects;
+import java.time.LocalDateTime;
+import java.math.BigDecimal;
+
+public class CommunitiesDto {
+    private Long	id;
+    private Long	users;
+    private Long	categories;
+    private String	title;
+    private String	content;
+    private Long	count;
+    private LocalDateTime	created_at;
+    private LocalDateTime	updated_at;
+    private Long	is_delete;
+    private Long	is_visible;
+
+    public CommunitiesDto() {}
+
+    public CommunitiesDto(Long id, Long users, Long categories, String title, String content, Long count, LocalDateTime created_at, LocalDateTime updated_at, Long is_delete, Long is_visible) {
+        this.id = id;
+        this.users = users;
+        this.categories = categories;
+        this.title = title;
+        this.content = content;
+        this.count = count;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+        this.is_delete = is_delete;
+        this.is_visible = is_visible;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getUsers() {
+        return users;
+    }
+
+    public void setUsers(Long users) {
+        this.users = users;
+    }
+
+    public Long getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Long categories) {
+        this.categories = categories;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Long getCount() {
+        return count;
+    }
+
+    public void setCount(Long count) {
+        this.count = count;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return created_at;
+    }
+
+    public void setCreatedAt(LocalDateTime created_at) {
+        this.created_at = created_at;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updated_at;
+    }
+
+    public void setUpdatedAt(LocalDateTime updated_at) {
+        this.updated_at = updated_at;
+    }
+
+    public Long getIsDelete() {
+        return is_delete;
+    }
+
+    public void setIsDelete(Long is_delete) {
+        this.is_delete = is_delete;
+    }
+
+    public Long getIsVisible() {
+        return is_visible;
+    }
+
+    public void setIsVisible(Long is_visible) {
+        this.is_visible = is_visible;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, users, categories, title, content, count, created_at, updated_at, is_delete, is_visible);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        CommunitiesDto other = (CommunitiesDto) obj;
+        return Objects.equals(id, other.id) && Objects.equals(users, other.users) && Objects.equals(categories, other.categories) && Objects.equals(title, other.title) && Objects.equals(content, other.content) && Objects.equals(count, other.count) && Objects.equals(created_at, other.created_at) && Objects.equals(updated_at, other.updated_at) && Objects.equals(is_delete, other.is_delete) && Objects.equals(is_visible, other.is_visible);
+    }
+
+    @Override
+    public String toString() {
+        return "CommunitiesDto [id=" + id + ", users=" + users + ", categories=" + categories + ", title=" + title + ", content=" + content + ", count=" + count + ", created_at=" + created_at + ", updated_at=" + updated_at + ", is_delete=" + is_delete + ", is_visible=" + is_visible + "]";
+    }
+}
+

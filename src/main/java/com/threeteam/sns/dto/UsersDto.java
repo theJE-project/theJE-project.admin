@@ -1,0 +1,116 @@
+package com.threeteam.sns.dto;
+
+import java.util.Objects;
+import java.time.LocalDateTime;
+import java.math.BigDecimal;
+
+public class UsersDto {
+    private Long	id;
+    private String	account;
+    private String	password;
+    private String	role;
+    private String	name;
+    private String	email;
+    private String	img;
+    private Long	is_alert;
+
+    public UsersDto() {}
+
+    public UsersDto(Long id, String account, String password, String role, String name, String email, String img, Long is_alert) {
+        this.id = id;
+        this.account = account;
+        this.password = password;
+        this.role = role;
+        this.name = name;
+        this.email = email;
+        this.img = img;
+        this.is_alert = is_alert;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public Long getIsAlert() {
+        return is_alert;
+    }
+
+    public void setIsAlert(Long is_alert) {
+        this.is_alert = is_alert;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, account, password, role, name, email, img, is_alert);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        UsersDto other = (UsersDto) obj;
+        return Objects.equals(id, other.id) && Objects.equals(account, other.account) && Objects.equals(password, other.password) && Objects.equals(role, other.role) && Objects.equals(name, other.name) && Objects.equals(email, other.email) && Objects.equals(img, other.img) && Objects.equals(is_alert, other.is_alert);
+    }
+
+    @Override
+    public String toString() {
+        return "UsersDto [id=" + id + ", account=" + account + ", password=" + password + ", role=" + role + ", name=" + name + ", email=" + email + ", img=" + img + ", is_alert=" + is_alert + "]";
+    }
+}
+
