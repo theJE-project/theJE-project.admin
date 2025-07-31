@@ -6,18 +6,18 @@ import java.math.BigDecimal;
 
 public class NotificationsDto {
     private Long	id;
-    private Long	sender;
-    private Long	receiver;
+    private String	sender;
+    private String	receiver;
     private Long	board;
     private Long	board_types;
     private String	content;
     private LocalDateTime	created_at;
-    private Long	is_read;
-    private Long	is_delete;
+    private boolean	is_read;
+    private boolean	is_delete;
 
     public NotificationsDto() {}
 
-    public NotificationsDto(Long id, Long sender, Long receiver, Long board, Long board_types, String content, LocalDateTime created_at, Long is_read, Long is_delete) {
+    public NotificationsDto(Long id, String sender, String receiver, Long board, Long board_types, String content, LocalDateTime created_at, boolean is_read, boolean is_delete) {
         this.id = id;
         this.sender = sender;
         this.receiver = receiver;
@@ -37,19 +37,19 @@ public class NotificationsDto {
         this.id = id;
     }
 
-    public Long getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(Long sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 
-    public Long getReceiver() {
+    public String getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(Long receiver) {
+    public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
 
@@ -85,19 +85,19 @@ public class NotificationsDto {
         this.created_at = created_at;
     }
 
-    public Long getIsRead() {
+    public boolean getIsRead() {
         return is_read;
     }
 
-    public void setIsRead(Long is_read) {
+    public void setIsRead(boolean is_read) {
         this.is_read = is_read;
     }
 
-    public Long getIsDelete() {
+    public boolean getIsDelete() {
         return is_delete;
     }
 
-    public void setIsDelete(Long is_delete) {
+    public void setIsDelete(boolean is_delete) {
         this.is_delete = is_delete;
     }
 

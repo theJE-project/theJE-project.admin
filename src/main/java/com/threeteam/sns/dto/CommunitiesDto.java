@@ -6,19 +6,19 @@ import java.math.BigDecimal;
 
 public class CommunitiesDto {
     private Long	id;
-    private Long	users;
+    private String users;
     private Long	categories;
     private String	title;
     private String	content;
     private Long	count;
     private LocalDateTime	created_at;
     private LocalDateTime	updated_at;
-    private Long	is_delete;
-    private Long	is_visible;
+    private boolean	is_delete;
+    private boolean	is_visible;
 
     public CommunitiesDto() {}
 
-    public CommunitiesDto(Long id, Long users, Long categories, String title, String content, Long count, LocalDateTime created_at, LocalDateTime updated_at, Long is_delete, Long is_visible) {
+    public CommunitiesDto(Long id, String users, Long categories, String title, String content, Long count, LocalDateTime created_at, LocalDateTime updated_at, boolean is_delete, boolean is_visible) {
         this.id = id;
         this.users = users;
         this.categories = categories;
@@ -39,11 +39,11 @@ public class CommunitiesDto {
         this.id = id;
     }
 
-    public Long getUsers() {
+    public String getUsers() {
         return users;
     }
 
-    public void setUsers(Long users) {
+    public void setUsers(String users) {
         this.users = users;
     }
 
@@ -95,19 +95,19 @@ public class CommunitiesDto {
         this.updated_at = updated_at;
     }
 
-    public Long getIsDelete() {
+    public boolean getIsDelete() {
         return is_delete;
     }
 
-    public void setIsDelete(Long is_delete) {
+    public void setIsDelete(boolean is_delete) {
         this.is_delete = is_delete;
     }
 
-    public Long getIsVisible() {
+    public boolean getIsVisible() {
         return is_visible;
     }
 
-    public void setIsVisible(Long is_visible) {
+    public void setIsVisible(boolean is_visible) {
         this.is_visible = is_visible;
     }
 

@@ -5,18 +5,18 @@ import java.time.LocalDateTime;
 import java.math.BigDecimal;
 
 public class UsersDto {
-    private Long	id;
+    private String	id;
     private String	account;
     private String	password;
     private String	role;
     private String	name;
     private String	email;
     private String	img;
-    private Long	is_alert;
+    private boolean	is_alert;
 
     public UsersDto() {}
 
-    public UsersDto(Long id, String account, String password, String role, String name, String email, String img, Long is_alert) {
+    public UsersDto(String id, String account, String password, String role, String name, String email, String img, boolean is_alert) {
         this.id = id;
         this.account = account;
         this.password = password;
@@ -27,11 +27,11 @@ public class UsersDto {
         this.is_alert = is_alert;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -83,11 +83,11 @@ public class UsersDto {
         this.img = img;
     }
 
-    public Long getIsAlert() {
+    public boolean getIsAlert() {
         return is_alert;
     }
 
-    public void setIsAlert(Long is_alert) {
+    public void setIsAlert(boolean is_alert) {
         this.is_alert = is_alert;
     }
 

@@ -6,14 +6,14 @@ import java.math.BigDecimal;
 
 public class LikesDto {
     private Long	id;
-    private Long	users;
+    private String	users;
     private Long	board;
     private Long	board_types;
     private LocalDateTime	created_at;
 
     public LikesDto() {}
 
-    public LikesDto(Long id, Long users, Long board, Long board_types, LocalDateTime created_at) {
+    public LikesDto(Long id, String users, Long board, Long board_types, LocalDateTime created_at) {
         this.id = id;
         this.users = users;
         this.board = board;
@@ -29,11 +29,11 @@ public class LikesDto {
         this.id = id;
     }
 
-    public Long getUsers() {
+    public String getUsers() {
         return users;
     }
 
-    public void setUsers(Long users) {
+    public void setUsers(String users) {
         this.users = users;
     }
 

@@ -6,13 +6,13 @@ import java.math.BigDecimal;
 
 public class FollowersDto {
     private Long	id;
-    private Long	follower;
-    private Long	followee;
+    private String	follower;
+    private String	followee;
     private LocalDateTime	created_at;
 
     public FollowersDto() {}
 
-    public FollowersDto(Long id, Long follower, Long followee, LocalDateTime created_at) {
+    public FollowersDto(Long id, String follower, String followee, LocalDateTime created_at) {
         this.id = id;
         this.follower = follower;
         this.followee = followee;
@@ -27,19 +27,19 @@ public class FollowersDto {
         this.id = id;
     }
 
-    public Long getFollower() {
+    public String getFollower() {
         return follower;
     }
 
-    public void setFollower(Long follower) {
+    public void setFollower(String follower) {
         this.follower = follower;
     }
 
-    public Long getFollowee() {
+    public String getFollowee() {
         return followee;
     }
 
-    public void setFollowee(Long followee) {
+    public void setFollowee(String followee) {
         this.followee = followee;
     }
 

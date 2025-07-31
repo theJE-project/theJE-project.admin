@@ -7,17 +7,17 @@ import java.math.BigDecimal;
 public class CommentsDto {
     private Long	id;
     private Long	parent;
-    private Long	users;
+    private String	users;
     private Long	board;
     private Long	board_types;
     private String	content;
     private LocalDateTime	created_at;
     private LocalDateTime	updated_at;
-    private Long	is_delete;
+    private boolean	is_delete;
 
     public CommentsDto() {}
 
-    public CommentsDto(Long id, Long parent, Long users, Long board, Long board_types, String content, LocalDateTime created_at, LocalDateTime updated_at, Long is_delete) {
+    public CommentsDto(Long id, Long parent, String users, Long board, Long board_types, String content, LocalDateTime created_at, LocalDateTime updated_at, boolean is_delete) {
         this.id = id;
         this.parent = parent;
         this.users = users;
@@ -45,11 +45,11 @@ public class CommentsDto {
         this.parent = parent;
     }
 
-    public Long getUsers() {
+    public String getUsers() {
         return users;
     }
 
-    public void setUsers(Long users) {
+    public void setUsers(String users) {
         this.users = users;
     }
 
@@ -93,11 +93,11 @@ public class CommentsDto {
         this.updated_at = updated_at;
     }
 
-    public Long getIsDelete() {
+    public boolean getIsDelete() {
         return is_delete;
     }
 
-    public void setIsDelete(Long is_delete) {
+    public void setIsDelete(boolean is_delete) {
         this.is_delete = is_delete;
     }
 

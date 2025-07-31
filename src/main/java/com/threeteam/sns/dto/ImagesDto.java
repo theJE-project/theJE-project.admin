@@ -9,12 +9,12 @@ public class ImagesDto {
     private Long	board;
     private Long	board_types;
     private String	url;
-    private Long	is_main;
+    private boolean	is_main;
     private LocalDateTime	created_at;
 
     public ImagesDto() {}
 
-    public ImagesDto(Long id, Long board, Long board_types, String url, Long is_main, LocalDateTime created_at) {
+    public ImagesDto(Long id, Long board, Long board_types, String url, boolean is_main, LocalDateTime created_at) {
         this.id = id;
         this.board = board;
         this.board_types = board_types;
@@ -55,11 +55,11 @@ public class ImagesDto {
         this.url = url;
     }
 
-    public Long getIsMain() {
+    public boolean getIsMain() {
         return is_main;
     }
 
-    public void setIsMain(Long is_main) {
+    public void setIsMain(boolean is_main) {
         this.is_main = is_main;
     }
 

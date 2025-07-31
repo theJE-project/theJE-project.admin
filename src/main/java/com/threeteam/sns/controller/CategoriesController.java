@@ -26,23 +26,4 @@ public class CategoriesController {
         CategoriesDto dto = service.getById(id);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
 	}
-	
-	@PostMapping
-    public ResponseEntity<Void> create(@RequestBody CategoriesDto dto) {
-        service.insert(dto);
-        return ResponseEntity.ok().build();
-	}
-	
-	@PutMapping
-    public ResponseEntity<Void> update(@RequestBody CategoriesDto dto) {
-        service.update(dto);
-        return ResponseEntity.ok().build();
-	}
-	
-	@DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("/{id}") Long id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
-	}
-	
 }
