@@ -9,7 +9,14 @@
     <select id="getById" parameterType="long" resultType="com.threeteam.sns.dto.UsersDto">
 			SELECT * FROM users WHERE id = #{id}
 	</select>
-    	
+
+    <select id="getByEmail" parameterType="String" resultType="com.threeteam.sns.dto.UsersDto">
+        SELECT * FROM users WHERE email = #{email}     LIMIT 1
+    </select>
+    <select id="getByAccount" parameterType="string" resultType="com.threeteam.sns.dto.UsersDto">
+        SELECT * FROM USERS WHERE ACCOUNT = #{account}
+    </select>
+
     <insert id="insert" parameterType="com.threeteam.sns.dto.UsersDto">
         INSERT INTO users ( created_at
         <if test="id != null">, id</if>
@@ -47,5 +54,5 @@
     <delete id="delete" parameterType="long">
 			DELETE FROM users WHERE id = {id})
 	</delete>
-    	
+
 </mapper>
