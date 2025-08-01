@@ -17,7 +17,7 @@ public class NotificationsService {
         return mapper.getAll();
     }
 
-    public NotificationsDto getById(Long id) {
+    public NotificationsDto[] getById(String id) {
         return mapper.getById(id);
     }
 
@@ -29,6 +29,6 @@ public class NotificationsService {
         mapper.update(dto);
     }
 
-    public void delete(Long id) {
+    public void delete(String id) {
         mapper.delete(id);
     }}

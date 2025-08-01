@@ -6,8 +6,8 @@
 			SELECT * FROM notifications
 	</select>
     	
-    <select id="getById" parameterType="long" resultType="com.threeteam.sns.dto.NotificationsDto">
-			SELECT * FROM notifications WHERE id = #{id}
+    <select id="getById" parameterType="String" resultType="com.threeteam.sns.dto.NotificationsDto">
+			SELECT * FROM notifications WHERE receiver = #{id}
 	</select>
     	
     <insert id="insert" parameterType="com.threeteam.sns.dto.NotificationsDto">

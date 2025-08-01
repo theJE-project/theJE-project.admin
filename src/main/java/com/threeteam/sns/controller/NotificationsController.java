@@ -20,13 +20,15 @@ public class NotificationsController {
 	public List<NotificationsDto> getAll() {
 		return service.getAll();
 	}
-	
+
 	@GetMapping("/{id}")
-    public ResponseEntity<NotificationsDto> getById(@PathVariable("/{id}") Long id) {
-        NotificationsDto dto = service.getById(id);
-        return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
+	public ResponseEntity<NotificationsDto[]> getById(@PathVariable String id) {
+		NotificationsDto[] dto = service.getById(id);
+		if(dto == null) {
+			return ResponseEntity.ok(new NotificationsDto[0]);
+		}
+		return ResponseEntity.ok(dto);
 	}
-	
 	@PostMapping
     public ResponseEntity<Void> create(@RequestBody NotificationsDto dto) {
         service.insert(dto);
@@ -40,7 +42,7 @@ public class NotificationsController {
 	}
 	
 	@DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("/{id}") Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("/{id}")String id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
 	}

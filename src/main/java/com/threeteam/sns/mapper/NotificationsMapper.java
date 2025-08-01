@@ -9,11 +9,11 @@ import java.util.List;
 public interface NotificationsMapper {
     List<NotificationsDto> getAll();
 
-	NotificationsDto getById(Long id);
+	NotificationsDto[] getById(String id);
 
     void insert(NotificationsDto dto);
 
     void update(NotificationsDto dto);
 
-    void delete(Long id);
+    void delete(String id);
 }
