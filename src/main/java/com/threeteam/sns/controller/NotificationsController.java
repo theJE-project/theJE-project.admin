@@ -42,9 +42,8 @@ public class NotificationsController {
 	}
 	
 	@DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("/{id}")String id) {
-        service.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+		service.delete(id);
         return ResponseEntity.noContent().build();
 	}
-	
 }
