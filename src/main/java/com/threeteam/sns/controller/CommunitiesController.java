@@ -15,6 +15,8 @@ public class CommunitiesController {
 	
 	@Autowired
 	private CommunitiesService service  = new CommunitiesService();
+	@Autowired
+	private ImagesService images = new ImagesService();
 	
 	@GetMapping
 	public List<CommunitiesDto> getAll() {
@@ -29,10 +31,17 @@ public class CommunitiesController {
 	
 	@PostMapping
     public ResponseEntity<Void> create(@RequestBody CommunitiesDto dto) {
-        service.insert(dto);
+		Long id = service.insert(dto);
+		if (dto.getImages() != null) {
+			for (ImagesDto image : dto.getImages()) {
+				image.setBoard(id);
+				image.setBoardTypes(1L);
+				images.insert(image);
+			}
+		}
         return ResponseEntity.ok().build();
 	}
-	
+
 	@PutMapping
     public ResponseEntity<Void> update(@RequestBody CommunitiesDto dto) {
         service.update(dto);

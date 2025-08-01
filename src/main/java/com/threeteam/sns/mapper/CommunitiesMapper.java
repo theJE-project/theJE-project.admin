@@ -11,7 +11,7 @@ public interface CommunitiesMapper {
 
 	CommunitiesDto getById(Long id);
 
-    void insert(CommunitiesDto dto);
+    int insert(CommunitiesDto dto);
 
     void update(CommunitiesDto dto);
 

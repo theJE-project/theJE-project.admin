@@ -9,7 +9,7 @@ public class ImagesDto {
     private Long	board;
     private Long	board_types;
     private String	url;
-    private boolean	is_main;
+    private boolean	is_main = true;
     private LocalDateTime	created_at;
 
     public ImagesDto() {}

@@ -1,5 +1,6 @@
 package com.threeteam.sns.dto;
 
+import java.util.List;
 import java.util.Objects;
 import java.time.LocalDateTime;
 import java.math.BigDecimal;
@@ -8,17 +9,19 @@ public class CommunitiesDto {
     private Long	id;
     private String users;
     private Long	categories;
-    private String	title;
+    private String	title = "";
     private String	content;
-    private Long	count;
+    private Long	count = 0L;
+    private String hash = "";
     private LocalDateTime	created_at;
     private LocalDateTime	updated_at;
-    private boolean	is_delete;
-    private boolean	is_visible;
+    private boolean	is_delete = false;
+    private boolean	is_visible = true;
+    private List<ImagesDto> images;
 
     public CommunitiesDto() {}
 
-    public CommunitiesDto(Long id, String users, Long categories, String title, String content, Long count, LocalDateTime created_at, LocalDateTime updated_at, boolean is_delete, boolean is_visible) {
+    public CommunitiesDto(Long id, String hash, String users, Long categories, String title, String content, Long count, LocalDateTime created_at, LocalDateTime updated_at, boolean is_delete, boolean is_visible) {
         this.id = id;
         this.users = users;
         this.categories = categories;
@@ -29,14 +32,31 @@ public class CommunitiesDto {
         this.updated_at = updated_at;
         this.is_delete = is_delete;
         this.is_visible = is_visible;
+        this.hash = hash;
     }
 
-    public Long getId() {
-        return id;
+    public List<ImagesDto> getImages() {
+        return images;
+    }
+
+    public void setImages(List<ImagesDto> images) {
+        this.images = images;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public String getHash() {
+        return hash;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getUsers() {
