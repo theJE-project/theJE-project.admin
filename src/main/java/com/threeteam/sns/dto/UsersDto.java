@@ -13,10 +13,12 @@ public class UsersDto {
     private String	email;
     private String	img;
     private boolean	is_alert;
+    private String content;
+
 
     public UsersDto() {}
 
-    public UsersDto(String id, String account, String password, String role, String name, String email, String img, boolean is_alert) {
+    public UsersDto(String id, String account, String password, String role, String name, String email, String img, boolean is_alert, String content) {
         this.id = id;
         this.account = account;
         this.password = password;
@@ -25,6 +27,7 @@ public class UsersDto {
         this.email = email;
         this.img = img;
         this.is_alert = is_alert;
+        this.content = content;
     }
 
     public String getId() {
@@ -91,9 +94,17 @@ public class UsersDto {
         this.is_alert = is_alert;
     }
 
+    public String getContent() {
+        return content;
+    }
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+
     @Override
     public int hashCode() {
-        return Objects.hash(id, account, password, role, name, email, img, is_alert);
+        return Objects.hash(id, account, password, role, name, email, img, is_alert, content);
     }
 
     @Override
@@ -105,12 +116,12 @@ public class UsersDto {
         if (getClass() != obj.getClass())
             return false;
         UsersDto other = (UsersDto) obj;
-        return Objects.equals(id, other.id) && Objects.equals(account, other.account) && Objects.equals(password, other.password) && Objects.equals(role, other.role) && Objects.equals(name, other.name) && Objects.equals(email, other.email) && Objects.equals(img, other.img) && Objects.equals(is_alert, other.is_alert);
+        return Objects.equals(id, other.id) && Objects.equals(account, other.account) && Objects.equals(password, other.password) && Objects.equals(role, other.role) && Objects.equals(name, other.name) && Objects.equals(email, other.email) && Objects.equals(img, other.img) && Objects.equals(is_alert, other.is_alert)  && Objects.equals(content, other.content);
     }
 
     @Override
     public String toString() {
-        return "UsersDto [id=" + id + ", account=" + account + ", password=" + password + ", role=" + role + ", name=" + name + ", email=" + email + ", img=" + img + ", is_alert=" + is_alert + "]";
+        return "UsersDto [id=" + id + ", account=" + account + ", password=" + password + ", role=" + role + ", name=" + name + ", email=" + email + ", img=" + img + ", is_alert=" + is_alert + ",content =" +content +"]";
     }
 }
 
