@@ -31,4 +31,8 @@ public class FollowersService {
 
     public void delete(Long id) {
         mapper.delete(id);
-    }}
+    }
+
+    public List<FollowersDto> getFolloweesByUser(String id) { return mapper.getFolloweesByUser(id); }
+}
+

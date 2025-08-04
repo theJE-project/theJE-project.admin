@@ -9,7 +9,11 @@
     <select id="getById" parameterType="long" resultType="com.threeteam.sns.dto.MusicsDto">
 			SELECT * FROM musics WHERE id = #{id}
 	</select>
-    	
+
+    <select id="getByBroads" parameterType="map" resultType="com.threeteam.sns.dto.MusicsDto">
+        SELECT * FROM musics WHERE board_types = #{board_type} AND board = #{board}
+    </select>
+
     <insert id="insert" parameterType="com.threeteam.sns.dto.MusicsDto">
         INSERT INTO musics ( created_at
         <if test="id != null">, id</if>

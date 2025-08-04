@@ -9,6 +9,13 @@
     <select id="getById" parameterType="long" resultType="com.threeteam.sns.dto.FollowersDto">
 			SELECT * FROM followers WHERE id = #{id}
 	</select>
+
+    <select id="getFolloweesByUser" parameterType="string" resultType="com.threeteam.sns.dto.FollowersDto">
+        SELECT *
+        FROM followers
+        WHERE follower = #{userId}
+        ORDER BY created_at DESC
+    </select>
     	
     <insert id="insert" parameterType="com.threeteam.sns.dto.FollowersDto">
         INSERT INTO followers ( created_at

@@ -18,10 +18,11 @@ public class CommunitiesDto {
     private boolean	is_delete = false;
     private boolean	is_visible = true;
     private List<ImagesDto> images;
+    private List<MusicsDto> musics;
 
     public CommunitiesDto() {}
 
-    public CommunitiesDto(Long id, String hash, String users, Long categories, String title, String content, Long count, LocalDateTime created_at, LocalDateTime updated_at, boolean is_delete, boolean is_visible) {
+    public CommunitiesDto(List<ImagesDto> images, List<MusicsDto> musics,  Long id, String hash, String users, Long categories, String title, String content, Long count, LocalDateTime created_at, LocalDateTime updated_at, boolean is_delete, boolean is_visible) {
         this.id = id;
         this.users = users;
         this.categories = categories;
@@ -33,8 +34,18 @@ public class CommunitiesDto {
         this.is_delete = is_delete;
         this.is_visible = is_visible;
         this.hash = hash;
+        this.images = images;
+        this.musics = musics;
     }
 
+
+    public List<MusicsDto> getMusics() {
+        return musics;
+    }
+
+    public void setMusics(List<MusicsDto> images) {
+        this.musics = images;
+    }
     public List<ImagesDto> getImages() {
         return images;
     }
