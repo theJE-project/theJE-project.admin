@@ -83,6 +83,17 @@ public class UsersController {
         service.delete(id);
         return ResponseEntity.noContent().build();
 	}
+// 추가
+	@GetMapping("/my")
+	public ResponseEntity<UsersResponsDto> getMyUser(@RequestParam("userId") String userId) {
+		UsersDto dto = service.getById(userId);
+		if (dto == null) {
+			return ResponseEntity.notFound().build();
+		}
+		UsersResponsDto response = new UsersResponsDto(dto);
+		return ResponseEntity.ok(response);
+	}
+
 
 	@Scheduled(fixedRate = 5 * 60 * 1000) // 5분마다 실행
 	public void clearExpiredTokens() {
@@ -91,5 +102,7 @@ public class UsersController {
 		pendingUsers.entrySet().removeIf(entry ->
 				now - entry.getValue().getCreatedAt() > expiration
 		);
+		
+		
 	}
 }

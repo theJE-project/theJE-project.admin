@@ -16,4 +16,9 @@ public interface CommunitiesMapper {
     void update(CommunitiesDto dto);
 
     void delete(Long id);
+
+    //  내가 쓴 글만 조회 (userId로)
+    List<CommunitiesDto> selectByUserId(String userId);
+
+
 }

@@ -20,7 +20,14 @@ public class CommunitiesController {
 	public List<CommunitiesDto> getAll() {
 		return service.getAll();
 	}
-	
+
+
+
+	@GetMapping("/my")
+	public List<CommunitiesDto> getByUserId(@RequestParam("userId") String userId) {
+		return service.getByUserId(userId);
+	}
+
 	@GetMapping("/{id}")
     public ResponseEntity<CommunitiesDto> getById(@PathVariable("/{id}") Long id) {
         CommunitiesDto dto = service.getById(id);

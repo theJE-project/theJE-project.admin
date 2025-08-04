@@ -31,4 +31,11 @@ public class CommunitiesService {
 
     public void delete(Long id) {
         mapper.delete(id);
-    }}
+    }
+    //내가 쓴글 조회 추가
+    public List<CommunitiesDto> getByUserId(String userId) {
+        return mapper.selectByUserId(userId);
+    }
+
+
+    }
