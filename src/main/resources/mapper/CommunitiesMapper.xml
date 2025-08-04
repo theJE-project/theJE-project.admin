@@ -18,19 +18,25 @@
         <if test="title != null">, title</if>
         <if test="content != null">, content</if>
         <if test="count != null">, count</if>
+        <if test="hash != null">, hash</if>
         <if test="updated_at != null">, updated_at</if>
         <if test="is_delete != null">, is_delete</if>
         <if test="is_visible != null">, is_visible</if>
-        ) VALUES ( NOW()
-        <if test="id != null">, #{id}</if>
+        )
+        VALUES (
+        NOW()
         <if test="users != null">, #{users}</if>
         <if test="categories != null">, #{categories}</if>
         <if test="title != null">, #{title}</if>
         <if test="content != null">, #{content}</if>
         <if test="count != null">, #{count}</if>
+        <if test="hash != null">, #{hash}</if>
         <if test="updated_at != null">, #{updated_at}</if>
         <if test="is_delete != null">, #{is_delete}</if>
         <if test="is_visible != null">, #{is_visible}</if>
+        <if test="is_visible == null">
+            , 0
+        </if>
         )
     </insert>
 

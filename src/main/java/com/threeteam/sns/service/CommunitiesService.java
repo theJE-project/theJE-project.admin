@@ -21,8 +21,13 @@ public class CommunitiesService {
         return mapper.getById(id);
     }
 
-    public void insert(CommunitiesDto dto) {
-        mapper.insert(dto);
+    public Long insert(CommunitiesDto dto) {
+        int result = mapper.insert(dto);
+        if (result > 0) {
+            return dto.getId();
+        } else {
+            throw new RuntimeException("Insert failed");
+        }
     }
 
     public void update(CommunitiesDto dto) {
