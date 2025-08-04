@@ -13,6 +13,7 @@ public class UsersResponsDto {
     private String	email;
     private String	img;
     private boolean	is_alert;
+    private String  content;
 
     public boolean isIs_alert() {
         return is_alert;
@@ -29,5 +30,6 @@ public class UsersResponsDto {
         this.email = user.getEmail();
         this.img = user.getImg();
         this.is_alert = user.getIsAlert();
+        this.content = user.getContent();
     }
 }
