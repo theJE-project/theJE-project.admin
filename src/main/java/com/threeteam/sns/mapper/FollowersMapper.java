@@ -16,4 +16,6 @@ public interface FollowersMapper {
     void update(FollowersDto dto);
 
     void delete(Long id);
+
+    List<FollowersDto> getFolloweesByUser(String id);
 }

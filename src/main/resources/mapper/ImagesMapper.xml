@@ -5,11 +5,15 @@
     <select id="getAll" resultType="com.threeteam.sns.dto.ImagesDto">
 			SELECT * FROM images
 	</select>
-    	
+
     <select id="getById" parameterType="long" resultType="com.threeteam.sns.dto.ImagesDto">
 			SELECT * FROM images WHERE id = #{id}
 	</select>
-    	
+
+    <select id="getByBroads" parameterType="map" resultType="com.threeteam.sns.dto.ImagesDto">
+        SELECT * FROM images WHERE board_types = #{board_type} AND board = #{board}
+    </select>
+
     <insert id="insert" parameterType="com.threeteam.sns.dto.ImagesDto">
         INSERT INTO images ( created_at
         <if test="id != null">, id</if>

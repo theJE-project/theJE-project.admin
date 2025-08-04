@@ -7,7 +7,7 @@ import com.threeteam.sns.service.TracksService;
 import com.threeteam.sns.dto.TracksDto;
 
 @RestController
-@RequestMapping("/api/Tracks")
+@RequestMapping("/api/tracks")
 public class TracksController {
     @Autowired
     private TracksService service;

@@ -11,6 +11,8 @@ public interface MusicsMapper {
 
 	MusicsDto getById(Long id);
 
+    List<MusicsDto> getByBroads(Long board_type,Long board);
+
     void insert(MusicsDto dto);
 
     void update(MusicsDto dto);

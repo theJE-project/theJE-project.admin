@@ -11,6 +11,8 @@ public interface ImagesMapper {
 
 	ImagesDto getById(Long id);
 
+    List<ImagesDto> getByBroads(Long board_type,Long board);
+
     void insert(ImagesDto dto);
 
     void update(ImagesDto dto);

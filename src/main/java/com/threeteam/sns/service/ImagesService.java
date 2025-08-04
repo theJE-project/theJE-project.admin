@@ -21,6 +21,8 @@ public class ImagesService {
         return mapper.getById(id);
     }
 
+    public List<ImagesDto> getByBroads(Long board_type,Long board) { return mapper.getByBroads(board_type,board); }
+
     public void insert(ImagesDto dto) {
         mapper.insert(dto);
     }
