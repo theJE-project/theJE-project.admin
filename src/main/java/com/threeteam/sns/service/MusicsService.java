@@ -21,6 +21,8 @@ public class MusicsService {
         return mapper.getById(id);
     }
 
+    public List<MusicsDto> getByBroads(Long board_type,Long board) { return  mapper.getByBroads(board_type,board); }
+
     public void insert(MusicsDto dto) {
         mapper.insert(dto);
     }

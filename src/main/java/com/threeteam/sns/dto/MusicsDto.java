@@ -8,12 +8,12 @@ public class MusicsDto {
     private Long	id;
     private Long	board;
     private Long	board_types;
-    private String	url;
+    private Long	url;
     private LocalDateTime	created_at;
 
     public MusicsDto() {}
 
-    public MusicsDto(Long id, Long board, Long board_types, String url, LocalDateTime created_at) {
+    public MusicsDto(Long id, Long board, Long board_types, Long url, LocalDateTime created_at) {
         this.id = id;
         this.board = board;
         this.board_types = board_types;
@@ -45,11 +45,11 @@ public class MusicsDto {
         this.board_types = board_types;
     }
 
-    public String getUrl() {
+    public long getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(long url) {
         this.url = url;
     }
 
