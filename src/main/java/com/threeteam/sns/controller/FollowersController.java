@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 
@@ -15,18 +16,34 @@ public class FollowersController {
 	
 	@Autowired
 	private FollowersService service  = new FollowersService();
+	@Autowired
+	private UsersService users;
 	
 	@GetMapping
 	public List<FollowersDto> getAll() {
 		return service.getAll();
 	}
-	
-	@GetMapping("/{id}")
-    public ResponseEntity<FollowersDto> getById(@PathVariable("/{id}") Long id) {
-        FollowersDto dto = service.getById(id);
-        return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
+
+	@GetMapping("/followee/{id}")
+	public ResponseEntity<List<UsersResponsDto>> getById(@PathVariable("id") String id) {
+		List<FollowersDto> dto = service.getFolloweesByUser(id);
+		List<UsersResponsDto> result = new ArrayList<>();
+		for (FollowersDto followersDto : dto) {
+			result.add(new UsersResponsDto(users.getById(followersDto.getFollowee())));
+		}
+		return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
 	}
-	
+
+	@GetMapping("/follower/{id}")
+	public ResponseEntity<List<UsersResponsDto>> getFollowers(@PathVariable("id") String id) {
+		List<FollowersDto> dto = service.getFollowersByUser(id);
+		List<UsersResponsDto> result = new ArrayList<>();
+		for (FollowersDto followersDto : dto) {
+			result.add(new UsersResponsDto(users.getById(followersDto.getFollower())));
+		}
+		return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
+	}
+
 	@PostMapping
     public ResponseEntity<Void> create(@RequestBody FollowersDto dto) {
         service.insert(dto);

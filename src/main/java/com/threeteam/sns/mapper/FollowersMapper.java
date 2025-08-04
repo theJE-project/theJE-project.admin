@@ -18,4 +18,6 @@ public interface FollowersMapper {
     void delete(Long id);
 
     List<FollowersDto> getFolloweesByUser(String id);
+
+    List<FollowersDto> getFollowersByUser(String id);
 }
