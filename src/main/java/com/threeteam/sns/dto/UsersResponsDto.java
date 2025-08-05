@@ -14,6 +14,7 @@ public class UsersResponsDto {
     private String	img;
     private boolean	is_alert;
     private String  content;
+    private boolean is_followed;
 
     public boolean isIs_alert() {
         return is_alert;
