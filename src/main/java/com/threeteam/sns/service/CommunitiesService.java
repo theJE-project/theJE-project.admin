@@ -49,9 +49,11 @@ public class CommunitiesService {
         mapper.update(dto);
     }
 
-    public void delete(Long id) {
-        mapper.delete(id);
-    }
+//    public void delete(Long id) {
+//        mapper.delete(id);
+//    }
+
+    public void isDelete(Long id) {mapper.isDelete(id);}
     //내가 쓴글 조회 추가
     public List<CommunitiesDto> getByUserId(String userId) {
         return mapper.selectByUserId(userId);

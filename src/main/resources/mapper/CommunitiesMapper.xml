@@ -5,12 +5,13 @@
     <select id="getAll" resultType="com.threeteam.sns.dto.CommunitiesDto" parameterType="map">
         SELECT * FROM communities
         WHERE categories = #{category}
+        and is_delete=false
         ORDER BY id DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
 
     <select id="getById" parameterType="long" resultType="com.threeteam.sns.dto.CommunitiesDto">
-			SELECT * FROM communities WHERE id = #{id}
+			SELECT * FROM communities WHERE id = #{id} and is_delete=false
 	</select>
 
 
@@ -18,6 +19,7 @@
         SELECT * FROM communities
         WHERE categories = #{category}
         AND users = #{user}
+        and is_delete=false
         ORDER BY id DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
@@ -30,6 +32,7 @@
             #{userId}
         </foreach>
         AND categories = #{category}
+        and is_delete=false
         ORDER BY created_at DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
@@ -64,16 +67,22 @@
         )
     </insert>
 
-    <update id="update" parameterType="com.threeteam.sns.dto.CommunitiesDto">
-        UPDATE communities SET updated_at = NOW()
-        <if test="users != null">, users = #{users}</if>
-        <if test="categories != null">, categories = #{categories}</if>
-        <if test="title != null">, title = #{title}</if>
-        <if test="content != null">, content = #{content}</if>
-        <if test="count != null">, count = #{count}</if>
-        <if test="is_delete != null">, is_delete = #{is_delete}</if>
-        <if test="is_visible != null">, is_visible = #{is_visible}</if>
-         WHERE id = #{id}
+<!--    <update id="update" parameterType="com.threeteam.sns.dto.CommunitiesDto">-->
+<!--        UPDATE communities SET updated_at = NOW()-->
+<!--        <if test="users != null">, users = #{users}</if>-->
+<!--        <if test="categories != null">, categories = #{categories}</if>-->
+<!--        <if test="title != null">, title = #{title}</if>-->
+<!--        <if test="content != null">, content = #{content}</if>-->
+<!--        <if test="count != null">, count = #{count}</if>-->
+<!--        <if test="is_delete != null">, is_delete = #{is_delete}</if>-->
+<!--        <if test="is_visible != null">, is_visible = #{is_visible}</if>-->
+<!--         WHERE id = #{id}-->
+<!--    </update>-->
+
+
+<!--    삭제 -->
+    <update id="isDelete" parameterType="com.threeteam.sns.dto.CommunitiesDto">
+        UPDATE communities SET is_delete = true where id = #{id}
     </update>
 
     <delete id="delete" parameterType="long">

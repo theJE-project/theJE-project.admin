@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 public class CommunitiesController {
 	
 	@Autowired
-	private CommunitiesService service  = new CommunitiesService();
+	private CommunitiesService service;
 	@Autowired
-	private ImagesService images = new ImagesService();
+	private ImagesService images;
 	@Autowired
-	private MusicsService musics = new MusicsService();
+	private MusicsService musics;
 	@Autowired
 	private UsersService users;
 	@Autowired
@@ -150,11 +150,18 @@ public class CommunitiesController {
         service.update(dto);
         return ResponseEntity.ok().build();
 	}
-	
-	@DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("/{id}") Long id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
+
+	// 게시글 삭제
+	@PutMapping("/{id}")
+	public ResponseEntity<Void> isDelete(@PathVariable Long id){
+		service.isDelete(id);
+		return ResponseEntity.ok().build();
 	}
+	
+//	@DeleteMapping("/{id}")
+//    public ResponseEntity<Void> delete(@PathVariable Long id) {
+//        service.delete(id);
+//        return ResponseEntity.noContent().build();
+//	}
 	
 }
