@@ -90,7 +90,6 @@
 	</delete>
 
 
-
     <!-- 내가 쓴글 조회 추가-->
     <select id="selectByUserId" parameterType="string" resultType="com.threeteam.sns.dto.CommunitiesDto">
         SELECT * FROM communities WHERE users = #{userId}

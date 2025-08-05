@@ -34,5 +34,7 @@ public class FollowersService {
     }
 
     public List<FollowersDto> getFolloweesByUser(String id) { return mapper.getFolloweesByUser(id); }
+
+    public List<FollowersDto> getFollowersByUser(String id) { return  mapper.getFollowersByUser(id); }
 }
 

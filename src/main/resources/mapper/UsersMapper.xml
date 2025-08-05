@@ -27,6 +27,7 @@
         <if test="email != null">, email</if>
         <if test="img != null">, img</if>
         <if test="is_alert != null">, is_alert</if>
+        <if test="content != null">, content</if>
         ) VALUES ( NOW()
         <if test="id != null">, #{id}</if>
         <if test="account != null">, #{account}</if>
@@ -36,6 +37,7 @@
         <if test="email != null">, #{email}</if>
         <if test="img != null">, #{img}</if>
         <if test="is_alert != null">, #{is_alert}</if>
+        <if test="content != null">, #{content}</if>
         )
     </insert>
     	
@@ -48,6 +50,7 @@
         <if test="email != null">, email = #{email}</if>
         <if test="img != null">, img = #{img}</if>
         <if test="is_alert != null">, is_alert = #{is_alert}</if>
+        <if test="content != null and content != ''">, content = #{content}</if>
          WHERE id = #{id}
     </update>
     
