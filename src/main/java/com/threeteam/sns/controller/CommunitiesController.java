@@ -73,7 +73,11 @@ public class CommunitiesController {
 		List<CommunitiesResponsDto> result = new ArrayList<>();
 		for (CommunitiesDto dto : dtos) {
 			UsersDto getUser = users.getById(dto.getUsers());
-
+			List<MusicsDto> getMusic = musics.getByBroads(1L, dto.getId());
+			List<TracksDto> track = new ArrayList<>();
+			for (MusicsDto music : getMusic) {
+				track.add(tracks.searchId(music.getUrl()));
+			}
 			// is_following 값 세팅 (내가 작성자 팔로우 중이면 true)
 			boolean isFollowing = false;
 			if (follower != null && !follower.equals(getUser.getId())) {
@@ -84,8 +88,7 @@ public class CommunitiesController {
 					dto,
 					new UsersResponsDto(getUser, isFollowing), // <- 여기에 is_following 값 전달
 					images.getByBroads(1L, dto.getId()),
-					// music, tracks 등 원래 코드 그대로
-					new ArrayList<>()
+					track
 			));
 		}
 		return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
