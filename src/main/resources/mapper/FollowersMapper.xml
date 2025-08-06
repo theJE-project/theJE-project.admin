@@ -24,6 +24,33 @@
         ORDER BY created_at DESC
     </select>
 
+
+<!--    <select id="getIsFollowingByUser" parameterType="string" resultType="com.threeteam.sns.dto.FollowersDto">-->
+<!--        SELECT-->
+<!--        c.id,-->
+<!--        c.content,-->
+<!--        c.users,-->
+<!--        f.follower,-->
+<!--        f.followee,-->
+<!--        CASE-->
+<!--            WHEN f.follower IS NOT NULL THEN true-->
+<!--            ELSE false-->
+<!--        END AS is_following-->
+<!--        FROM communities c-->
+<!--        LEFT JOIN followers f-->
+<!--            ON f.follower = #{userId}-->
+<!--            AND f.followee = c.users-->
+<!--        GROUP BY c.id, c.content, c.users, f.follower-->
+<!--        ORDER BY c.created_at DESC;-->
+<!--    </select>-->
+
+    <select id="isFollowing" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM followers
+        WHERE follower = #{myId} AND followee = #{targetId}
+    </select>
+
+
     <insert id="insert" parameterType="com.threeteam.sns.dto.FollowersDto">
         INSERT INTO followers ( created_at
         <if test="id != null">, id</if>

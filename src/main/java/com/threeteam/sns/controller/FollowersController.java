@@ -43,6 +43,26 @@ public class FollowersController {
 		}
 		return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
 	}
+//
+//	@GetMapping("/following/{id}")
+//	public ResponseEntity<List<UsersResponsDto>> getIsFollowingByUser(@PathVariable String id){
+//		List<FollowersDto> dto = service.getIsFollowingByUser(id);
+//		List<UsersResponsDto> result = new ArrayList<>();
+//		for (FollowersDto followersDto : dto){
+//			result.add(new UsersResponsDto(users.getById(followersDto.getFollowee())));
+//		}
+//		return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
+//	}
+
+	@GetMapping("/is-following")
+	public ResponseEntity<Boolean> isFollowing(
+			@RequestParam String myId,
+			@RequestParam String targetId
+	) {
+		boolean result = service.isFollowing(myId, targetId);
+		return ResponseEntity.ok(result);
+	}
+
 
 	@PostMapping
     public ResponseEntity<Void> create(@RequestBody FollowersDto dto) {

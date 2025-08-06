@@ -2,6 +2,7 @@ package com.threeteam.sns.mapper;
 
 import com.threeteam.sns.dto.*;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,4 +21,7 @@ public interface FollowersMapper {
     List<FollowersDto> getFolloweesByUser(String id);
 
     List<FollowersDto> getFollowersByUser(String id);
+
+    boolean isFollowing(@Param("myId") String myId, @Param("targetId") String targetId);
+
 }

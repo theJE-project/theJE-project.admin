@@ -61,6 +61,37 @@ public class CommunitiesController {
 				: ResponseEntity.notFound().build();
 	}
 
+
+	@GetMapping("/byUser") //전체검색
+	public ResponseEntity<List<CommunitiesResponsDto>> getAllByUser(
+			@RequestParam("category") Long category,
+			@RequestParam(value = "user", required = false) String myId, // 내 아이디
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size
+	) {
+		List<CommunitiesDto> dtos = service.getAll(category, page * size, size);
+		List<CommunitiesResponsDto> result = new ArrayList<>();
+		for (CommunitiesDto dto : dtos) {
+			UsersDto getUser = users.getById(dto.getUsers());
+
+			// is_following 값 세팅 (내가 작성자 팔로우 중이면 true)
+			boolean isFollowing = false;
+			if (myId != null && !myId.equals(getUser.getId())) {
+				isFollowing = followers.isFollowing(myId, getUser.getId());
+			}
+
+			result.add(new CommunitiesResponsDto(
+					dto,
+					new UsersResponsDto(getUser, isFollowing), // <- 여기에 is_following 값 전달
+					images.getByBroads(1L, dto.getId()),
+					// music, tracks 등 원래 코드 그대로
+					new ArrayList<>()
+			));
+		}
+		return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
+	}
+
+
 	@GetMapping("/followee") // 팔로잉 검색
 	public ResponseEntity<List<CommunitiesResponsDto>> getByFollowee(
 			@RequestParam("user") String user,
