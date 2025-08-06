@@ -81,5 +81,14 @@ public class FollowersController {
         service.delete(id);
         return ResponseEntity.noContent().build();
 	}
-	
+
+	@DeleteMapping("/delete")
+	public ResponseEntity<Void> deleteFollowing(
+			@RequestParam String follower,
+			@RequestParam String followee
+	) {
+		service.deleteFollowing(follower, followee);
+		return ResponseEntity.noContent().build();
+	}
+
 }

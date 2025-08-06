@@ -65,7 +65,7 @@ public class CommunitiesController {
 	@GetMapping("/byUser") //전체검색
 	public ResponseEntity<List<CommunitiesResponsDto>> getAllByUser(
 			@RequestParam("category") Long category,
-			@RequestParam(value = "user", required = false) String myId, // 내 아이디
+			@RequestParam(value = "user", required = false) String follower, // 내 아이디
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size
 	) {
@@ -76,8 +76,8 @@ public class CommunitiesController {
 
 			// is_following 값 세팅 (내가 작성자 팔로우 중이면 true)
 			boolean isFollowing = false;
-			if (myId != null && !myId.equals(getUser.getId())) {
-				isFollowing = followers.isFollowing(myId, getUser.getId());
+			if (follower != null && !follower.equals(getUser.getId())) {
+				isFollowing = followers.isFollowing(follower, getUser.getId());
 			}
 
 			result.add(new CommunitiesResponsDto(

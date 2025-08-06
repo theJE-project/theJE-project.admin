@@ -22,6 +22,8 @@ public interface FollowersMapper {
 
     List<FollowersDto> getFollowersByUser(String id);
 
-    boolean isFollowing(@Param("myId") String myId, @Param("targetId") String targetId);
+    boolean isFollowing(@Param("follower") String follower, @Param("followee") String followee);
+
+    void deleteFollowing(@Param("follower") String follower, @Param("followee") String followee);
 
 }

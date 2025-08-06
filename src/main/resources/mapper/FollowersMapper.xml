@@ -47,7 +47,7 @@
     <select id="isFollowing" resultType="boolean">
         SELECT COUNT(*) > 0
         FROM followers
-        WHERE follower = #{myId} AND followee = #{targetId}
+        WHERE follower = #{follower} AND followee = #{followee}
     </select>
 
 
@@ -73,5 +73,10 @@
     <delete id="delete" parameterType="long">
 			DELETE FROM followers WHERE id = {id})
 	</delete>
-    	
+
+    <delete id="deleteFollowing">
+        DELETE FROM followers WHERE follower = #{follower} AND followee = #{followee}
+    </delete>
+
+
 </mapper>

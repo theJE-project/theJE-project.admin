@@ -37,8 +37,12 @@ public class FollowersService {
 
     public List<FollowersDto> getFollowersByUser(String id) { return  mapper.getFollowersByUser(id); }
 
-    public boolean isFollowing(String myId, String targetId) {
-        return mapper.isFollowing(myId, targetId);
+    public boolean isFollowing(String follower, String followee) {
+        return mapper.isFollowing(follower, followee);
+    }
+
+    public void deleteFollowing(String follower, String followee){
+        mapper.deleteFollowing(follower, followee);
     }
 
 }
