@@ -3,6 +3,7 @@ package com.threeteam.sns.mapper;
 import java.util.List;
 import java.util.Map;
 
+import com.threeteam.sns.dto.UsersResponsDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.threeteam.sns.dto.CommunitiesDto;

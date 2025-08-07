@@ -16,7 +16,7 @@ public class NotificationsService {
 		return mapper.getAll();
 	}
 
-	public NotificationsDto getById(int id) {
+	public  List<NotificationsDto> getById(String id) {
 		return mapper.getById(id);
 	}
 

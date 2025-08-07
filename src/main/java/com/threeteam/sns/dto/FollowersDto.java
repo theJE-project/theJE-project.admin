@@ -10,5 +10,5 @@ public class FollowersDto {
     private String	follower;
     private String	followee;
     private LocalDateTime	created_at;
-    
+    private LocalDateTime	updated_at;
 }

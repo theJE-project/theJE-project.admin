@@ -59,6 +59,7 @@ public class FollowersController {
 	}
 	@PostMapping
     public ResponseEntity<Void> create(@RequestBody FollowersDto dto) {
+		System.out.println(dto);
         service.insert(dto);
         return ResponseEntity.ok().build();
 	}
