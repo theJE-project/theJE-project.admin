@@ -3,14 +3,14 @@
 <mapper namespace="com.threeteam.sns.mapper.FollowersMapper">
     
     <select id="getAll" resultType="com.threeteam.sns.dto.FollowersDto">
-			SELECT * FROM followers
+		SELECT * FROM followers
 	</select>
     	
-    <select id="getById" parameterType="long" resultType="com.threeteam.sns.dto.FollowersDto">
-			SELECT * FROM followers WHERE id = #{id}
+    <select id="getById" parameterType="int" resultType="com.threeteam.sns.dto.FollowersDto">
+		SELECT * FROM followers WHERE `id` = #{id}
 	</select>
-
-    <select id="getFolloweesByUser" parameterType="string" resultType="com.threeteam.sns.dto.FollowersDto">
+	
+	<select id="getFolloweesByUser" parameterType="string" resultType="com.threeteam.sns.dto.FollowersDto">
         SELECT *
         FROM followers
         WHERE follower = #{userId}
@@ -23,60 +23,48 @@
         WHERE followee = #{userId}
         ORDER BY created_at DESC
     </select>
-
-
-<!--    <select id="getIsFollowingByUser" parameterType="string" resultType="com.threeteam.sns.dto.FollowersDto">-->
-<!--        SELECT-->
-<!--        c.id,-->
-<!--        c.content,-->
-<!--        c.users,-->
-<!--        f.follower,-->
-<!--        f.followee,-->
-<!--        CASE-->
-<!--            WHEN f.follower IS NOT NULL THEN true-->
-<!--            ELSE false-->
-<!--        END AS is_following-->
-<!--        FROM communities c-->
-<!--        LEFT JOIN followers f-->
-<!--            ON f.follower = #{userId}-->
-<!--            AND f.followee = c.users-->
-<!--        GROUP BY c.id, c.content, c.users, f.follower-->
-<!--        ORDER BY c.created_at DESC;-->
-<!--    </select>-->
-
-    <select id="isFollowing" resultType="boolean">
-        SELECT COUNT(*) > 0
-        FROM followers
-        WHERE follower = #{follower} AND followee = #{followee}
-    </select>
-
-
+	
+    	
     <insert id="insert" parameterType="com.threeteam.sns.dto.FollowersDto">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">SELECT LAST_INSERT_ID()</selectKey>
         INSERT INTO followers ( created_at
-        <if test="id != null">, id</if>
-        <if test="follower != null">, follower</if>
-        <if test="followee != null">, followee</if>
+        <if test="id != null">, `id`</if>
+        <if test="follower != null">, `follower`</if>
+        <if test="followee != null">, `followee`</if>
+        <if test="updated_at != null">, `updated_at`</if>
         ) VALUES ( NOW()
         <if test="id != null">, #{id}</if>
         <if test="follower != null">, #{follower}</if>
         <if test="followee != null">, #{followee}</if>
+        <if test="updated_at != null">, #{updated_at}</if>
         )
     </insert>
     	
     <update id="update" parameterType="com.threeteam.sns.dto.FollowersDto">
         UPDATE followers SET updated_at = NOW()
-        <if test="follower != null">, follower = #{follower}</if>
-        <if test="followee != null">, followee = #{followee}</if>
-         WHERE id = #{id}
+        <if test="follower != null">, `follower` = #{follower}</if>
+        <if test="followee != null">, `followee` = #{followee}</if>
+         WHERE `id` = #{id}
     </update>
     
-    <delete id="delete" parameterType="long">
-			DELETE FROM followers WHERE id = {id})
+    <delete id="delete" parameterType="int">
+		DELETE FROM followers WHERE `id` = #{id}
 	</delete>
 
     <delete id="deleteFollowing">
         DELETE FROM followers WHERE follower = #{follower} AND followee = #{followee}
     </delete>
 
+    <select id="search" parameterType="com.threeteam.sns.dto.FollowersDto" resultType="com.threeteam.sns.dto.FollowersDto">
+        SELECT * FROM followers WHERE 1=1
+        <if test="id != null">AND `id` = #{id}</if>
+        <if test="follower != null">AND `follower` = #{follower}</if>
+        <if test="followee != null">AND `followee` = #{followee}</if>
+    </select>
 
+    <select id="isFollowing" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM followers
+        WHERE follower = #{follower} AND followee = #{followee}
+    </select>
 </mapper>

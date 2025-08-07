@@ -6,52 +6,54 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-// [파일업로드추가] import 추가
+import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import java.util.List;
-import lombok.RequiredArgsConstructor;
-
 @RestController
-@RequestMapping("/api/images")
+@RequiredArgsConstructor
+@RequestMapping(value = "/api/images", produces = "application/json; charset=UTF-8")
 public class ImagesController {
-
-	@Autowired
-	private ImagesService service  = new ImagesService();
-
+	
+	private final ImagesService service;
+	
 	@GetMapping
 	public List<ImagesDto> getAll() {
 		return service.getAll();
 	}
-
+	
 	@GetMapping("/{id}")
-	public ResponseEntity<ImagesDto> getById(@PathVariable("/{id}") Long id) {
-		ImagesDto dto = service.getById(id);
-		return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
+    public ResponseEntity<ImagesDto> getById(@PathVariable("id") int id) {
+        ImagesDto dto = service.getById(id);
+        return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
 	}
-
+	
 	@PostMapping
-	public ResponseEntity<Void> create(@RequestBody ImagesDto dto) {
-		service.insert(dto);
-		return ResponseEntity.ok().build();
+    public ResponseEntity<Void> create(@RequestBody ImagesDto dto) {
+        service.insert(dto);
+        return ResponseEntity.ok().build();
 	}
-
+	
 	@PutMapping
-	public ResponseEntity<Void> update(@RequestBody ImagesDto dto) {
-		service.update(dto);
-		return ResponseEntity.ok().build();
+    public ResponseEntity<Void> update(@RequestBody ImagesDto dto) {
+        service.update(dto);
+        return ResponseEntity.ok().build();
 	}
-
+	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable("/{id}") Long id) {
-		service.delete(id);
-		return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> delete(@PathVariable("id") int id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+	}
+	
+	@PostMapping("/search")
+	public List<ImagesDto> search(@RequestBody ImagesDto dto) {
+		return service.search(dto);
 	}
 
-	// [파일업로드추가] 프로필/이미지 파일 업로드용 엔드포인트 추가
 	@PostMapping("/upload")
 	public ResponseEntity<?> uploadProfileImage(@RequestParam("file") MultipartFile file) {
 		try {
@@ -74,6 +76,4 @@ public class ImagesController {
 			return ResponseEntity.status(500).body("이미지 업로드 실패");
 		}
 	}
-	// [파일업로드추가] 끝
-
 }

@@ -1,36 +1,50 @@
 package com.threeteam.sns.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 
+import org.springframework.stereotype.Service;
 import com.threeteam.sns.dto.*;
 import com.threeteam.sns.mapper.*;
-
 import java.util.List;
+import java.util.Map;
+
 @Service
+@RequiredArgsConstructor
 public class MusicsService {
 
-	@Autowired
-	private MusicsMapper mapper;
+	private final MusicsMapper mapper;
 
-    public List<MusicsDto> getAll() {
-        return mapper.getAll();
-    }
+	public List<MusicsDto> getAll() {
+		return mapper.getAll();
+	}
 
-    public MusicsDto getById(Long id) {
-        return mapper.getById(id);
-    }
+	public MusicsDto getById(int id) {
+		return mapper.getById(id);
+	}
 
-    public List<MusicsDto> getByBroads(Long board_type,Long board) { return  mapper.getByBroads(board_type,board); }
+	public int insert(MusicsDto dto) {
+		int result = mapper.insert(dto);
+		return result;
+	}
 
-    public void insert(MusicsDto dto) {
-        mapper.insert(dto);
-    }
+	public void update(MusicsDto dto) {
+		mapper.update(dto);
+	}
 
-    public void update(MusicsDto dto) {
-        mapper.update(dto);
-    }
+	public void delete(int id) {
+		mapper.delete(id);
+	}
 
-    public void delete(Long id) {
-        mapper.delete(id);
-    }}
+	public List<MusicsDto> search(MusicsDto dto) {
+		return mapper.search(dto);
+	}
+
+	public List<Map<String, Object>> searchList(MusicsDto dto) {
+		return mapper.searchList(dto);
+	}
+	
+	public List<MusicsDto> getByBoards(int board_type, int board) {
+		return  mapper.getByBoards(board_type, board);
+	}
+
+}

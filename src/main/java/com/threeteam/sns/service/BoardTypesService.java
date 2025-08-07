@@ -1,34 +1,40 @@
 package com.threeteam.sns.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import com.threeteam.sns.dto.*;
 import com.threeteam.sns.mapper.*;
-
-import java.util.List;
+import java.util.List
+;
 @Service
+@RequiredArgsConstructor
 public class BoardTypesService {
 
-	@Autowired
-	private BoardTypesMapper mapper;
+	private final BoardTypesMapper mapper;
 
-    public List<BoardTypesDto> getAll() {
-        return mapper.getAll();
-    }
+	public List<BoardTypesDto> getAll() {
+		return mapper.getAll();
+	}
 
-    public BoardTypesDto getById(Long id) {
-        return mapper.getById(id);
-    }
+	public BoardTypesDto getById(int id) {
+		return mapper.getById(id);
+	}
 
-    public void insert(BoardTypesDto dto) {
-        mapper.insert(dto);
-    }
+	public int insert(BoardTypesDto dto) {
+		int result = mapper.insert(dto);
+		return result;
+	}
 
-    public void update(BoardTypesDto dto) {
-        mapper.update(dto);
-    }
+	public void update(BoardTypesDto dto) {
+		mapper.update(dto);
+	}
 
-    public void delete(Long id) {
-        mapper.delete(id);
-    }}
+	public void delete(int id) {
+		mapper.delete(id);
+	}
+
+	public List<BoardTypesDto> search(BoardTypesDto dto) {
+		return mapper.search(dto);
+	}
+
+}

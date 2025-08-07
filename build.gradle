@@ -44,6 +44,8 @@ dependencies {
 
     // MySQL
     runtimeOnly 'com.mysql:mysql-connector-j'
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+    implementation 'p6spy:p6spy:3.9.1'
 
     // JSON
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'

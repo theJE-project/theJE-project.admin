@@ -1,33 +1,34 @@
 package com.threeteam.sns.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import com.threeteam.sns.dto.*;
 import com.threeteam.sns.mapper.*;
 
-import java.util.List;
 import java.util.HashMap;
+import java.util.List
+;
 import java.util.Map;
-
 @Service
+@RequiredArgsConstructor
 public class CommunitiesService {
 
-	@Autowired
-	private CommunitiesMapper mapper;
-
-    public List<CommunitiesDto> getAll(Long category, int offset, int limit) {
+	private final CommunitiesMapper mapper;
+	
+	public List<CommunitiesDto> getAll() {
+		return mapper.getAll();
+	}
+	public List<CommunitiesDto> getAll(int category, int offset, int limit) {
         return mapper.getAll(category, offset, limit);
     }
 
-    public CommunitiesDto getById(Long id) {
-        return mapper.getById(id);
+	public CommunitiesDto getById(int id) {
+		return mapper.getById(id);
+	}
+	public List<CommunitiesDto> getByUser(String user, int category, int offset, int limit) {
+        return  mapper.getByUser(user, category, offset, limit);
     }
-
-    public List<CommunitiesDto> getByUser(String user,Long category,int offset, int limit) {
-        return  mapper.getByUser(user,category,offset,limit);
-    }
-    public List<CommunitiesDto> getByFollowees(List<String> followee, Long category, int offset, int limit) {
+    public List<CommunitiesDto> getByFollowees(List<String> followee, int category, int offset, int limit) {
         Map<String, Object> params = new HashMap<>();
         params.put("followee", followee);
         params.put("category", category);
@@ -36,28 +37,30 @@ public class CommunitiesService {
         return mapper.getByFollowees(params);
     }
 
-    public Long insert(CommunitiesDto dto) {
-        int result = mapper.insert(dto);
-        if (result > 0) {
-            return dto.getId();
-        } else {
-            throw new RuntimeException("Insert failed");
-        }
-    }
+	public int insert(CommunitiesDto dto) {
+		int result = mapper.insert(dto);
+		return result;
+	}
 
-    public void update(CommunitiesDto dto) {
-        mapper.update(dto);
-    }
+	public void update(CommunitiesDto dto) {
+		mapper.update(dto);
+	}
 
-//    public void delete(Long id) {
-//        mapper.delete(id);
-//    }
+	public void delete(int id) {
+		mapper.delete(id);
+	}
 
-    public void isDelete(Long id) {mapper.isDelete(id);}
-    //내가 쓴글 조회 추가
-    public List<CommunitiesDto> getByUserId(String userId) {
-        return mapper.selectByUserId(userId);
-    }
+	public List<CommunitiesDto> search(CommunitiesDto dto) {
+		return mapper.search(dto);
+	}
+	
+	public List<Map<String, Object>> searchList(CommunitiesDto dto) {
+		return mapper.searchList(dto);
+	}
 
+	//내가 쓴글 조회 추가
+	public List<CommunitiesDto> getByUserId(String userId) {
+		return mapper.selectByUserId(userId);
+	}
 
-    }
+}

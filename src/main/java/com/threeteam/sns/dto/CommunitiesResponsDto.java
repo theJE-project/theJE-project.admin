@@ -1,25 +1,23 @@
 package com.threeteam.sns.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
+import lombok.Data;
+
+@Data
 public class CommunitiesResponsDto {
-    private Long	id;
+    private Integer	id;
     private UsersResponsDto users;
-    private Long	categories;
-    private String	title;
+    private Integer	categories;
+    private String	title ="";
     private String	content;
-    private Long	count ;
-    private String hash ;
+    private Integer	count = 0;
+    private String hash = "";
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
-    private boolean	is_delete;
-    private boolean	is_visible;
+    private Boolean	is_delete = false;
+    private Boolean	is_visible = true;
     private List<ImagesDto> images;
     private List<TracksDto> musics;
 //
@@ -41,10 +39,10 @@ public class CommunitiesResponsDto {
         this.content = data.getContent();
         this.count = data.getCount();
         this.hash = data.getHash();
-        this.created_at = data.getCreatedAt();
-        this.updated_at = data.getUpdatedAt();
-        this.is_delete = data.getIsDelete();
-        this.is_visible = data.getIsVisible();
+        this.created_at = data.getCreated_at();
+        this.updated_at = data.getUpdated_at();
+        this.is_delete = data.getIs_delete();
+        this.is_visible = data.getIs_visible();
         this.images = images;
         this.musics = musics;
     }

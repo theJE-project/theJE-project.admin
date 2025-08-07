@@ -6,22 +6,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/api/followers")
+@RequiredArgsConstructor
+@RequestMapping(value = "/api/followers", produces = "application/json; charset=UTF-8")
 public class FollowersController {
 	
-	@Autowired
-	private FollowersService service  = new FollowersService();
-	@Autowired
-	private UsersService users;
+	private final FollowersService service;
+	private final UsersService users;
 	
 	@GetMapping
 	public List<FollowersDto> getAll() {
 		return service.getAll();
+	}
+	
+	@GetMapping("/{id}")
+    public ResponseEntity<FollowersDto> getById(@PathVariable("id") int id) {
+        FollowersDto dto = service.getById(id);
+        return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
 	}
 
 	@GetMapping("/followee/{id}")
@@ -43,16 +48,6 @@ public class FollowersController {
 		}
 		return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
 	}
-//
-//	@GetMapping("/following/{id}")
-//	public ResponseEntity<List<UsersResponsDto>> getIsFollowingByUser(@PathVariable String id){
-//		List<FollowersDto> dto = service.getIsFollowingByUser(id);
-//		List<UsersResponsDto> result = new ArrayList<>();
-//		for (FollowersDto followersDto : dto){
-//			result.add(new UsersResponsDto(users.getById(followersDto.getFollowee())));
-//		}
-//		return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
-//	}
 
 	@GetMapping("/is-following")
 	public ResponseEntity<Boolean> isFollowing(
@@ -62,8 +57,6 @@ public class FollowersController {
 		boolean result = service.isFollowing(myId, targetId);
 		return ResponseEntity.ok(result);
 	}
-
-
 	@PostMapping
     public ResponseEntity<Void> create(@RequestBody FollowersDto dto) {
         service.insert(dto);
@@ -77,7 +70,7 @@ public class FollowersController {
 	}
 	
 	@DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") int id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
 	}
@@ -91,4 +84,9 @@ public class FollowersController {
 		return ResponseEntity.noContent().build();
 	}
 
+	@PostMapping("/search")
+	public List<FollowersDto> search(@RequestBody FollowersDto dto) {
+		return service.search(dto);
+	}
+	
 }

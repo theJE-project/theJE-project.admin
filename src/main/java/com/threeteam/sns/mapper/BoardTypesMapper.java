@@ -7,13 +7,16 @@ import java.util.List;
 
 @Mapper
 public interface BoardTypesMapper {
-    List<BoardTypesDto> getAll();
+	List<BoardTypesDto> getAll();
 
-	BoardTypesDto getById(Long id);
+	BoardTypesDto getById(int id);
 
-    void insert(BoardTypesDto dto);
+	int insert(BoardTypesDto dto);
 
-    void update(BoardTypesDto dto);
+	void update(BoardTypesDto dto);
 
-    void delete(Long id);
+	void delete(int id);
+
+	List<BoardTypesDto> search(BoardTypesDto dto);
+
 }

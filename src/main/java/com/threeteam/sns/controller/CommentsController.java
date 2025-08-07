@@ -10,11 +10,11 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/comments")
+@RequiredArgsConstructor
+@RequestMapping(value = "/api/comments", produces = "application/json; charset=UTF-8")
 public class CommentsController {
 	
-	@Autowired
-	private CommentsService service  = new CommentsService();
+	private final CommentsService service;
 	
 	@GetMapping
 	public List<CommentsDto> getAll() {
@@ -22,7 +22,7 @@ public class CommentsController {
 	}
 	
 	@GetMapping("/{id}")
-    public ResponseEntity<CommentsDto> getById(@PathVariable("/{id}") Long id) {
+    public ResponseEntity<CommentsDto> getById(@PathVariable("id") int id) {
         CommentsDto dto = service.getById(id);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
 	}
@@ -40,9 +40,14 @@ public class CommentsController {
 	}
 	
 	@DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("/{id}") Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") int id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
+	}
+	
+	@PostMapping("/search")
+	public List<CommentsDto> search(@RequestBody CommentsDto dto) {
+		return service.search(dto);
 	}
 	
 }

@@ -10,25 +10,23 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/notifications")
+@RequiredArgsConstructor
+@RequestMapping(value = "/api/notifications", produces = "application/json; charset=UTF-8")
 public class NotificationsController {
 	
-	@Autowired
-	private NotificationsService service  = new NotificationsService();
+	private final NotificationsService service;
 	
 	@GetMapping
 	public List<NotificationsDto> getAll() {
 		return service.getAll();
 	}
-
+	
 	@GetMapping("/{id}")
-	public ResponseEntity<NotificationsDto[]> getById(@PathVariable String id) {
-		NotificationsDto[] dto = service.getById(id);
-		if(dto == null) {
-			return ResponseEntity.ok(new NotificationsDto[0]);
-		}
-		return ResponseEntity.ok(dto);
+    public ResponseEntity<NotificationsDto> getById(@PathVariable("id") int id) {
+        NotificationsDto dto = service.getById(id);
+        return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
 	}
+	
 	@PostMapping
     public ResponseEntity<Void> create(@RequestBody NotificationsDto dto) {
         service.insert(dto);
@@ -42,8 +40,20 @@ public class NotificationsController {
 	}
 	
 	@DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
-		service.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable("id") int id) {
+        service.delete(id);
         return ResponseEntity.noContent().build();
 	}
+	
+	@PostMapping("/search")
+	public List<NotificationsDto> search(@RequestBody NotificationsDto dto) {
+		return service.getListByUsers(dto);
+	}
+	
+	@PutMapping("/allRead")
+	public ResponseEntity<Void> markAllAsRead(@RequestBody NotificationsDto dto) {
+		service.updateAllRead(dto);
+		return ResponseEntity.ok().build();
+	}
+	
 }

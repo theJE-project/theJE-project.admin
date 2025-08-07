@@ -3,23 +3,24 @@
 <mapper namespace="com.threeteam.sns.mapper.CommentsMapper">
     
     <select id="getAll" resultType="com.threeteam.sns.dto.CommentsDto">
-			SELECT * FROM comments
+		SELECT * FROM comments
 	</select>
     	
-    <select id="getById" parameterType="long" resultType="com.threeteam.sns.dto.CommentsDto">
-			SELECT * FROM comments WHERE id = #{id}
+    <select id="getById" parameterType="int" resultType="com.threeteam.sns.dto.CommentsDto">
+		SELECT * FROM comments WHERE `id` = #{id}
 	</select>
     	
     <insert id="insert" parameterType="com.threeteam.sns.dto.CommentsDto">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">SELECT LAST_INSERT_ID()</selectKey>
         INSERT INTO comments ( created_at
-        <if test="id != null">, id</if>
-        <if test="parent != null">, parent</if>
-        <if test="users != null">, users</if>
-        <if test="board != null">, board</if>
-        <if test="board_types != null">, board_types</if>
-        <if test="content != null">, content</if>
-        <if test="updated_at != null">, updated_at</if>
-        <if test="is_delete != null">, is_delete</if>
+        <if test="id != null">, `id`</if>
+        <if test="parent != null">, `parent`</if>
+        <if test="users != null">, `users`</if>
+        <if test="board != null">, `board`</if>
+        <if test="board_types != null">, `board_types`</if>
+        <if test="content != null">, `content`</if>
+        <if test="updated_at != null">, `updated_at`</if>
+        <if test="is_delete != null">, `is_delete`</if>
         ) VALUES ( NOW()
         <if test="id != null">, #{id}</if>
         <if test="parent != null">, #{parent}</if>
@@ -34,17 +35,28 @@
     	
     <update id="update" parameterType="com.threeteam.sns.dto.CommentsDto">
         UPDATE comments SET updated_at = NOW()
-        <if test="parent != null">, parent = #{parent}</if>
-        <if test="users != null">, users = #{users}</if>
-        <if test="board != null">, board = #{board}</if>
-        <if test="board_types != null">, board_types = #{board_types}</if>
-        <if test="content != null">, content = #{content}</if>
-        <if test="is_delete != null">, is_delete = #{is_delete}</if>
-         WHERE id = #{id}
+        <if test="parent != null">, `parent` = #{parent}</if>
+        <if test="users != null">, `users` = #{users}</if>
+        <if test="board != null">, `board` = #{board}</if>
+        <if test="board_types != null">, `board_types` = #{board_types}</if>
+        <if test="content != null">, `content` = #{content}</if>
+        <if test="is_delete != null">, `is_delete` = #{is_delete}</if>
+         WHERE `id` = #{id}
     </update>
     
-    <delete id="delete" parameterType="long">
-			DELETE FROM comments WHERE id = {id})
+    <delete id="delete" parameterType="int">
+		DELETE FROM comments WHERE `id` = #{id}
 	</delete>
+    	
+    <select id="search" parameterType="com.threeteam.sns.dto.CommentsDto" resultType="com.threeteam.sns.dto.CommentsDto">
+        SELECT * FROM comments WHERE 1=1
+        <if test="id != null">AND `id` = #{id}</if>
+        <if test="parent != null">AND `parent` = #{parent}</if>
+        <if test="users != null">AND `users` = #{users}</if>
+        <if test="board != null">AND `board` = #{board}</if>
+        <if test="board_types != null">AND `board_types` = #{board_types}</if>
+        <if test="content != null">AND `content` = #{content}</if>
+        <if test="is_delete != null">AND `is_delete` = #{is_delete}</if>
+    </select>
     	
 </mapper>

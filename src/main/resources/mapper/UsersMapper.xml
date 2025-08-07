@@ -3,31 +3,31 @@
 <mapper namespace="com.threeteam.sns.mapper.UsersMapper">
     
     <select id="getAll" resultType="com.threeteam.sns.dto.UsersDto">
-			SELECT * FROM users
+		SELECT * FROM users
 	</select>
     	
-    <select id="getById" parameterType="string" resultType="com.threeteam.sns.dto.UsersDto">
-			SELECT * FROM users WHERE id = #{id}
+    <select id="getById" parameterType="String" resultType="com.threeteam.sns.dto.UsersDto">
+		SELECT * FROM users WHERE `id` = #{id}
 	</select>
-
-    <select id="getByEmail" parameterType="String" resultType="com.threeteam.sns.dto.UsersDto">
+	
+	<select id="getByEmail" parameterType="String" resultType="com.threeteam.sns.dto.UsersDto">
         SELECT * FROM users WHERE email = #{email}     LIMIT 1
     </select>
     <select id="getByAccount" parameterType="string" resultType="com.threeteam.sns.dto.UsersDto">
         SELECT * FROM USERS WHERE ACCOUNT = #{account}
     </select>
-
+    	
     <insert id="insert" parameterType="com.threeteam.sns.dto.UsersDto">
         INSERT INTO users ( created_at
-        <if test="id != null">, id</if>
-        <if test="account != null">, account</if>
-        <if test="password != null">, password</if>
-        <if test="role != null">, role</if>
-        <if test="name != null">, name</if>
-        <if test="email != null">, email</if>
-        <if test="img != null">, img</if>
-        <if test="is_alert != null">, is_alert</if>
-        <if test="content != null">, content</if>
+        <if test="id != null">, `id`</if>
+        <if test="account != null">, `account`</if>
+        <if test="password != null">, `password`</if>
+        <if test="role != null">, `role`</if>
+        <if test="name != null">, `name`</if>
+        <if test="email != null">, `email`</if>
+        <if test="img != null">, `img`</if>
+        <if test="is_alert != null">, `is_alert`</if>
+        <if test="updated_at != null">, `updated_at`</if>
         ) VALUES ( NOW()
         <if test="id != null">, #{id}</if>
         <if test="account != null">, #{account}</if>
@@ -37,25 +37,37 @@
         <if test="email != null">, #{email}</if>
         <if test="img != null">, #{img}</if>
         <if test="is_alert != null">, #{is_alert}</if>
-        <if test="content != null">, #{content}</if>
+        <if test="updated_at != null">, #{updated_at}</if>
         )
     </insert>
     	
     <update id="update" parameterType="com.threeteam.sns.dto.UsersDto">
         UPDATE users SET updated_at = NOW()
-        <if test="account != null">, account = #{account}</if>
-        <if test="password != null">, password = #{password}</if>
-        <if test="role != null">, role = #{role}</if>
-        <if test="name != null">, name = #{name}</if>
-        <if test="email != null">, email = #{email}</if>
-        <if test="img != null">, img = #{img}</if>
-        <if test="is_alert != null">, is_alert = #{is_alert}</if>
-        <if test="content != null and content != ''">, content = #{content}</if>
-         WHERE id = #{id}
+        <if test="account != null">, `account` = #{account}</if>
+        <if test="password != null">, `password` = #{password}</if>
+        <if test="role != null">, `role` = #{role}</if>
+        <if test="name != null">, `name` = #{name}</if>
+        <if test="email != null">, `email` = #{email}</if>
+        <if test="img != null">, `img` = #{img}</if>
+        <if test="is_alert != null">, `is_alert` = #{is_alert}</if>
+         WHERE `id` = #{id}
     </update>
     
-    <delete id="delete" parameterType="long">
-			DELETE FROM users WHERE id = {id})
+    <delete id="delete" parameterType="String">
+		DELETE FROM users WHERE `id` = #{id}
 	</delete>
-
+    	
+    <select id="searchList" parameterType="com.threeteam.sns.dto.UsersDto" resultType="map">
+        SELECT * FROM users
+        <where>
+	        <trim prefix="(" suffix=")" prefixOverrides="OR">
+		        <if test="id != null">OR `id` = #{id}</if>
+		        <if test="role != null">OR `role` = #{role}</if>
+	            <if test="account != null">OR `account` LIKE CONCAT('%',  #{account}, '%')</if>
+	            <if test="name != null">OR `name` LIKE CONCAT('%',  #{name}, '%')</if>
+	            <if test="email != null">OR `email` LIKE CONCAT('%',  #{email}, '%')</if>
+			</trim>
+		</where>
+    </select>
+    	
 </mapper>

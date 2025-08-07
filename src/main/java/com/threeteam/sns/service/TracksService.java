@@ -10,8 +10,12 @@ import com.threeteam.sns.dto.TracksDto;
 @RequiredArgsConstructor
 public class TracksService {
     private final TracksMapper mapper;
+    
     public List<TracksDto> searchTracks(String query) {
         return mapper.search(query);
     }
-    public TracksDto searchId(Long id) { return mapper.searchId(id); }
+    
+    public TracksDto searchId(int id) {
+    	return mapper.searchId(id);
+    }
 }

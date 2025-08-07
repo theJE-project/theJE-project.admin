@@ -1,19 +1,18 @@
 package com.threeteam.sns.dto;
 
+import java.time.LocalDateTime;
+
+import lombok.Data;
+
+@Data
 public class UsersPendingDto {
     private UsersDto user;
-    private long createdAt; // timestamp
-
+    //private long createdAt; // timestamp
+    private Long create_at;
+    
     public UsersPendingDto(UsersDto user) {
         this.user = user;
-        this.createdAt = System.currentTimeMillis();
+        this.create_at = System.currentTimeMillis();
     }
-
-    public UsersDto getUser() {
-        return user;
-    }
-
-    public long getCreatedAt() {
-        return createdAt;
-    }
+    
 }

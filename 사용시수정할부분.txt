@@ -1,0 +1,2 @@
+application.properties
+- MySQL 설정 url, username, password
