@@ -48,6 +48,31 @@ public class CommunitiesController {
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
 	}
 
+	@GetMapping("/community/{id}")
+	public ResponseEntity<CommunitiesResponsDto> getByCId(
+			@PathVariable Long id, @RequestParam(value = "user", required = false) String follower) {
+		CommunitiesDto dto = service.getById(id);
+		if (dto == null) return ResponseEntity.notFound().build();
+
+		UsersDto getUser = users.getById(dto.getUsers());
+		List<MusicsDto> getMusic = musics.getByBroads(1L, dto.getId());
+		List<TracksDto> track = new ArrayList<>();
+		for (MusicsDto music : getMusic) {
+			track.add(tracks.searchId(music.getUrl()));
+		}
+		boolean isFollowing = false;
+		if (follower != null && !follower.equals(getUser.getId())) {
+			isFollowing = followers.isFollowing(follower, getUser.getId());
+		}
+		CommunitiesResponsDto result = new CommunitiesResponsDto(
+				dto,
+				new UsersResponsDto(getUser, isFollowing),
+				images.getByBroads(1L, dto.getId()),
+				track
+		);
+		return ResponseEntity.ok(result);
+	}
+
 	@GetMapping //전체검색
 	public ResponseEntity<List<CommunitiesResponsDto>> getAll(
 			@RequestParam("category") int category,
@@ -164,7 +189,7 @@ public class CommunitiesController {
         return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/byUser") //전체검색
+	@GetMapping("/byUser") //전체검색(로그인한 유저 기준)
 	public ResponseEntity<List<CommunitiesResponsDto>> getAllByUser(
 			@RequestParam("category") Long category,
 			@RequestParam(value = "user", required = false) String follower, // 내 아이디
@@ -175,7 +200,11 @@ public class CommunitiesController {
 		List<CommunitiesResponsDto> result = new ArrayList<>();
 		for (CommunitiesDto dto : dtos) {
 			UsersDto getUser = users.getById(dto.getUsers());
-
+			List<MusicsDto> getMusic = musics.getByBroads(1L, dto.getId());
+			List<TracksDto> track = new ArrayList<>();
+			for (MusicsDto music : getMusic) {
+				track.add(tracks.searchId(music.getUrl()));
+			}
 			// is_following 값 세팅 (내가 작성자 팔로우 중이면 true)
 			boolean isFollowing = false;
 			if (follower != null && !follower.equals(getUser.getId())) {
@@ -186,8 +215,7 @@ public class CommunitiesController {
 					dto,
 					new UsersResponsDto(getUser, isFollowing), // <- 여기에 is_following 값 전달
 					images.getByBroads(1L, dto.getId()),
-					// music, tracks 등 원래 코드 그대로
-					new ArrayList<>()
+					track
 			));
 		}
 		return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();

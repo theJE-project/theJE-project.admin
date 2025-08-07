@@ -20,6 +20,16 @@ public class CommunitiesResponsDto {
     private Boolean	is_visible = true;
     private List<ImagesDto> images;
     private List<TracksDto> musics;
+//
+//    public CommunitiesResponsDto(CommunitiesDto data, UsersResponsDto user,List<ImagesDto> images, List<TracksDto> musics) {
+//        this.id = data.getId();
+//        this.users = user;
+//        this.content = data.getContent();
+//        this.count = data.getCount();
+//        this.created_at = data.getCreatedAt();
+//        this.images = images;
+//        this.musics = musics;
+//    }
 
     public CommunitiesResponsDto(CommunitiesDto data, UsersResponsDto user,List<ImagesDto> images, List<TracksDto> musics) {
         this.id = data.getId();
