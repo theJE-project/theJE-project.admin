@@ -1,49 +1,48 @@
 package com.threeteam.sns.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import com.threeteam.sns.dto.*;
 import com.threeteam.sns.mapper.*;
-
-import java.util.List;
+import java.util.List
+;
 @Service
+@RequiredArgsConstructor
 public class FollowersService {
 
-	@Autowired
-	private FollowersMapper mapper;
+	private final FollowersMapper mapper;
 
-    public List<FollowersDto> getAll() {
-        return mapper.getAll();
-    }
+	public List<FollowersDto> getAll() {
+		return mapper.getAll();
+	}
 
-    public FollowersDto getById(Long id) {
-        return mapper.getById(id);
-    }
+	public FollowersDto getById(int id) {
+		return mapper.getById(id);
+	}
 
-    public void insert(FollowersDto dto) {
-        mapper.insert(dto);
-    }
+	public int insert(FollowersDto dto) {
+		int result = mapper.insert(dto);
+		return result;
+	}
 
-    public void update(FollowersDto dto) {
-        mapper.update(dto);
-    }
+	public void update(FollowersDto dto) {
+		mapper.update(dto);
+	}
 
-    public void delete(Long id) {
-        mapper.delete(id);
-    }
+	public void delete(int id) {
+		mapper.delete(id);
+	}
 
-    public List<FollowersDto> getFolloweesByUser(String id) { return mapper.getFolloweesByUser(id); }
+	public List<FollowersDto> search(FollowersDto dto) {
+		return mapper.search(dto);
+	}
+	
+	public List<FollowersDto> getFolloweesByUser(String id) {
+		return mapper.getFolloweesByUser(id);
+	}
 
-    public List<FollowersDto> getFollowersByUser(String id) { return  mapper.getFollowersByUser(id); }
-
-    public boolean isFollowing(String follower, String followee) {
-        return mapper.isFollowing(follower, followee);
-    }
-
-    public void deleteFollowing(String follower, String followee){
-        mapper.deleteFollowing(follower, followee);
+    public List<FollowersDto> getFollowersByUser(String id) {
+    	return  mapper.getFollowersByUser(id);
     }
 
 }
-

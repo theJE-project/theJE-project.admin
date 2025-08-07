@@ -3,41 +3,66 @@
 <mapper namespace="com.threeteam.sns.mapper.MusicsMapper">
     
     <select id="getAll" resultType="com.threeteam.sns.dto.MusicsDto">
-			SELECT * FROM musics
+		SELECT * FROM musics
 	</select>
     	
-    <select id="getById" parameterType="long" resultType="com.threeteam.sns.dto.MusicsDto">
-			SELECT * FROM musics WHERE id = #{id}
+    <select id="getById" parameterType="int" resultType="com.threeteam.sns.dto.MusicsDto">
+		SELECT * FROM musics WHERE `id` = #{id}
 	</select>
-
-    <select id="getByBroads" parameterType="map" resultType="com.threeteam.sns.dto.MusicsDto">
-        SELECT * FROM musics WHERE board_types = #{board_type} AND board = #{board}
+	
+	<select id="getByBoards" resultType="com.threeteam.sns.dto.MusicsDto">
+        SELECT * FROM musics 
+        WHERE board_types = #{board_type} 
+        AND board = #{board}
     </select>
-
+    	
     <insert id="insert" parameterType="com.threeteam.sns.dto.MusicsDto">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">SELECT LAST_INSERT_ID()</selectKey>
         INSERT INTO musics ( created_at
-        <if test="id != null">, id</if>
-        <if test="board != null">, board</if>
-        <if test="board_types != null">, board_types</if>
-        <if test="url != null">, url</if>
+        <if test="id != null">, `id`</if>
+        <if test="board != null">, `board`</if>
+        <if test="board_types != null">, `board_types`</if>
+        <if test="url != null">, `url`</if>
+        <if test="updated_at != null">, `updated_at`</if>
         ) VALUES ( NOW()
         <if test="id != null">, #{id}</if>
         <if test="board != null">, #{board}</if>
         <if test="board_types != null">, #{board_types}</if>
         <if test="url != null">, #{url}</if>
+        <if test="updated_at != null">, #{updated_at}</if>
         )
     </insert>
     	
     <update id="update" parameterType="com.threeteam.sns.dto.MusicsDto">
         UPDATE musics SET updated_at = NOW()
-        <if test="board != null">, board = #{board}</if>
-        <if test="board_types != null">, board_types = #{board_types}</if>
-        <if test="url != null">, url = #{url}</if>
-         WHERE id = #{id}
+        <if test="board != null">, `board` = #{board}</if>
+        <if test="board_types != null">, `board_types` = #{board_types}</if>
+        <if test="url != null">, `url` = #{url}</if>
+         WHERE `id` = #{id}
     </update>
     
-    <delete id="delete" parameterType="long">
-			DELETE FROM musics WHERE id = {id})
+    <delete id="delete" parameterType="int">
+		DELETE FROM musics WHERE `id` = #{id}
 	</delete>
+    	
+    <select id="search" parameterType="com.threeteam.sns.dto.MusicsDto" resultType="com.threeteam.sns.dto.MusicsDto">
+        SELECT * FROM musics WHERE 1=1
+        <if test="id != null">AND `id` = #{id}</if>
+        <if test="board != null">AND `board` = #{board}</if>
+        <if test="board_types != null">AND `board_types` = #{board_types}</if>
+        <if test="url != null">AND `url` = #{url}</if>
+    </select>
+    
+    <select id="searchList" parameterType="com.threeteam.sns.dto.MusicsDto" resultType="map">
+        SELECT * FROM musics
+        <where>
+	        <trim prefix="(" suffix=")" prefixOverrides="OR">
+		        <if test="id != null">OR `id` = #{id}</if>
+		        <if test="board != null">OR `board` = #{board}</if>
+		        <if test="board_types != null">OR `board_types` = #{board_types}</if>
+		        <if test="url != null">OR `url` = #{url}</if>
+	        </trim>
+	    </where>
+    </select>
     	
 </mapper>

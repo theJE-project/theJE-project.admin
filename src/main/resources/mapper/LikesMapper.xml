@@ -3,37 +3,63 @@
 <mapper namespace="com.threeteam.sns.mapper.LikesMapper">
     
     <select id="getAll" resultType="com.threeteam.sns.dto.LikesDto">
-			SELECT * FROM likes
+		SELECT * FROM likes
 	</select>
     	
-    <select id="getById" parameterType="long" resultType="com.threeteam.sns.dto.LikesDto">
-			SELECT * FROM likes WHERE id = #{id}
+    <select id="getById" parameterType="int" resultType="com.threeteam.sns.dto.LikesDto">
+		SELECT * FROM likes WHERE `id` = #{id}
 	</select>
     	
     <insert id="insert" parameterType="com.threeteam.sns.dto.LikesDto">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">SELECT LAST_INSERT_ID()</selectKey>
         INSERT INTO likes ( created_at
-        <if test="id != null">, id</if>
-        <if test="users != null">, users</if>
-        <if test="board != null">, board</if>
-        <if test="board_types != null">, board_types</if>
+        <if test="id != null">, `id`</if>
+        <if test="users != null">, `users`</if>
+        <if test="board != null">, `board`</if>
+        <if test="board_types != null">, `board_types`</if>
+        <if test="updated_at != null">, `updated_at`</if>
         ) VALUES ( NOW()
         <if test="id != null">, #{id}</if>
         <if test="users != null">, #{users}</if>
         <if test="board != null">, #{board}</if>
         <if test="board_types != null">, #{board_types}</if>
+        <if test="updated_at != null">, #{updated_at}</if>
         )
     </insert>
     	
     <update id="update" parameterType="com.threeteam.sns.dto.LikesDto">
         UPDATE likes SET updated_at = NOW()
-        <if test="users != null">, users = #{users}</if>
-        <if test="board != null">, board = #{board}</if>
-        <if test="board_types != null">, board_types = #{board_types}</if>
-         WHERE id = #{id}
+        <if test="users != null">, `users` = #{users}</if>
+        <if test="board != null">, `board` = #{board}</if>
+        <if test="board_types != null">, `board_types` = #{board_types}</if>
+         WHERE `id` = #{id}
     </update>
     
-    <delete id="delete" parameterType="long">
-			DELETE FROM likes WHERE id = {id})
+    <delete id="delete" parameterType="int">
+		DELETE FROM likes WHERE `id` = #{id}
 	</delete>
+    	
+    <select id="search" parameterType="com.threeteam.sns.dto.LikesDto" resultType="com.threeteam.sns.dto.LikesDto">
+        SELECT * FROM likes WHERE 1=1
+        <if test="id != null">AND `id` = #{id}</if>
+        <if test="users != null">AND `users` = #{users}</if>
+        <if test="board != null">AND `board` = #{board}</if>
+        <if test="board_types != null">AND `board_types` = #{board_types}</if>
+    </select>
+    
+    <select id="count" parameterType="com.threeteam.sns.dto.LikesDto" resultType="com.threeteam.sns.dto.LikesDto">
+		SELECT 
+			id,
+			COUNT(*) AS count,
+			EXISTS (
+		      SELECT 1 FROM likes 
+		      WHERE users = #{users} 
+		      AND board = #{board} 
+		      AND board_types = #{board_types}
+		    ) AS liked
+		FROM likes 
+		WHERE `board` = #{board}
+		AND `board_types` = #{board_types}
+	</select>
     	
 </mapper>

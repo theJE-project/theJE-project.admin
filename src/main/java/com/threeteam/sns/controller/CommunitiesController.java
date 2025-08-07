@@ -1,49 +1,65 @@
 package com.threeteam.sns.controller;
 
-import com.threeteam.sns.service.*;
-import com.threeteam.sns.dto.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.threeteam.sns.dto.*;
+import com.threeteam.sns.service.*;
+
+import lombok.RequiredArgsConstructor;
+
 @RestController
-@RequestMapping("/api/communities")
+@RequiredArgsConstructor
+@RequestMapping(value = "/api/communities", produces = "application/json; charset=UTF-8")
 public class CommunitiesController {
 	
-	@Autowired
-	private CommunitiesService service;
-	@Autowired
-	private ImagesService images;
-	@Autowired
-	private MusicsService musics;
-	@Autowired
-	private UsersService users;
-	@Autowired
-	private TracksService tracks;
-	@Autowired
-	private FollowersService followers;
-
+	private final CommunitiesService service;
+	private final ImagesService images;
+	private final MusicsService musics;
+	private final UsersService users;
+	private final TracksService tracks;
+	private final FollowersService followers;
+	
+	/*
+	@GetMapping
+	public List<CommunitiesDto> getAll() {
+		return service.getAll();
+	}
+	*/
+	
 	@GetMapping("/{id}")
-    public ResponseEntity<CommunitiesDto> getById(@PathVariable("/{id}") Long id) {
+    public ResponseEntity<CommunitiesDto> getById(@PathVariable("id") int id) {
         CommunitiesDto dto = service.getById(id);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
 	}
 
 	@GetMapping //전체검색
 	public ResponseEntity<List<CommunitiesResponsDto>> getAll(
-			@RequestParam("category") Long category,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size
+			@RequestParam("category") int category,
+		    @RequestParam(value = "page", defaultValue = "0") int page,
+		    @RequestParam(value = "size", defaultValue = "10") int size
 	) {
+		System.out.println("communities getAll - category : " + category);
+		System.out.println("communities getAll - page : " + page);
+		System.out.println("communities getAll - size : " + size);
 		List<CommunitiesDto> dtos = service.getAll(category, page * size, size);
 		List<CommunitiesResponsDto> result = new ArrayList<>();
 		for (CommunitiesDto dto : dtos) {
+			System.out.println("dto : " + dto.toString());
 			UsersDto getUser = users.getById(dto.getUsers());
-			List<MusicsDto> getMusic = musics.getByBroads(1L, dto.getId());
+			List<MusicsDto> getMusic = musics.getByBoards(1, dto.getId());
 			List<TracksDto> track = new ArrayList<>();
 			for (MusicsDto music : getMusic) {
 				track.add(tracks.searchId(music.getUrl()));
@@ -51,7 +67,7 @@ public class CommunitiesController {
 			result.add(new CommunitiesResponsDto(
 					dto,
 					new UsersResponsDto(getUser),
-					images.getByBroads(1L, dto.getId()),
+					images.getByBoards(1, dto.getId()),
 					track
 			));
 		}
@@ -61,41 +77,10 @@ public class CommunitiesController {
 				: ResponseEntity.notFound().build();
 	}
 
-
-	@GetMapping("/byUser") //전체검색
-	public ResponseEntity<List<CommunitiesResponsDto>> getAllByUser(
-			@RequestParam("category") Long category,
-			@RequestParam(value = "user", required = false) String follower, // 내 아이디
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size
-	) {
-		List<CommunitiesDto> dtos = service.getAll(category, page * size, size);
-		List<CommunitiesResponsDto> result = new ArrayList<>();
-		for (CommunitiesDto dto : dtos) {
-			UsersDto getUser = users.getById(dto.getUsers());
-
-			// is_following 값 세팅 (내가 작성자 팔로우 중이면 true)
-			boolean isFollowing = false;
-			if (follower != null && !follower.equals(getUser.getId())) {
-				isFollowing = followers.isFollowing(follower, getUser.getId());
-			}
-
-			result.add(new CommunitiesResponsDto(
-					dto,
-					new UsersResponsDto(getUser, isFollowing), // <- 여기에 is_following 값 전달
-					images.getByBroads(1L, dto.getId()),
-					// music, tracks 등 원래 코드 그대로
-					new ArrayList<>()
-			));
-		}
-		return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
-	}
-
-
 	@GetMapping("/followee") // 팔로잉 검색
 	public ResponseEntity<List<CommunitiesResponsDto>> getByFollowee(
 			@RequestParam("user") String user,
-			@RequestParam("category") Long category,
+			@RequestParam("category") int category,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size
 	) {
@@ -115,7 +100,7 @@ public class CommunitiesController {
 		List<CommunitiesResponsDto> result = new ArrayList<>();
 		for(CommunitiesDto dto : dtos){
 			UsersDto getUser = users.getById(dto.getUsers());
-			List<MusicsDto> getMusic= musics.getByBroads(1L,dto.getId());
+			List<MusicsDto> getMusic= musics.getByBoards(1, dto.getId());
 			List<TracksDto> track = new ArrayList<>();
 			for(MusicsDto music : getMusic) {
 				track.add(tracks.searchId(music.getUrl()));
@@ -123,7 +108,7 @@ public class CommunitiesController {
 			result.add(new CommunitiesResponsDto(
 					dto,
 					new UsersResponsDto(getUser),
-					images.getByBroads(1L, dto.getId()),
+					images.getByBoards(1, dto.getId()),
 					track
 			));
 		}
@@ -133,7 +118,7 @@ public class CommunitiesController {
 	@GetMapping("/user") // 유저아이디 검색
 	public ResponseEntity<List<CommunitiesResponsDto>> getByUser(
 			@RequestParam("user") String user,
-			@RequestParam("category") Long category,
+			@RequestParam("category") int category,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size
 	) {
@@ -141,7 +126,7 @@ public class CommunitiesController {
 		List<CommunitiesResponsDto> result = new ArrayList<>();
 		for(CommunitiesDto dto : dtos){
 			UsersDto getUser = users.getById(dto.getUsers());
-			List<MusicsDto> getMusic= musics.getByBroads(1L,dto.getId());
+			List<MusicsDto> getMusic= musics.getByBoards(1, dto.getId());
 			List<TracksDto> track = new ArrayList<>();
 			for(MusicsDto music : getMusic) {
 				track.add(tracks.searchId(music.getUrl()));
@@ -149,7 +134,7 @@ public class CommunitiesController {
 			result.add( new CommunitiesResponsDto(
 					dto,
 					new UsersResponsDto(getUser),
-					images.getByBroads(1L, dto.getId()),
+					images.getByBoards(1, dto.getId()),
 					track
 			));
 		}
@@ -158,41 +143,39 @@ public class CommunitiesController {
 
 	@PostMapping
     public ResponseEntity<Void> create(@RequestBody CommunitiesDto dto) {
-		Long id = service.insert(dto);
+        int id = service.insert(dto);
 		if (dto.getImages() != null) {
 			for (ImagesDto image : dto.getImages()) {
 				image.setBoard(id);
-				image.setBoardTypes(1L);
+				image.setBoard_types(1);
 				images.insert(image);
 			}
 		}
 		if(dto.getMusics() != null){
 			for (MusicsDto music : dto.getMusics()){
 				music.setBoard(id);
-				music.setBoardTypes(1L);
+				music.setBoard_types(1);
 				musics.insert(music);
 			}
 		}
         return ResponseEntity.ok().build();
 	}
-
+	
 	@PutMapping
     public ResponseEntity<Void> update(@RequestBody CommunitiesDto dto) {
         service.update(dto);
         return ResponseEntity.ok().build();
 	}
-
-	// 게시글 삭제
-	@PutMapping("/{id}")
-	public ResponseEntity<Void> isDelete(@PathVariable Long id){
-		service.isDelete(id);
-		return ResponseEntity.ok().build();
+	
+	@DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") int id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
 	}
 	
-//	@DeleteMapping("/{id}")
-//    public ResponseEntity<Void> delete(@PathVariable Long id) {
-//        service.delete(id);
-//        return ResponseEntity.noContent().build();
-//	}
+	@PostMapping("/search")
+	public List<CommunitiesDto> search(@RequestBody CommunitiesDto dto) {
+		return service.search(dto);
+	}
 	
 }

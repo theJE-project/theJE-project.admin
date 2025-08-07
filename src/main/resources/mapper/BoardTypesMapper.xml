@@ -3,31 +3,40 @@
 <mapper namespace="com.threeteam.sns.mapper.BoardTypesMapper">
     
     <select id="getAll" resultType="com.threeteam.sns.dto.BoardTypesDto">
-			SELECT * FROM board_types
+		SELECT * FROM board_types
 	</select>
     	
-    <select id="getById" parameterType="long" resultType="com.threeteam.sns.dto.BoardTypesDto">
-			SELECT * FROM board_types WHERE id = #{id}
+    <select id="getById" parameterType="int" resultType="com.threeteam.sns.dto.BoardTypesDto">
+		SELECT * FROM board_types WHERE `id` = #{id}
 	</select>
     	
     <insert id="insert" parameterType="com.threeteam.sns.dto.BoardTypesDto">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">SELECT LAST_INSERT_ID()</selectKey>
         INSERT INTO board_types ( created_at
-        <if test="id != null">, id</if>
-        <if test="name != null">, name</if>
+        <if test="id != null">, `id`</if>
+        <if test="name != null">, `name`</if>
+        <if test="updated_at != null">, `updated_at`</if>
         ) VALUES ( NOW()
         <if test="id != null">, #{id}</if>
         <if test="name != null">, #{name}</if>
+        <if test="updated_at != null">, #{updated_at}</if>
         )
     </insert>
     	
     <update id="update" parameterType="com.threeteam.sns.dto.BoardTypesDto">
         UPDATE board_types SET updated_at = NOW()
-        <if test="name != null">, name = #{name}</if>
-         WHERE id = #{id}
+        <if test="name != null">, `name` = #{name}</if>
+         WHERE `id` = #{id}
     </update>
     
-    <delete id="delete" parameterType="long">
-			DELETE FROM board_types WHERE id = {id})
+    <delete id="delete" parameterType="int">
+		DELETE FROM board_types WHERE `id` = #{id}
 	</delete>
+    	
+    <select id="search" parameterType="com.threeteam.sns.dto.BoardTypesDto" resultType="com.threeteam.sns.dto.BoardTypesDto">
+        SELECT * FROM board_types WHERE 1=1
+        <if test="id != null">AND `id` = #{id}</if>
+        <if test="name != null">AND `name` = #{name}</if>
+    </select>
     	
 </mapper>

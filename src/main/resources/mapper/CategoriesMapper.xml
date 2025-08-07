@@ -1,10 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.threeteam.sns.mapper.CategoriesMapper">
+    
     <select id="getAll" resultType="com.threeteam.sns.dto.CategoriesDto">
-			SELECT * FROM categories
+		SELECT * FROM categories
 	</select>
-    <select id="getById" parameterType="long" resultType="com.threeteam.sns.dto.CategoriesDto">
-			SELECT * FROM categories WHERE id = #{id}
+    	
+    <select id="getById" parameterType="int" resultType="com.threeteam.sns.dto.CategoriesDto">
+		SELECT * FROM categories WHERE `id` = #{id}
 	</select>
+    	
+    <insert id="insert" parameterType="com.threeteam.sns.dto.CategoriesDto">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">SELECT LAST_INSERT_ID()</selectKey>
+        INSERT INTO categories ( created_at
+        <if test="id != null">, `id`</if>
+        <if test="parent != null">, `parent`</if>
+        <if test="name != null">, `name`</if>
+        <if test="url != null">, `url`</if>
+        <if test="board_type != null">, `board_type`</if>
+        <if test="updated_at != null">, `updated_at`</if>
+        ) VALUES ( NOW()
+        <if test="id != null">, #{id}</if>
+        <if test="parent != null">, #{parent}</if>
+        <if test="name != null">, #{name}</if>
+        <if test="url != null">, #{url}</if>
+        <if test="board_type != null">, #{board_type}</if>
+        <if test="updated_at != null">, #{updated_at}</if>
+        )
+    </insert>
+    	
+    <update id="update" parameterType="com.threeteam.sns.dto.CategoriesDto">
+        UPDATE categories SET updated_at = NOW()
+        <if test="parent != null">, `parent` = #{parent}</if>
+        <if test="name != null">, `name` = #{name}</if>
+        <if test="url != null">, `url` = #{url}</if>
+        <if test="board_type != null">, `board_type` = #{board_type}</if>
+         WHERE `id` = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="int">
+		DELETE FROM categories WHERE `id` = #{id}
+	</delete>
+    	
+    <select id="search" parameterType="com.threeteam.sns.dto.CategoriesDto" resultType="com.threeteam.sns.dto.CategoriesDto">
+        SELECT * FROM categories WHERE 1=1
+        <if test="id != null">AND `id` = #{id}</if>
+        <if test="parent != null">AND `parent` = #{parent}</if>
+        <if test="name != null">AND `name` = #{name}</if>
+        <if test="url != null">AND `url` = #{url}</if>
+        <if test="board_type != null">AND `board_type` = #{board_type}</if>
+    </select>
+    	
 </mapper>

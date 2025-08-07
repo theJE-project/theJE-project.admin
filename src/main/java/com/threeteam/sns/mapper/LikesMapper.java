@@ -7,13 +7,17 @@ import java.util.List;
 
 @Mapper
 public interface LikesMapper {
-    List<LikesDto> getAll();
+	List<LikesDto> getAll();
 
-	LikesDto getById(Long id);
+	LikesDto getById(int id);
 
-    void insert(LikesDto dto);
+	int insert(LikesDto dto);
 
-    void update(LikesDto dto);
+	void update(LikesDto dto);
 
-    void delete(Long id);
+	void delete(int id);
+
+	List<LikesDto> search(LikesDto dto);
+
+	List<LikesDto> count(LikesDto dto);
 }
