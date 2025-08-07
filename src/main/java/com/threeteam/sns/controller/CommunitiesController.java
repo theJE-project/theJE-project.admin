@@ -28,9 +28,34 @@ public class CommunitiesController {
 	private FollowersService followers;
 
 	@GetMapping("/{id}")
-    public ResponseEntity<CommunitiesDto> getById(@PathVariable("/{id}") Long id) {
+    public ResponseEntity<CommunitiesDto> getById(@PathVariable Long id) {
         CommunitiesDto dto = service.getById(id);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
+	}
+
+	@GetMapping("/community/{id}")
+	public ResponseEntity<CommunitiesResponsDto> getByCId(
+			@PathVariable Long id, @RequestParam(value = "user", required = false) String follower) {
+		CommunitiesDto dto = service.getById(id);
+		if (dto == null) return ResponseEntity.notFound().build();
+
+		UsersDto getUser = users.getById(dto.getUsers());
+		List<MusicsDto> getMusic = musics.getByBroads(1L, dto.getId());
+		List<TracksDto> track = new ArrayList<>();
+		for (MusicsDto music : getMusic) {
+			track.add(tracks.searchId(music.getUrl()));
+		}
+		boolean isFollowing = false;
+		if (follower != null && !follower.equals(getUser.getId())) {
+			isFollowing = followers.isFollowing(follower, getUser.getId());
+		}
+		CommunitiesResponsDto result = new CommunitiesResponsDto(
+				dto,
+				new UsersResponsDto(getUser, isFollowing),
+				images.getByBroads(1L, dto.getId()),
+				track
+		);
+		return ResponseEntity.ok(result);
 	}
 
 	@GetMapping //전체검색
@@ -62,7 +87,7 @@ public class CommunitiesController {
 	}
 
 
-	@GetMapping("/byUser") //전체검색
+	@GetMapping("/byUser") //전체검색(로그인한 유저 기준)
 	public ResponseEntity<List<CommunitiesResponsDto>> getAllByUser(
 			@RequestParam("category") Long category,
 			@RequestParam(value = "user", required = false) String follower, // 내 아이디
