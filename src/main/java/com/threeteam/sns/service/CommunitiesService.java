@@ -57,5 +57,10 @@ public class CommunitiesService {
 	public List<Map<String, Object>> searchList(CommunitiesDto dto) {
 		return mapper.searchList(dto);
 	}
-	
+
+	//내가 쓴글 조회 추가
+	public List<CommunitiesDto> getByUserId(String userId) {
+		return mapper.selectByUserId(userId);
+	}
+
 }

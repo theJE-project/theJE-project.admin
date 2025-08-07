@@ -18,8 +18,6 @@ public class NotificationsDto {
     private LocalDateTime	updated_at;
     private Boolean	is_read;
     private Boolean	is_delete;
-    
-    private String	name;	// JOIN users
-
+    private String	name;
 }
 

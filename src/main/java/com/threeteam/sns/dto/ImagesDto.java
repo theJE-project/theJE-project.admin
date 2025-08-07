@@ -12,7 +12,7 @@ public class ImagesDto {
     private Integer	board;
     private Integer	board_types;
     private String	url;
-    private Boolean	is_main;
+    private Boolean	is_main = true;
     private LocalDateTime	created_at;
     private LocalDateTime	updated_at;
 

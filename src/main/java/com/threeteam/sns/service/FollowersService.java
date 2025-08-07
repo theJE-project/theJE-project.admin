@@ -45,4 +45,8 @@ public class FollowersService {
     	return  mapper.getFollowersByUser(id);
     }
 
+	public boolean isFollowing(String follower, String followee) {
+		return mapper.isFollowing(follower, followee);
+	}
+
 }

@@ -1,4 +1,8 @@
-package com.threeteam.sns.controller;
+import com.threeteam.sns.service.*;
+import com.threeteam.sns.dto.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +23,6 @@ import com.threeteam.sns.dto.*;
 import com.threeteam.sns.service.*;
 
 import lombok.RequiredArgsConstructor;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/communities", produces = "application/json; charset=UTF-8")
@@ -160,13 +163,50 @@ public class CommunitiesController {
 		}
         return ResponseEntity.ok().build();
 	}
-	
+
+	@GetMapping("/byUser") //전체검색
+	public ResponseEntity<List<CommunitiesResponsDto>> getAllByUser(
+			@RequestParam("category") Long category,
+			@RequestParam(value = "user", required = false) String follower, // 내 아이디
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size
+	) {
+		List<CommunitiesDto> dtos = service.getAll(category, page * size, size);
+		List<CommunitiesResponsDto> result = new ArrayList<>();
+		for (CommunitiesDto dto : dtos) {
+			UsersDto getUser = users.getById(dto.getUsers());
+
+			// is_following 값 세팅 (내가 작성자 팔로우 중이면 true)
+			boolean isFollowing = false;
+			if (follower != null && !follower.equals(getUser.getId())) {
+				isFollowing = followers.isFollowing(follower, getUser.getId());
+			}
+
+			result.add(new CommunitiesResponsDto(
+					dto,
+					new UsersResponsDto(getUser, isFollowing), // <- 여기에 is_following 값 전달
+					images.getByBroads(1L, dto.getId()),
+					// music, tracks 등 원래 코드 그대로
+					new ArrayList<>()
+			));
+		}
+		return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
+	}
+
 	@PutMapping
     public ResponseEntity<Void> update(@RequestBody CommunitiesDto dto) {
         service.update(dto);
         return ResponseEntity.ok().build();
 	}
-	
+
+
+	// 게시글 삭제
+	@PutMapping("/{id}")
+	public ResponseEntity<Void> isDelete(@PathVariable Long id) {
+		service.isDelete(id);
+		return ResponseEntity.ok().build();
+	}
+
 	@DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") int id) {
         service.delete(id);

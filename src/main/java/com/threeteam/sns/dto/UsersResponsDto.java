@@ -12,8 +12,16 @@ public class UsersResponsDto {
     private String	img;
     private Boolean	is_alert;
     private String  content;
+    private boolean is_following;
 
-    public UsersResponsDto(UsersDto user) {
+    public boolean isIs_alert() {
+        return is_alert;
+    }
+    public void setIs_alert(boolean is_alert) {
+        this.is_alert = is_alert;
+    }
+
+    public UsersResponsDto(UsersDto user, boolean is_following) {
         this.id = user.getId();
         this.account = user.getAccount();
         this.role = user.getRole();
@@ -22,6 +30,6 @@ public class UsersResponsDto {
         this.img = user.getImg();
         this.is_alert = user.getIs_alert();
         this.content = user.getContent();
+        this.is_following = is_following;
     }
-    
 }

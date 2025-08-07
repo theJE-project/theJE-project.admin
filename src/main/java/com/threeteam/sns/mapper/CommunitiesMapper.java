@@ -25,5 +25,7 @@ public interface CommunitiesMapper {
 	List<CommunitiesDto> search(CommunitiesDto dto);
 	
 	List<Map<String, Object>> searchList(CommunitiesDto dto);
+
+	List<CommunitiesDto> selectByUserId(String userId);
 	
 }

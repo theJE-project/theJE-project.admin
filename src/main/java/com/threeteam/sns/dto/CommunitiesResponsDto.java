@@ -10,14 +10,14 @@ public class CommunitiesResponsDto {
     private Integer	id;
     private UsersResponsDto users;
     private Integer	categories;
-    private String	title;
+    private String	title ="";
     private String	content;
-    private Integer	count ;
-    private String hash ;
+    private Integer	count = 0;
+    private String hash = "";
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
-    private Boolean	is_delete;
-    private Boolean	is_visible;
+    private Boolean	is_delete = false;
+    private Boolean	is_visible = true;
     private List<ImagesDto> images;
     private List<TracksDto> musics;
 
