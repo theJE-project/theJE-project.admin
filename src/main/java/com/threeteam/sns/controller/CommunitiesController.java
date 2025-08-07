@@ -1,3 +1,5 @@
+package com.threeteam.sns.controller;
+
 import com.threeteam.sns.service.*;
 import com.threeteam.sns.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
