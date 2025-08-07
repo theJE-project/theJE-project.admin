@@ -20,13 +20,12 @@ public class NotificationsController {
 	public List<NotificationsDto> getAll() {
 		return service.getAll();
 	}
-	
+
 	@GetMapping("/{id}")
-    public ResponseEntity<NotificationsDto> getById(@PathVariable("id") int id) {
-        NotificationsDto dto = service.getById(id);
-        return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
+	public ResponseEntity<List<NotificationsDto>> getById(@PathVariable("id") String id) {
+		List<NotificationsDto> dto = service.getById(id);
+		return dto != null && !dto.isEmpty() ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
 	}
-	
 	@PostMapping
     public ResponseEntity<Void> create(@RequestBody NotificationsDto dto) {
         service.insert(dto);

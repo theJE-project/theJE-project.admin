@@ -14,10 +14,7 @@ import java.util.Map;
 public class CommunitiesService {
 
 	private final CommunitiesMapper mapper;
-	
-	public List<CommunitiesDto> getAll() {
-		return mapper.getAll();
-	}
+
 	public List<CommunitiesDto> getAll(int category, int offset, int limit) {
         return mapper.getAll(category, offset, limit);
     }
@@ -38,8 +35,8 @@ public class CommunitiesService {
     }
 
 	public int insert(CommunitiesDto dto) {
-		int result = mapper.insert(dto);
-		return result;
+		mapper.insert(dto);
+		return dto.getId();
 	}
 
 	public void update(CommunitiesDto dto) {

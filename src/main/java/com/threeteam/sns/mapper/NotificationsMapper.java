@@ -9,7 +9,7 @@ import java.util.List;
 public interface NotificationsMapper {
 	List<NotificationsDto> getAll();
 
-	NotificationsDto getById(int id);
+	List<NotificationsDto> getById(String id);
 
 	int insert(NotificationsDto dto);
 

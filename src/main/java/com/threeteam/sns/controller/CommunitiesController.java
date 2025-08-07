@@ -78,6 +78,7 @@ public class CommunitiesController {
 		System.out.println("communities getAll - size : " + size);
 		List<CommunitiesDto> dtos = service.getAll(category, page * size, size);
 		List<CommunitiesResponsDto> result = new ArrayList<>();
+
 		for (CommunitiesDto dto : dtos) {
 			System.out.println("dto : " + dto.toString());
 			UsersDto getUser = users.getById(dto.getUsers());
@@ -86,6 +87,8 @@ public class CommunitiesController {
 			for (MusicsDto music : getMusic) {
 				track.add(tracks.searchId(music.getUrl()));
 			}
+			System.out.println("================================================================================================");
+			System.out.println(dto.getId());
 			result.add(new CommunitiesResponsDto(
 					dto,
 					new UsersResponsDto(getUser),
@@ -165,7 +168,8 @@ public class CommunitiesController {
 
 	@PostMapping
     public ResponseEntity<Void> create(@RequestBody CommunitiesDto dto) {
-        int id = service.insert(dto);
+		int id = service.insert(dto);
+
 		if (dto.getImages() != null) {
 			for (ImagesDto image : dto.getImages()) {
 				image.setBoard(id);
@@ -220,7 +224,6 @@ public class CommunitiesController {
         service.update(dto);
         return ResponseEntity.ok().build();
 	}
-
 
 	// 게시글 삭제
 	@PutMapping("/{id}")

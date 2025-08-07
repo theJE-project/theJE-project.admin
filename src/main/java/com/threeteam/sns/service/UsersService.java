@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.threeteam.sns.dto.UsersResponsDto;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +17,8 @@ import com.threeteam.sns.dto.UsersPendingDto;
 import com.threeteam.sns.mapper.UsersMapper;
 
 import lombok.RequiredArgsConstructor;
+import com.threeteam.sns.dto.UsersResponsDto;
+
 @Service
 @RequiredArgsConstructor
 public class UsersService {
@@ -57,8 +60,8 @@ public class UsersService {
 	public UsersDto getByAccount(String account){
         return mapper.getByAccount(account);
     }
-	
-	public String registerUser(UsersDto user) {
+
+    public String registerUser(UsersDto user) {
         try {
             // 계정 중복 체크
             UsersDto existingUserByAccount = mapper.getByAccount(user.getAccount());

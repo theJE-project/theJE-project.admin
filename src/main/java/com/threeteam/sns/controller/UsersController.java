@@ -95,7 +95,11 @@ public class UsersController {
 	// 추가
 	@GetMapping("/my")
 	public ResponseEntity<UsersResponsDto> getMyUser(@RequestParam("userId") String userId) {
+		System.out.println("🔍 요청받은 userId = " + userId);  // userId 값 확인
+
 		UsersDto dto = service.getById(userId);
+
+		System.out.println("📦 조회된 UsersDto = " + dto); // dt
 		if (dto == null) {
 			return ResponseEntity.notFound().build();
 		}
