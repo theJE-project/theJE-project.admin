@@ -49,13 +49,12 @@ public class CommunitiesController {
 	}
 
 	@GetMapping("/community/{id}")
-	public ResponseEntity<CommunitiesResponsDto> getByCId(
-			@PathVariable Long id, @RequestParam(value = "user", required = false) String follower) {
+	public ResponseEntity<CommunitiesResponsDto> getByCId(@PathVariable int id, @RequestParam(value = "user", required = false) String follower) {
 		CommunitiesDto dto = service.getById(id);
 		if (dto == null) return ResponseEntity.notFound().build();
 
 		UsersDto getUser = users.getById(dto.getUsers());
-		List<MusicsDto> getMusic = musics.getByBroads(1L, dto.getId());
+		List<MusicsDto> getMusic = musics.getByBoards(1, dto.getId());
 		List<TracksDto> track = new ArrayList<>();
 		for (MusicsDto music : getMusic) {
 			track.add(tracks.searchId(music.getUrl()));
@@ -67,7 +66,7 @@ public class CommunitiesController {
 		CommunitiesResponsDto result = new CommunitiesResponsDto(
 				dto,
 				new UsersResponsDto(getUser, isFollowing),
-				images.getByBroads(1L, dto.getId()),
+				images.getByBoards(1, dto.getId()),
 				track
 		);
 		return ResponseEntity.ok(result);
@@ -191,7 +190,7 @@ public class CommunitiesController {
 
 	@GetMapping("/byUser") //전체검색(로그인한 유저 기준)
 	public ResponseEntity<List<CommunitiesResponsDto>> getAllByUser(
-			@RequestParam("category") Long category,
+			@RequestParam("category") int category,
 			@RequestParam(value = "user", required = false) String follower, // 내 아이디
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size
@@ -200,7 +199,7 @@ public class CommunitiesController {
 		List<CommunitiesResponsDto> result = new ArrayList<>();
 		for (CommunitiesDto dto : dtos) {
 			UsersDto getUser = users.getById(dto.getUsers());
-			List<MusicsDto> getMusic = musics.getByBroads(1L, dto.getId());
+			List<MusicsDto> getMusic = musics.getByBoards(1, dto.getId());
 			List<TracksDto> track = new ArrayList<>();
 			for (MusicsDto music : getMusic) {
 				track.add(tracks.searchId(music.getUrl()));
@@ -214,7 +213,7 @@ public class CommunitiesController {
 			result.add(new CommunitiesResponsDto(
 					dto,
 					new UsersResponsDto(getUser, isFollowing), // <- 여기에 is_following 값 전달
-					images.getByBroads(1L, dto.getId()),
+					images.getByBoards(1, dto.getId()),
 					track
 			));
 		}
@@ -230,8 +229,8 @@ public class CommunitiesController {
 
 	// 게시글 삭제
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> isDelete(@PathVariable Long id) {
-		service.isDelete(id);
+	public ResponseEntity<Void> isDelete(@PathVariable int id) {
+		service.delete(id);
 		return ResponseEntity.ok().build();
 	}
 

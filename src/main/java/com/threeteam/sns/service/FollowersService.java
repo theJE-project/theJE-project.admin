@@ -49,4 +49,7 @@ public class FollowersService {
 		return mapper.isFollowing(follower, followee);
 	}
 
+	public void deleteFollowing(String follower, String followee) {
+		mapper.deleteFollowing(follower, followee);
+	}
 }

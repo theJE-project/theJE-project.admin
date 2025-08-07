@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class FollowersController {
 	
 	private final FollowersService service;
+	private final UsersService users;
 	
 	@GetMapping
 	public List<FollowersDto> getAll() {

@@ -22,4 +22,6 @@ public interface FollowersMapper {
 	List<FollowersDto> getFolloweesByUser(String id);
     List<FollowersDto> getFollowersByUser(String id);
 
+	void deleteFollowing(String follower, String followee);
+	boolean isFollowing(String follower, String followee);
 }

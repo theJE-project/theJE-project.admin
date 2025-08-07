@@ -50,12 +50,21 @@
     <delete id="delete" parameterType="int">
 		DELETE FROM followers WHERE `id` = #{id}
 	</delete>
-    	
+
+    <delete id="deleteFollowing">
+        DELETE FROM followers WHERE follower = #{follower} AND followee = #{followee}
+    </delete>
+
     <select id="search" parameterType="com.threeteam.sns.dto.FollowersDto" resultType="com.threeteam.sns.dto.FollowersDto">
         SELECT * FROM followers WHERE 1=1
         <if test="id != null">AND `id` = #{id}</if>
         <if test="follower != null">AND `follower` = #{follower}</if>
         <if test="followee != null">AND `followee` = #{followee}</if>
     </select>
-    	
+
+    <select id="isFollowing" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM followers
+        WHERE follower = #{follower} AND followee = #{followee}
+    </select>
 </mapper>

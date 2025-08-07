@@ -21,6 +21,17 @@ public class UsersResponsDto {
         this.is_alert = is_alert;
     }
 
+    public UsersResponsDto(UsersDto user) {
+        this.id = user.getId();
+        this.account = user.getAccount();
+        this.role = user.getRole();
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.img = user.getImg();
+        this.is_alert = user.getIs_alert();
+        this.content = user.getContent();
+    }
+
     public UsersResponsDto(UsersDto user, boolean is_following) {
         this.id = user.getId();
         this.account = user.getAccount();

@@ -19,8 +19,6 @@ public class CommunitiesDto {
     private Boolean	is_delete = false;
     private Boolean	is_visible = true;
     private List<ImagesDto> images;
-    private List<TracksDto> musics;
-
-
+    private List< MusicsDto> musics;
 }
 
