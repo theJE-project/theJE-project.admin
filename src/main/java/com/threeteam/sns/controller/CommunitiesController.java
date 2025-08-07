@@ -1,3 +1,5 @@
+package com.threeteam.sns.controller;
+
 import com.threeteam.sns.service.*;
 import com.threeteam.sns.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +36,7 @@ public class CommunitiesController {
 	private final UsersService users;
 	private final TracksService tracks;
 	private final FollowersService followers;
-	
-	/*
-	@GetMapping
-	public List<CommunitiesDto> getAll() {
-		return service.getAll();
-	}
-	*/
-	
+
 	@GetMapping("/{id}")
     public ResponseEntity<CommunitiesDto> getById(@PathVariable("id") int id) {
         CommunitiesDto dto = service.getById(id);
