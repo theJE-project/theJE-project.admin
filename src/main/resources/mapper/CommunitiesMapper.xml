@@ -79,6 +79,10 @@
         <if test="is_visible != null">, `is_visible` = #{is_visible}</if>
          WHERE `id` = #{id}
     </update>
+
+    <update id="updateView" parameterType="com.threeteam.sns.dto.CommunitiesDto">
+        update communities set count = count+1 where id = #{id}
+    </update>
     
     <delete id="delete" parameterType="int">
 		DELETE FROM communities WHERE `id` = #{id}

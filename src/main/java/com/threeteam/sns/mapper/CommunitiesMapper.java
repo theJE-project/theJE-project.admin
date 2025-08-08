@@ -20,6 +20,8 @@ public interface CommunitiesMapper {
 
 	void update(CommunitiesDto dto);
 
+	void updateView(int id);
+
 	void delete(int id);
 
 	List<CommunitiesDto> search(CommunitiesDto dto);

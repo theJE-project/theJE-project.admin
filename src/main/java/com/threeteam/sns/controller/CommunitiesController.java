@@ -224,6 +224,11 @@ public class CommunitiesController {
         return ResponseEntity.ok().build();
 	}
 
+	@PutMapping("/view/{id}")
+	public ResponseEntity<Void> update(@PathVariable int id) {
+		service.updateView(id);
+		return ResponseEntity.ok().build();
+	}
 	// 게시글 삭제
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> isDelete(@PathVariable int id) {

@@ -43,6 +43,10 @@ public class CommunitiesService {
 		mapper.update(dto);
 	}
 
+	public void updateView(int id) {
+		mapper.updateView(id);
+	}
+
 	public void delete(int id) {
 		mapper.delete(id);
 	}
