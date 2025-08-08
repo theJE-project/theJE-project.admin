@@ -48,7 +48,7 @@ public class TracksMapper {
 	}
 
 	@SuppressWarnings("unchecked")
-	public TracksDto searchId(int id) {
+	public TracksDto searchId(Long id) {
 		String url = SEARCH_API_URL + "/track/" + id;
 		Map<String, Object> item = restTemplate.getForObject(url, Map.class);
 		if (item == null || item.containsKey("error")) {

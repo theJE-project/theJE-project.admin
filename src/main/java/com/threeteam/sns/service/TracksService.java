@@ -15,7 +15,7 @@ public class TracksService {
         return mapper.search(query);
     }
     
-    public TracksDto searchId(int id) {
+    public TracksDto searchId(Long id) {
     	return mapper.searchId(id);
     }
 }

@@ -11,7 +11,7 @@ public class MusicsDto {
     private Integer	id;
     private Integer	board;
     private Integer	board_types;
-    private Integer	url;
+    private Long	url;
     private LocalDateTime	created_at;
     private LocalDateTime	updated_at;
 

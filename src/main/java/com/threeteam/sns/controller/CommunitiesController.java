@@ -203,7 +203,6 @@ public class CommunitiesController {
 			for (MusicsDto music : getMusic) {
 				track.add(tracks.searchId(music.getUrl()));
 			}
-			// is_following 값 세팅 (내가 작성자 팔로우 중이면 true)
 			boolean isFollowing = false;
 			if (follower != null && !follower.equals(getUser.getId())) {
 				isFollowing = followers.isFollowing(follower, getUser.getId());
