@@ -59,7 +59,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll()
                 )
-                .httpBasic(Customizer.withDefaults()) // ✅ 여기에 빨간 줄이면 import 확인!
+                .httpBasic(Customizer.withDefaults())
                 .build();
     }
 
