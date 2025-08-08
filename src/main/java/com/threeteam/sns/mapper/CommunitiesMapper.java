@@ -6,11 +6,12 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.threeteam.sns.dto.CommunitiesDto;
+import org.eclipse.tags.shaded.org.apache.xpath.operations.Bool;
 
 @Mapper
 public interface CommunitiesMapper {
 	List<CommunitiesDto> getAll();
-	List<CommunitiesDto> getAll(int category, int offset, int limit);
+	List<CommunitiesDto> getAll(int category, int offset, int limit, Boolean isVisible);
 
 	CommunitiesDto getById(int id);
 	List<CommunitiesDto> getByUser(String user, int category, int offset, int limit);

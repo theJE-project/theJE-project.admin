@@ -1,6 +1,7 @@
 package com.threeteam.sns.service;
 
 import lombok.RequiredArgsConstructor;
+import org.eclipse.tags.shaded.org.apache.xpath.operations.Bool;
 import org.springframework.stereotype.Service;
 import com.threeteam.sns.dto.*;
 import com.threeteam.sns.mapper.*;
@@ -15,8 +16,8 @@ public class CommunitiesService {
 
 	private final CommunitiesMapper mapper;
 
-	public List<CommunitiesDto> getAll(int category, int offset, int limit) {
-        return mapper.getAll(category, offset, limit);
+	public List<CommunitiesDto> getAll(int category, int offset, int limit, Boolean isVisible) {
+        return mapper.getAll(category, offset, limit, isVisible);
     }
 
 	public CommunitiesDto getById(int id) {

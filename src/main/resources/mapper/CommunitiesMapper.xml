@@ -9,6 +9,11 @@
             <if test="category != null">
                 categories = #{category}
             </if>
+
+            <!--  공개 여부-->
+            <if test="isVisible != null and isVisible">
+                AND is_visible = true
+            </if>
         </where>
         ORDER BY created_at DESC
         LIMIT #{limit} OFFSET #{offset}
