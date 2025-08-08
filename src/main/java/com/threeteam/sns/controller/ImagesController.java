@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class ImagesController {
 
 	@Autowired
-	private ImagesService service  = new ImagesService();
+	private ImagesService service = new ImagesService();
 
 	@GetMapping
 	public List<ImagesDto> getAll() {
@@ -51,19 +51,24 @@ public class ImagesController {
 		return ResponseEntity.noContent().build();
 	}
 
-	// [파일업로드추가] 프로필/이미지 파일 업로드용 엔드포인트 추가
+	// ✅ 날짜별 폴더에 이미지 업로드
 	@PostMapping("/upload")
 	public ResponseEntity<?> uploadProfileImage(@RequestParam("file") MultipartFile file) {
 		try {
-			// 저장할 폴더 경로 (★ 경로 수정! 프로젝트 루트 uploads 폴더)
-			String uploadDir = System.getProperty("user.dir") + "/uploads/"; // ★ 여기만 수정!
-			String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+			// 📅 날짜 폴더 생성 (예: /uploads/20250807/)
+			String dateFolder = new java.text.SimpleDateFormat("yyyyMMdd").format(new java.util.Date());
+			String uploadDir = System.getProperty("user.dir") + "/uploads/" + dateFolder + "/";
+
+			// 🆔 고유한 파일명 생성
+			String fileName = java.util.UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
 			Path filePath = Paths.get(uploadDir + fileName);
+
+			// 📂 디렉토리 생성 및 저장
 			Files.createDirectories(filePath.getParent());
 			file.transferTo(filePath.toFile());
 
-			// URL 생성 (프론트엔드에서 바로 <img src=...> 사용 가능)
-			String fileUrl = "/uploads/" + fileName;
+			// 🌐 클라이언트에 보낼 URL 경로
+			String fileUrl = "/uploads/" + dateFolder + "/" + fileName;
 
 			java.util.HashMap<String, String> result = new java.util.HashMap<>();
 			result.put("url", fileUrl);
@@ -74,6 +79,4 @@ public class ImagesController {
 			return ResponseEntity.status(500).body("이미지 업로드 실패");
 		}
 	}
-	// [파일업로드추가] 끝
-
 }
