@@ -28,7 +28,7 @@ public class TracksMapper {
 				track.setPreview((String) item.get("preview"));
 				track.setTitleShort((String) item.get("title_short"));
 				track.setDuration((Integer) item.get("duration"));
-				track.setId(((Number) item.get("id")).intValue());
+				track.setId(((Number) item.get("id")).longValue());
 
 				Map<String, Object> album = (Map<String, Object>) item.get("album");
 				if (album != null) {
@@ -59,7 +59,7 @@ public class TracksMapper {
 		track.setPreview((String) item.get("preview"));
 		track.setTitleShort((String) item.get("title_short"));
 		track.setDuration(((Number) item.get("duration")).intValue());
-		track.setId(((Number) item.get("id")).intValue());
+		track.setId(((Number) item.get("id")).longValue());
 		Map<String, Object> album = (Map<String, Object>) item.get("album");
 		if (album != null) {
 			track.setAlbumCover((String) album.get("cover_medium"));
