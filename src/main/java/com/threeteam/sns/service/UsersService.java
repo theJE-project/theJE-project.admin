@@ -1,38 +1,63 @@
 package com.threeteam.sns.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.threeteam.sns.dto.*;
-import com.threeteam.sns.mapper.*;
-
-import java.util.List;
+import java.util.List
+;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import org.springframework.mail.javamail.JavaMailSender;
+
+import com.threeteam.sns.dto.UsersResponsDto;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.threeteam.sns.dto.UsersDto;
+import com.threeteam.sns.dto.UsersPendingDto;
+import com.threeteam.sns.mapper.UsersMapper;
+
 import lombok.RequiredArgsConstructor;
+import com.threeteam.sns.dto.UsersResponsDto;
 
 @Service
 @RequiredArgsConstructor
 public class UsersService {
 
-    private final UsersMapper mapper;
-    private final PasswordEncoder passwordEncoder;
+	private final UsersMapper mapper;
+	private final PasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
     private final Map<String, UsersPendingDto> pendingUsers = new ConcurrentHashMap<>();
 
-    public List<UsersDto> getAll() {
-        return mapper.getAll();
-    }
+	public List<UsersDto> getAll() {
+		return mapper.getAll();
+	}
 
-    public UsersDto getById(String id) {
-        return mapper.getById(id);
-    }
+	public UsersDto getById(String id) {
+		return mapper.getById(id);
+	}
 
-    public UsersDto getByAccount(String account){
+	public int insert(UsersDto dto) {
+		int result = mapper.insert(dto);
+		return result;
+	}
+
+	public void update(UsersDto dto) {
+		mapper.update(dto);
+	}
+
+	public void delete(int id) {
+		mapper.delete(id);
+	}
+
+	public List<UsersDto> search(UsersDto dto) {
+		return mapper.search(dto);
+	}
+	
+	public List<Map<String, Object>> searchList(UsersDto dto) {
+		return mapper.searchList(dto);
+	}
+	
+	public UsersDto getByAccount(String account){
         return mapper.getByAccount(account);
     }
 
@@ -86,6 +111,8 @@ public class UsersService {
         try {
             UsersDto user = mapper.getByAccount(account);
             System.out.println(user);
+            System.out.println("pw : " + password);
+            System.out.println("pw en : " + passwordEncoder.encode(password));
             if (user == null) return "존재하지 않는 계정입니다.";
             if (!passwordEncoder.matches(password, user.getPassword())) return "비밀번호가 일치하지 않습니다.";
             return null;
@@ -94,14 +121,4 @@ public class UsersService {
         }
     }
 
-    public void insert(UsersDto dto) {
-        mapper.insert(dto);
-    }
-
-    public void update(UsersDto dto) {
-        mapper.update(dto);
-    }
-
-    public void delete(Long id) {
-        mapper.delete(id);
-    }}
+}

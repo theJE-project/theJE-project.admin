@@ -1,21 +1,28 @@
 package com.threeteam.sns.mapper;
 
-import com.threeteam.sns.dto.*;
-import org.apache.ibatis.annotations.Mapper;
-
 import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import com.threeteam.sns.dto.MusicsDto;
 
 @Mapper
 public interface MusicsMapper {
-    List<MusicsDto> getAll();
+	List<MusicsDto> getAll();
 
-	MusicsDto getById(Long id);
+	MusicsDto getById(int id);
 
-    List<MusicsDto> getByBroads(Long board_type,Long board);
+	int insert(MusicsDto dto);
 
-    void insert(MusicsDto dto);
+	void update(MusicsDto dto);
 
-    void update(MusicsDto dto);
+	void delete(int id);
 
-    void delete(Long id);
+	List<MusicsDto> search(MusicsDto dto);
+	List<Map<String, Object>> searchList(MusicsDto dto);
+	
+	List<MusicsDto> getByBoards(@Param("board_type") int board_type, @Param("board") int board);
+
 }

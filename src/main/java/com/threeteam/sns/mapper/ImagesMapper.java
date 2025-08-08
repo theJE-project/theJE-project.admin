@@ -1,21 +1,25 @@
 package com.threeteam.sns.mapper;
 
-import com.threeteam.sns.dto.*;
-import org.apache.ibatis.annotations.Mapper;
-
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import com.threeteam.sns.dto.ImagesDto;
 
 @Mapper
 public interface ImagesMapper {
-    List<ImagesDto> getAll();
+	List<ImagesDto> getAll();
 
-	ImagesDto getById(Long id);
+	ImagesDto getById(int id);
 
-    List<ImagesDto> getByBroads(Long board_type,Long board);
+	int insert(ImagesDto dto);
 
-    void insert(ImagesDto dto);
+	void update(ImagesDto dto);
 
-    void update(ImagesDto dto);
+	void delete(int id);
 
-    void delete(Long id);
+	List<ImagesDto> search(ImagesDto dto);
+
+	List<ImagesDto> getByBoards(@Param("board_type") int board_type, @Param("board") int board);
 }

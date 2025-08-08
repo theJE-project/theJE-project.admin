@@ -7,17 +7,21 @@ import java.util.List;
 
 @Mapper
 public interface FollowersMapper {
-    List<FollowersDto> getAll();
+	List<FollowersDto> getAll();
 
-	FollowersDto getById(Long id);
+	FollowersDto getById(int id);
 
-    void insert(FollowersDto dto);
+	int insert(FollowersDto dto);
 
-    void update(FollowersDto dto);
+	void update(FollowersDto dto);
 
-    void delete(Long id);
+	void delete(int id);
 
-    List<FollowersDto> getFolloweesByUser(String id);
-
+	List<FollowersDto> search(FollowersDto dto);
+	
+	List<FollowersDto> getFolloweesByUser(String id);
     List<FollowersDto> getFollowersByUser(String id);
+
+	void deleteFollowing(String follower, String followee);
+	boolean isFollowing(String follower, String followee);
 }

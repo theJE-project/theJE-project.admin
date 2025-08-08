@@ -3,44 +3,58 @@
 <mapper namespace="com.threeteam.sns.mapper.ImagesMapper">
     
     <select id="getAll" resultType="com.threeteam.sns.dto.ImagesDto">
-			SELECT * FROM images
+		SELECT * FROM images
 	</select>
-
-    <select id="getById" parameterType="long" resultType="com.threeteam.sns.dto.ImagesDto">
-			SELECT * FROM images WHERE id = #{id}
+    	
+    <select id="getById" parameterType="int" resultType="com.threeteam.sns.dto.ImagesDto">
+		SELECT * FROM images WHERE `id` = #{id}
 	</select>
-
-    <select id="getByBroads" parameterType="map" resultType="com.threeteam.sns.dto.ImagesDto">
-        SELECT * FROM images WHERE board_types = #{board_type} AND board = #{board}
+	
+	<select id="getByBoards" resultType="com.threeteam.sns.dto.ImagesDto">
+        SELECT * FROM images 
+        WHERE board_types = #{board_type} 
+        AND board = #{board}
     </select>
-
+    	
     <insert id="insert" parameterType="com.threeteam.sns.dto.ImagesDto">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">SELECT LAST_INSERT_ID()</selectKey>
         INSERT INTO images ( created_at
-        <if test="id != null">, id</if>
-        <if test="board != null">, board</if>
-        <if test="board_types != null">, board_types</if>
-        <if test="url != null">, url</if>
-        <if test="is_main != null">, is_main</if>
+        <if test="id != null">, `id`</if>
+        <if test="board != null">, `board`</if>
+        <if test="board_types != null">, `board_types`</if>
+        <if test="url != null">, `url`</if>
+        <if test="is_main != null">, `is_main`</if>
+        <if test="updated_at != null">, `updated_at`</if>
         ) VALUES ( NOW()
         <if test="id != null">, #{id}</if>
         <if test="board != null">, #{board}</if>
         <if test="board_types != null">, #{board_types}</if>
         <if test="url != null">, #{url}</if>
         <if test="is_main != null">, #{is_main}</if>
+        <if test="updated_at != null">, #{updated_at}</if>
         )
     </insert>
     	
     <update id="update" parameterType="com.threeteam.sns.dto.ImagesDto">
         UPDATE images SET updated_at = NOW()
-        <if test="board != null">, board = #{board}</if>
-        <if test="board_types != null">, board_types = #{board_types}</if>
-        <if test="url != null">, url = #{url}</if>
-        <if test="is_main != null">, is_main = #{is_main}</if>
-         WHERE id = #{id}
+        <if test="board != null">, `board` = #{board}</if>
+        <if test="board_types != null">, `board_types` = #{board_types}</if>
+        <if test="url != null">, `url` = #{url}</if>
+        <if test="is_main != null">, `is_main` = #{is_main}</if>
+         WHERE `id` = #{id}
     </update>
     
-    <delete id="delete" parameterType="long">
-			DELETE FROM images WHERE id = {id})
+    <delete id="delete" parameterType="int">
+		DELETE FROM images WHERE `id` = #{id}
 	</delete>
+    	
+    <select id="search" parameterType="com.threeteam.sns.dto.ImagesDto" resultType="com.threeteam.sns.dto.ImagesDto">
+        SELECT * FROM images WHERE 1=1
+        <if test="id != null">AND `id` = #{id}</if>
+        <if test="board != null">AND `board` = #{board}</if>
+        <if test="board_types != null">AND `board_types` = #{board_types}</if>
+        <if test="url != null">AND `url` = #{url}</if>
+        <if test="is_main != null">AND `is_main` = #{is_main}</if>
+    </select>
     	
 </mapper>

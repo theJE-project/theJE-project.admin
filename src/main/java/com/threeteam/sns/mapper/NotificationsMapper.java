@@ -7,13 +7,18 @@ import java.util.List;
 
 @Mapper
 public interface NotificationsMapper {
-    List<NotificationsDto> getAll();
+	List<NotificationsDto> getAll();
 
-	NotificationsDto[] getById(String id);
+	List<NotificationsDto> getById(String id);
 
-    void insert(NotificationsDto dto);
+	int insert(NotificationsDto dto);
 
-    void update(NotificationsDto dto);
+	void update(NotificationsDto dto);
 
-    void delete(String id);
+	void delete(int id);
+
+	List<NotificationsDto> search(NotificationsDto dto);
+	List<NotificationsDto> getListByUsers(NotificationsDto dto);
+
+	void updateAllRead(NotificationsDto dto);
 }

@@ -7,13 +7,16 @@ import java.util.List;
 
 @Mapper
 public interface CommentsMapper {
-    List<CommentsDto> getAll();
+	List<CommentsDto> getAll();
 
-	CommentsDto getById(Long id);
+	CommentsDto getById(int id);
 
-    void insert(CommentsDto dto);
+	int insert(CommentsDto dto);
 
-    void update(CommentsDto dto);
+	void update(CommentsDto dto);
 
-    void delete(Long id);
+	void delete(int id);
+
+	List<CommentsDto> search(CommentsDto dto);
+
 }

@@ -2,24 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.threeteam.sns.mapper.CommunitiesMapper">
 
-    <select id="getAll" resultType="com.threeteam.sns.dto.CommunitiesDto" parameterType="map">
-        SELECT * FROM communities
-        WHERE categories = #{category}
-        and is_delete=false
-        ORDER BY id DESC
+    <select id="getAll" resultType="com.threeteam.sns.dto.CommunitiesDto">
+        SELECT *
+        FROM communities
+        <where>
+            <if test="category != null">
+                categories = #{category}
+            </if>
+        </where>
+        ORDER BY created_at DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
-
-    <select id="getById" parameterType="long" resultType="com.threeteam.sns.dto.CommunitiesDto">
-			SELECT * FROM communities WHERE id = #{id} and is_delete=false
+    	
+    <select id="getById" parameterType="int" resultType="com.threeteam.sns.dto.CommunitiesDto">
+		SELECT * FROM communities WHERE `id` = #{id}
 	</select>
-
-
-    <select id="getByUser" parameterType="map" resultType="com.threeteam.sns.dto.CommunitiesDto">
+	
+	<select id="getByUser" parameterType="map" resultType="com.threeteam.sns.dto.CommunitiesDto">
         SELECT * FROM communities
         WHERE categories = #{category}
         AND users = #{user}
-        and is_delete=false
         ORDER BY id DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
@@ -32,71 +34,87 @@
             #{userId}
         </foreach>
         AND categories = #{category}
-        and is_delete=false
         ORDER BY created_at DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
 
-    <insert id="insert" parameterType="com.threeteam.sns.dto.CommunitiesDto" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.threeteam.sns.dto.CommunitiesDto">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
         INSERT INTO communities (
-        created_at
-        <if test="users != null">, users</if>
-        <if test="categories != null">, categories</if>
-        <if test="title != null">, title</if>
-        <if test="content != null">, content</if>
-        <if test="count != null">, count</if>
-        <if test="hash != null">, hash</if>
-        <if test="updated_at != null">, updated_at</if>
-        <if test="is_delete != null">, is_delete</if>
-        <if test="is_visible != null">, is_visible</if>
-        )
-        VALUES (
-        NOW()
-        <if test="users != null">, #{users}</if>
-        <if test="categories != null">, #{categories}</if>
-        <if test="title != null">, #{title}</if>
-        <if test="content != null">, #{content}</if>
-        <if test="count != null">, #{count}</if>
-        <if test="hash != null">, #{hash}</if>
-        <if test="updated_at != null">, #{updated_at}</if>
-        <if test="is_delete != null">, #{is_delete}</if>
-        <if test="is_visible != null">, #{is_visible}</if>
-        <if test="is_visible == null">
-            , 0
-        </if>
+        created_at,
+        users,
+        categories,
+        title,
+        content,
+        count,
+        hash,
+        updated_at,
+        is_delete,
+        is_visible
+        ) VALUES (
+        NOW(),
+        #{users},
+        #{categories},
+        #{title},
+        #{content},
+        #{count},
+        #{hash},
+        #{updated_at},
+        #{is_delete},
+        #{is_visible}
         )
     </insert>
-
-<!--    <update id="update" parameterType="com.threeteam.sns.dto.CommunitiesDto">-->
-<!--        UPDATE communities SET updated_at = NOW()-->
-<!--        <if test="users != null">, users = #{users}</if>-->
-<!--        <if test="categories != null">, categories = #{categories}</if>-->
-<!--        <if test="title != null">, title = #{title}</if>-->
-<!--        <if test="content != null">, content = #{content}</if>-->
-<!--        <if test="count != null">, count = #{count}</if>-->
-<!--        <if test="is_delete != null">, is_delete = #{is_delete}</if>-->
-<!--        <if test="is_visible != null">, is_visible = #{is_visible}</if>-->
-<!--         WHERE id = #{id}-->
-<!--    </update>-->
-
-
-<!--    삭제 -->
-    <update id="isDelete" parameterType="com.threeteam.sns.dto.CommunitiesDto">
-        UPDATE communities SET is_delete = true where id = #{id}
+    	
+    <update id="update" parameterType="com.threeteam.sns.dto.CommunitiesDto">
+        UPDATE communities SET updated_at = NOW()
+        <if test="users != null">, `users` = #{users}</if>
+        <if test="categories != null">, `categories` = #{categories}</if>
+        <if test="title != null">, `title` = #{title}</if>
+        <if test="content != null">, `content` = #{content}</if>
+        <if test="count != null">, `count` = #{count}</if>
+        <if test="hash != null">, `hash` = #{hash}</if>
+        <if test="is_delete != null">, `is_delete` = #{is_delete}</if>
+        <if test="is_visible != null">, `is_visible` = #{is_visible}</if>
+         WHERE `id` = #{id}
     </update>
-
-    <delete id="delete" parameterType="long">
-			DELETE FROM communities WHERE id = {id})
+    
+    <delete id="delete" parameterType="int">
+		DELETE FROM communities WHERE `id` = #{id}
 	</delete>
-
-
-    <!-- 내가 쓴글 조회 추가-->
+    	
+    <select id="search" parameterType="com.threeteam.sns.dto.CommunitiesDto" resultType="com.threeteam.sns.dto.CommunitiesDto">
+        SELECT * FROM communities WHERE 1=1
+        <if test="id != null">AND `id` = #{id}</if>
+        <if test="users != null">AND `users` = #{users}</if>
+        <if test="categories != null">AND `categories` = #{categories}</if>
+        <if test="title != null">AND `title` = #{title}</if>
+        <if test="content != null">AND `content` = #{content}</if>
+        <if test="count != null">AND `count` = #{count}</if>
+        <if test="hash != null">AND `hash` = #{hash}</if>
+        <if test="is_delete != null">AND `is_delete` = #{is_delete}</if>
+        <if test="is_visible != null">AND `is_visible` = #{is_visible}</if>
+    </select>
+    
+    <select id="searchList" parameterType="com.threeteam.sns.dto.CommunitiesDto" resultType="map">
+        SELECT c.*, u.`account`, u.`name`, u.`img` FROM communities c
+        INNER JOIN users u ON u.`id` = c.`users`
+        <where>
+	        <trim prefix="(" suffix=")" prefixOverrides="OR">
+	            <if test="id != null">OR c.`id` = #{id}</if>
+		        <if test="users != null">OR c.`users` = #{users}</if>
+		        <if test="categories != null">OR c.`categories` = #{categories}</if>
+		        <if test="title != null">OR c.`title` LIKE CONCAT('%',  #{title}, '%')</if>
+		        <if test="content != null">OR c.`content` LIKE CONCAT('%',  #{content}, '%')</if>
+		        <if test="count != null">OR c.`count` = #{count}</if>
+		        <if test="hash != null">OR c.`hash` = #{hash}</if>
+	        </trim>
+	    </where>
+    </select>
+    
     <select id="selectByUserId" parameterType="string" resultType="com.threeteam.sns.dto.CommunitiesDto">
         SELECT * FROM communities WHERE users = #{userId}
     </select>
-
-
-
-
-
+    	
 </mapper>

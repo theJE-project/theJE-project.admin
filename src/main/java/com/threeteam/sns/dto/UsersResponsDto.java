@@ -1,10 +1,8 @@
 package com.threeteam.sns.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class UsersResponsDto {
     private String	id;
     private String	account;
@@ -12,9 +10,9 @@ public class UsersResponsDto {
     private String	name;
     private String	email;
     private String	img;
-    private boolean	is_alert;
+    private Boolean	is_alert;
     private String  content;
-    private boolean is_followed;
+    private boolean is_following;
 
     public boolean isIs_alert() {
         return is_alert;
@@ -30,7 +28,19 @@ public class UsersResponsDto {
         this.name = user.getName();
         this.email = user.getEmail();
         this.img = user.getImg();
-        this.is_alert = user.getIsAlert();
+        this.is_alert = user.getIs_alert();
         this.content = user.getContent();
+    }
+
+    public UsersResponsDto(UsersDto user, boolean is_following) {
+        this.id = user.getId();
+        this.account = user.getAccount();
+        this.role = user.getRole();
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.img = user.getImg();
+        this.is_alert = user.getIs_alert();
+        this.content = user.getContent();
+        this.is_following = is_following;
     }
 }

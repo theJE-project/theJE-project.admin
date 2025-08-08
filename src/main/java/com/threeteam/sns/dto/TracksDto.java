@@ -1,9 +1,10 @@
 package com.threeteam.sns.dto;
+
 import lombok.Data;
 
 @Data
 public class TracksDto {
-    private Long id;
+	private Integer id;
     private String preview;      // 미리듣기 URL
     private String titleShort;   // title_short
     private String albumCover;   // album.cover_medium

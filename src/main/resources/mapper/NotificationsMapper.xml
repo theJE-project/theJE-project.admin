@@ -3,23 +3,25 @@
 <mapper namespace="com.threeteam.sns.mapper.NotificationsMapper">
     
     <select id="getAll" resultType="com.threeteam.sns.dto.NotificationsDto">
-			SELECT * FROM notifications
+		SELECT * FROM notifications
 	</select>
     	
     <select id="getById" parameterType="String" resultType="com.threeteam.sns.dto.NotificationsDto">
-			SELECT * FROM notifications WHERE receiver = #{id}
+		SELECT * FROM notifications WHERE receiver = #{id}
 	</select>
     	
     <insert id="insert" parameterType="com.threeteam.sns.dto.NotificationsDto">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">SELECT LAST_INSERT_ID()</selectKey>
         INSERT INTO notifications ( created_at
-        <if test="id != null">, id</if>
-        <if test="sender != null">, sender</if>
-        <if test="receiver != null">, receiver</if>
-        <if test="board != null">, board</if>
-        <if test="board_types != null">, board_types</if>
-        <if test="content != null">, content</if>
-        <if test="is_read != null">, is_read</if>
-        <if test="is_delete != null">, is_delete</if>
+        <if test="id != null">, `id`</if>
+        <if test="sender != null">, `sender`</if>
+        <if test="receiver != null">, `receiver`</if>
+        <if test="board != null">, `board`</if>
+        <if test="board_types != null">, `board_types`</if>
+        <if test="content != null">, `content`</if>
+        <if test="updated_at != null">, `updated_at`</if>
+        <if test="is_read != null">, `is_read`</if>
+        <if test="is_delete != null">, `is_delete`</if>
         ) VALUES ( NOW()
         <if test="id != null">, #{id}</if>
         <if test="sender != null">, #{sender}</if>
@@ -27,6 +29,7 @@
         <if test="board != null">, #{board}</if>
         <if test="board_types != null">, #{board_types}</if>
         <if test="content != null">, #{content}</if>
+        <if test="updated_at != null">, #{updated_at}</if>
         <if test="is_read != null">, #{is_read}</if>
         <if test="is_delete != null">, #{is_delete}</if>
         )
@@ -34,18 +37,58 @@
     	
     <update id="update" parameterType="com.threeteam.sns.dto.NotificationsDto">
         UPDATE notifications SET updated_at = NOW()
-        <if test="sender != null">, sender = #{sender}</if>
-        <if test="receiver != null">, receiver = #{receiver}</if>
-        <if test="board != null">, board = #{board}</if>
-        <if test="board_types != null">, board_types = #{board_types}</if>
-        <if test="content != null">, content = #{content}</if>
-        <if test="is_read != null">, is_read = #{is_read}</if>
-        <if test="is_delete != null">, is_delete = #{is_delete}</if>
-         WHERE id = #{id}
+        <if test="sender != null">, `sender` = #{sender}</if>
+        <if test="receiver != null">, `receiver` = #{receiver}</if>
+        <if test="board != null">, `board` = #{board}</if>
+        <if test="board_types != null">, `board_types` = #{board_types}</if>
+        <if test="content != null">, `content` = #{content}</if>
+        <if test="is_read != null">, `is_read` = #{is_read}</if>
+        <if test="is_delete != null">, `is_delete` = #{is_delete}</if>
+         WHERE `id` = #{id}
     </update>
     
-    <delete id="delete" parameterType="long">
-			DELETE FROM notifications WHERE id = {id})
+    <delete id="delete" parameterType="int">
+		DELETE FROM notifications WHERE `id` = #{id}
 	</delete>
+    	
+    <select id="search" parameterType="com.threeteam.sns.dto.NotificationsDto" resultType="com.threeteam.sns.dto.NotificationsDto">
+        SELECT n.*, u.`name`, u.`img` FROM notifications n
+        INNER JOIN users u ON u.`id` = n.`sender`   
+        <where>
+	        <trim prefix="(" suffix=")" prefixOverrides="OR">
+		        <if test="id != null">OR n.`id` = #{id}</if>
+		        <if test="sender != null">OR n.`sender` = #{sender}</if>
+		        <if test="receiver != null">OR n.`receiver` = #{receiver}</if>
+		        <if test="board != null">OR n.`board` = #{board}</if>
+		        <if test="board_types != null">OR n.`board_types` = #{board_types}</if>
+		        <if test="content != null">OR n.`content` = #{content}</if>
+		        <if test="is_read != null">OR n.`is_read` = #{is_read}</if>
+		        <if test="is_delete != null">OR n.`is_delete` = #{is_delete}</if>
+			</trim>
+		</where>
+    </select>
+    
+    <select id="getListByUsers" parameterType="com.threeteam.sns.dto.NotificationsDto" resultType="com.threeteam.sns.dto.NotificationsDto">
+        SELECT n.*, u.`name`, u.`img` FROM notifications n
+        INNER JOIN users u ON u.`id` = n.`sender`   
+        <where>
+	        <trim prefix="(" suffix=")" prefixOverrides="OR">
+		        <if test="id != null">OR n.`id` = #{id}</if>
+		        <if test="sender != null">OR n.`sender` = #{sender}</if>
+		        <if test="receiver != null">OR n.`receiver` = #{receiver}</if>
+		        <if test="board != null">OR n.`board` = #{board}</if>
+		        <if test="board_types != null">OR n.`board_types` = #{board_types}</if>
+		        <if test="content != null">OR n.`content` = #{content}</if>
+		        <if test="is_read != null">OR n.`is_read` = #{is_read}</if>
+		        <if test="is_delete != null">OR n.`is_delete` = #{is_delete}</if>
+			</trim>
+		</where>
+    </select>
+    
+    <update id="updateAllRead" parameterType="com.threeteam.sns.dto.NotificationsDto">
+        UPDATE notifications SET updated_at = NOW()
+        <if test="receiver != null">, `receiver` = #{receiver}</if>
+        <if test="is_read != null">, `is_read` = #{is_read}</if>
+    </update>
     	
 </mapper>

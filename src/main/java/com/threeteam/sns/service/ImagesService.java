@@ -1,36 +1,44 @@
 package com.threeteam.sns.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import com.threeteam.sns.dto.*;
 import com.threeteam.sns.mapper.*;
-
-import java.util.List;
+import java.util.List
+;
 @Service
+@RequiredArgsConstructor
 public class ImagesService {
 
-	@Autowired
-	private ImagesMapper mapper;
+	private final ImagesMapper mapper;
 
-    public List<ImagesDto> getAll() {
-        return mapper.getAll();
-    }
+	public List<ImagesDto> getAll() {
+		return mapper.getAll();
+	}
 
-    public ImagesDto getById(Long id) {
-        return mapper.getById(id);
-    }
+	public ImagesDto getById(int id) {
+		return mapper.getById(id);
+	}
 
-    public List<ImagesDto> getByBroads(Long board_type,Long board) { return mapper.getByBroads(board_type,board); }
+	public int insert(ImagesDto dto) {
+		int result = mapper.insert(dto);
+		return result;
+	}
 
-    public void insert(ImagesDto dto) {
-        mapper.insert(dto);
-    }
+	public void update(ImagesDto dto) {
+		mapper.update(dto);
+	}
 
-    public void update(ImagesDto dto) {
-        mapper.update(dto);
-    }
+	public void delete(int id) {
+		mapper.delete(id);
+	}
 
-    public void delete(Long id) {
-        mapper.delete(id);
-    }}
+	public List<ImagesDto> search(ImagesDto dto) {
+		return mapper.search(dto);
+	}
+	
+	public List<ImagesDto> getByBoards(int board_type, int board) {
+		return mapper.getByBoards(board_type, board);
+	}
+	
+}

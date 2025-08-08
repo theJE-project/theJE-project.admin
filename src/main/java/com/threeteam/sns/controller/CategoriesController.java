@@ -10,11 +10,11 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequiredArgsConstructor
+@RequestMapping(value = "/api/categories", produces = "application/json; charset=UTF-8")
 public class CategoriesController {
 	
-	@Autowired
-	private CategoriesService service  = new CategoriesService();
+	private final CategoriesService service;
 	
 	@GetMapping
 	public List<CategoriesDto> getAll() {
@@ -22,8 +22,32 @@ public class CategoriesController {
 	}
 	
 	@GetMapping("/{id}")
-    public ResponseEntity<CategoriesDto> getById(@PathVariable("/{id}") Long id) {
+    public ResponseEntity<CategoriesDto> getById(@PathVariable("id") int id) {
         CategoriesDto dto = service.getById(id);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
 	}
+	
+	@PostMapping
+    public ResponseEntity<Void> create(@RequestBody CategoriesDto dto) {
+        service.insert(dto);
+        return ResponseEntity.ok().build();
+	}
+	
+	@PutMapping
+    public ResponseEntity<Void> update(@RequestBody CategoriesDto dto) {
+        service.update(dto);
+        return ResponseEntity.ok().build();
+	}
+	
+	@DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") int id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+	}
+	
+	@PostMapping("/search")
+	public List<CategoriesDto> search(@RequestBody CategoriesDto dto) {
+		return service.search(dto);
+	}
+	
 }

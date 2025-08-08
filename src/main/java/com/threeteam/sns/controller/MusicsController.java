@@ -10,11 +10,11 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/musics")
+@RequiredArgsConstructor
+@RequestMapping(value = "/api/musics", produces = "application/json; charset=UTF-8")
 public class MusicsController {
 	
-	@Autowired
-	private MusicsService service  = new MusicsService();
+	private final MusicsService service;
 	
 	@GetMapping
 	public List<MusicsDto> getAll() {
@@ -22,7 +22,7 @@ public class MusicsController {
 	}
 	
 	@GetMapping("/{id}")
-    public ResponseEntity<MusicsDto> getById(@PathVariable("/{id}") Long id) {
+    public ResponseEntity<MusicsDto> getById(@PathVariable("id") int id) {
         MusicsDto dto = service.getById(id);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
 	}
@@ -40,9 +40,14 @@ public class MusicsController {
 	}
 	
 	@DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("/{id}") Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") int id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
+	}
+	
+	@PostMapping("/search")
+	public List<MusicsDto> search(@RequestBody MusicsDto dto) {
+		return service.search(dto);
 	}
 	
 }
