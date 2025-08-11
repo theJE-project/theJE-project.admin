@@ -76,7 +76,7 @@ public class CommunitiesController {
 		System.out.println("communities getAll - category : " + category);
 		System.out.println("communities getAll - page : " + page);
 		System.out.println("communities getAll - size : " + size);
-		List<CommunitiesDto> dtos = service.getAll(category, page * size, size);
+		List<CommunitiesDto> dtos = service.getAll(category, page * size, size, true);
 		List<CommunitiesResponsDto> result = new ArrayList<>();
 
 		for (CommunitiesDto dto : dtos) {
@@ -194,7 +194,7 @@ public class CommunitiesController {
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size
 	) {
-		List<CommunitiesDto> dtos = service.getAll(category, page * size, size);
+		List<CommunitiesDto> dtos = service.getAll(category, page * size, size, null);
 		List<CommunitiesResponsDto> result = new ArrayList<>();
 		for (CommunitiesDto dto : dtos) {
 			UsersDto getUser = users.getById(dto.getUsers());
