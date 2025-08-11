@@ -47,6 +47,11 @@ public class CommunitiesService {
 		mapper.updateView(id);
 	}
 
+	// 게시글 삭제
+	public void isDelete(int id){
+		mapper.isDelete(id);
+	}
+
 	public void delete(int id) {
 		mapper.delete(id);
 	}

@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/communities", produces = "application/json; charset=UTF-8")
 public class CommunitiesController {
-	
+
 	private final CommunitiesService service;
 	private final ImagesService images;
 	private final MusicsService musics;
@@ -38,9 +38,9 @@ public class CommunitiesController {
 	private final FollowersService followers;
 
 	@GetMapping("/{id}")
-    public ResponseEntity<CommunitiesDto> getById(@PathVariable("id") int id) {
-        CommunitiesDto dto = service.getById(id);
-        return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
+	public ResponseEntity<CommunitiesDto> getById(@PathVariable("id") int id) {
+		CommunitiesDto dto = service.getById(id);
+		return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
 	}
 
 	@GetMapping("/community/{id}")
@@ -70,8 +70,8 @@ public class CommunitiesController {
 	@GetMapping //전체검색
 	public ResponseEntity<List<CommunitiesResponsDto>> getAll(
 			@RequestParam("category") int category,
-		    @RequestParam(value = "page", defaultValue = "0") int page,
-		    @RequestParam(value = "size", defaultValue = "10") int size
+			@RequestParam(value = "page", defaultValue = "0") int page,
+			@RequestParam(value = "size", defaultValue = "10") int size
 	) {
 		System.out.println("communities getAll - category : " + category);
 		System.out.println("communities getAll - page : " + page);
@@ -116,18 +116,18 @@ public class CommunitiesController {
 				.map(FollowersDto::getFollowee)
 				.collect(Collectors.toList());
 
-		if(followeeIds.isEmpty()) {
+		if (followeeIds.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
 
 		// 2. 한 번에 팔로잉한 사람들의 게시물 최신순으로 페이징해서 가져오기
 		List<CommunitiesDto> dtos = service.getByFollowees(followeeIds, category, page * size, size);
 		List<CommunitiesResponsDto> result = new ArrayList<>();
-		for(CommunitiesDto dto : dtos){
+		for (CommunitiesDto dto : dtos) {
 			UsersDto getUser = users.getById(dto.getUsers());
-			List<MusicsDto> getMusic= musics.getByBoards(1, dto.getId());
+			List<MusicsDto> getMusic = musics.getByBoards(1, dto.getId());
 			List<TracksDto> track = new ArrayList<>();
-			for(MusicsDto music : getMusic) {
+			for (MusicsDto music : getMusic) {
 				track.add(tracks.searchId(music.getUrl()));
 			}
 			result.add(new CommunitiesResponsDto(
@@ -149,14 +149,14 @@ public class CommunitiesController {
 	) {
 		List<CommunitiesDto> dtos = service.getByUser(user, category, page * size, size);
 		List<CommunitiesResponsDto> result = new ArrayList<>();
-		for(CommunitiesDto dto : dtos){
+		for (CommunitiesDto dto : dtos) {
 			UsersDto getUser = users.getById(dto.getUsers());
-			List<MusicsDto> getMusic= musics.getByBoards(1, dto.getId());
+			List<MusicsDto> getMusic = musics.getByBoards(1, dto.getId());
 			List<TracksDto> track = new ArrayList<>();
-			for(MusicsDto music : getMusic) {
+			for (MusicsDto music : getMusic) {
 				track.add(tracks.searchId(music.getUrl()));
 			}
-			result.add( new CommunitiesResponsDto(
+			result.add(new CommunitiesResponsDto(
 					dto,
 					new UsersResponsDto(getUser),
 					images.getByBoards(1, dto.getId()),
@@ -167,7 +167,7 @@ public class CommunitiesController {
 	}
 
 	@PostMapping
-    public ResponseEntity<Void> create(@RequestBody CommunitiesDto dto) {
+	public ResponseEntity<Void> create(@RequestBody CommunitiesDto dto) {
 		int id = service.insert(dto);
 
 		if (dto.getImages() != null) {
@@ -177,14 +177,14 @@ public class CommunitiesController {
 				images.insert(image);
 			}
 		}
-		if(dto.getMusics() != null){
-			for (MusicsDto music : dto.getMusics()){
+		if (dto.getMusics() != null) {
+			for (MusicsDto music : dto.getMusics()) {
 				music.setBoard(id);
 				music.setBoard_types(1);
 				musics.insert(music);
 			}
 		}
-        return ResponseEntity.ok().build();
+		return ResponseEntity.ok().build();
 	}
 
 	@GetMapping("/byUser") //전체검색(로그인한 유저 기준)
@@ -219,9 +219,9 @@ public class CommunitiesController {
 	}
 
 	@PutMapping
-    public ResponseEntity<Void> update(@RequestBody CommunitiesDto dto) {
-        service.update(dto);
-        return ResponseEntity.ok().build();
+	public ResponseEntity<Void> update(@RequestBody CommunitiesDto dto) {
+		service.update(dto);
+		return ResponseEntity.ok().build();
 	}
 
 	@PutMapping("/view/{id}")
@@ -229,22 +229,22 @@ public class CommunitiesController {
 		service.updateView(id);
 		return ResponseEntity.ok().build();
 	}
+
 	// 게시글 삭제
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> isDelete(@PathVariable int id) {
-		service.delete(id);
+		service.isDelete(id);
 		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") int id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
+	public ResponseEntity<Void> delete(@PathVariable("id") int id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
 	}
-	
+
 	@PostMapping("/search")
 	public List<CommunitiesDto> search(@RequestBody CommunitiesDto dto) {
 		return service.search(dto);
 	}
-	
 }

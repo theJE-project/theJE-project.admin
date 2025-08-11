@@ -22,6 +22,9 @@ public interface CommunitiesMapper {
 
 	void updateView(int id);
 
+	// 게시글 삭제
+	void isDelete(int id);
+
 	void delete(int id);
 
 	List<CommunitiesDto> search(CommunitiesDto dto);

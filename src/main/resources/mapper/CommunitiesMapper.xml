@@ -10,18 +10,20 @@
                 categories = #{category}
             </if>
         </where>
+        and is_delete=false
         ORDER BY created_at DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
     	
     <select id="getById" parameterType="int" resultType="com.threeteam.sns.dto.CommunitiesDto">
-		SELECT * FROM communities WHERE `id` = #{id}
+		SELECT * FROM communities WHERE `id` = #{id} and is_delete=false
 	</select>
 	
 	<select id="getByUser" parameterType="map" resultType="com.threeteam.sns.dto.CommunitiesDto">
         SELECT * FROM communities
         WHERE categories = #{category}
         AND users = #{user}
+        and is_delete=false
         ORDER BY id DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
@@ -34,6 +36,7 @@
             #{userId}
         </foreach>
         AND categories = #{category}
+        and is_delete=false
         ORDER BY created_at DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
@@ -82,6 +85,11 @@
 
     <update id="updateView" parameterType="com.threeteam.sns.dto.CommunitiesDto">
         update communities set count = count+1 where id = #{id}
+    </update>
+    
+<!--  게시글 삭제  -->
+    <update id="isDelete" parameterType="com.threeteam.sns.dto.CommunitiesDto">
+        update communities set is_delete = true where id = #{id}
     </update>
     
     <delete id="delete" parameterType="int">
