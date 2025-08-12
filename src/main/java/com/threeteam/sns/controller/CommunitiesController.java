@@ -218,9 +218,32 @@ public class CommunitiesController {
 		return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
 	}
 
-	@PutMapping
-	public ResponseEntity<Void> update(@RequestBody CommunitiesDto dto) {
-		service.update(dto);
+	// playlist update(플레이리스트 수정)에서 사용
+	@PutMapping("/update/{id}")
+	public ResponseEntity<Void> update(@PathVariable int id, @RequestBody CommunitiesDto dto) {
+		dto.setId(id); // URL에서 받은 id를 DTO에 설정
+
+		service.update(dto); // 게시글 기본 정보 update
+
+		images.delete(id); // images 테이블 게시글 id로 delete
+		musics.delete(id); // musics 테이블 게시글 id로 delete
+
+		// List 데이터 새로 삽입
+		if (dto.getImages() != null) {
+			for (ImagesDto image : dto.getImages()) {
+				image.setBoard(id);
+				image.setBoard_types(1);
+				images.insert(image);
+			}
+		}
+		if (dto.getMusics() != null) {
+			for (MusicsDto music : dto.getMusics()) {
+				music.setBoard(id);
+				music.setBoard_types(1);
+				musics.insert(music);
+			}
+		}
+
 		return ResponseEntity.ok().build();
 	}
 

@@ -40,9 +40,10 @@
         <if test="url != null">, `url` = #{url}</if>
          WHERE `id` = #{id}
     </update>
-    
+
+    <!-- 'id' = #{id}에서 수정함 -->
     <delete id="delete" parameterType="int">
-		DELETE FROM musics WHERE `id` = #{id}
+		DELETE FROM musics WHERE `board` = #{id}
 	</delete>
     	
     <select id="search" parameterType="com.threeteam.sns.dto.MusicsDto" resultType="com.threeteam.sns.dto.MusicsDto">
