@@ -43,6 +43,7 @@ public class CommunitiesController {
 		return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
 	}
 
+// 커뮤니티 상세 게시글
 	@GetMapping("/community/{id}")
 	public ResponseEntity<CommunitiesResponsDto> getByCId(@PathVariable int id, @RequestParam(value = "user", required = false) String follower) {
 		CommunitiesDto dto = service.getById(id);
@@ -102,6 +103,7 @@ public class CommunitiesController {
 				: ResponseEntity.notFound().build();
 	}
 
+	// 팔로잉 탭
 	@GetMapping("/followee") // 팔로잉 검색
 	public ResponseEntity<List<CommunitiesResponsDto>> getByFollowee(
 			@RequestParam("user") String user,
@@ -187,12 +189,13 @@ public class CommunitiesController {
 		return ResponseEntity.ok().build();
 	}
 
+	// 유저 기준 전체검색(팔로우 여부 판별)
 	@GetMapping("/byUser") //전체검색(로그인한 유저 기준)
 	public ResponseEntity<List<CommunitiesResponsDto>> getAllByUser(
 			@RequestParam("category") int category,
 			@RequestParam(value = "user", required = false) String follower, // 내 아이디
 			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size
+			@RequestParam(defaultValue = "100") int size
 	) {
 		List<CommunitiesDto> dtos = service.getAll(category, page * size, size, null);
 		List<CommunitiesResponsDto> result = new ArrayList<>();
@@ -247,4 +250,5 @@ public class CommunitiesController {
 	public List<CommunitiesDto> search(@RequestBody CommunitiesDto dto) {
 		return service.search(dto);
 	}
+
 }
