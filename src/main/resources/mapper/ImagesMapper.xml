@@ -43,9 +43,10 @@
         <if test="is_main != null">, `is_main` = #{is_main}</if>
          WHERE `id` = #{id}
     </update>
-    
+
+    <!-- 'id' = #{id}에서 수정함 -->
     <delete id="delete" parameterType="int">
-		DELETE FROM images WHERE `id` = #{id}
+		DELETE FROM images WHERE `board` = #{id}
 	</delete>
     	
     <select id="search" parameterType="com.threeteam.sns.dto.ImagesDto" resultType="com.threeteam.sns.dto.ImagesDto">
