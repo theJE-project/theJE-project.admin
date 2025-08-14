@@ -16,6 +16,7 @@ public class UsersDto {
     private LocalDateTime	created_at;
     private LocalDateTime	updated_at;
     private String content;
-
+    
+    private String follower;
 }
 

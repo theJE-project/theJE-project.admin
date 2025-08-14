@@ -45,18 +45,27 @@
     </update>
     
     <delete id="delete" parameterType="int">
-		DELETE FROM comments WHERE `id` = #{id}
+		<!-- DELETE FROM comments WHERE `id` = #{id} -->
+		UPDATE comments SET is_delete = true WHERE `id` = #{id}
 	</delete>
-    	
-    <select id="search" parameterType="com.threeteam.sns.dto.CommentsDto" resultType="com.threeteam.sns.dto.CommentsDto">
-        SELECT * FROM comments WHERE 1=1
-        <if test="id != null">AND `id` = #{id}</if>
-        <if test="parent != null">AND `parent` = #{parent}</if>
-        <if test="users != null">AND `users` = #{users}</if>
-        <if test="board != null">AND `board` = #{board}</if>
-        <if test="board_types != null">AND `board_types` = #{board_types}</if>
-        <if test="content != null">AND `content` = #{content}</if>
-        <if test="is_delete != null">AND `is_delete` = #{is_delete}</if>
-    </select>
-    	
+
+	<select id="search"
+		parameterType="com.threeteam.sns.dto.CommentsDto"
+		resultType="com.threeteam.sns.dto.CommentsDto">
+		SELECT c.*, u.name FROM comments c
+		INNER JOIN users u ON u.`id` = c.`users`
+		<where>
+			<trim prefix="(" suffix=")" prefixOverrides="AND |OR ">
+				<if test="id != null">AND id = #{id}</if>
+				<if test="parent != null">AND parent = #{parent}</if>
+				<if test="users != null">AND users = #{users}</if>
+				<if test="board != null">AND board = #{board}</if>
+				<if test="board_types != null">AND board_types = #{board_types}</if>
+				<if test="content != null">AND content = #{content}</if>
+				<if test="is_delete != null">AND is_delete = #{is_delete}</if>
+			</trim>
+		</where>
+		ORDER BY c.id DESC
+	</select>
+
 </mapper>

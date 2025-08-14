@@ -58,8 +58,7 @@ public class CommentsService {
 	        }
 	        
 	        // 알림 작성 - 원 게시글 및 원 댓글 작성자가 아닐경우만 알림 - 원 글에게 알림 전달
-	        if (!dto.getUsers().equals(communitiesDto.getUsers())	// 원 게시글 작성자가 다를때,
-	        	&& (commentsDto == null | !dto.getUsers().equals(commentsDto.getUsers()))) {	// 원 댓글 작성자가 다를떄
+	        if (!dto.getUsers().equals(communitiesDto.getUsers()) || commentsDto == null) {	// 원 댓글 작성자가 다를떄
 	            NotificationsDto notificationsDto = new NotificationsDto();
 	            notificationsDto.setSender(usersDto.getId());					// 보내는이
 	            if (commentsDto != null) {	// 원글이 댓글일 때

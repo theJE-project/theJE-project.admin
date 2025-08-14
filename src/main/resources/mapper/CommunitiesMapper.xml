@@ -115,7 +115,21 @@
     </select>
     
     <select id="searchList" parameterType="com.threeteam.sns.dto.CommunitiesDto" resultType="map">
-        SELECT c.*, u.`account`, u.`name`, u.`img` FROM communities c
+        SELECT 
+        	c.*, 
+        	u.`account`, u.`name`, u.`img`,
+        	<if test="follower != null">
+        	EXISTS (
+	            SELECT 1 
+	            FROM followers f
+	            WHERE f.follower = #{follower} 
+	            AND f.followee = u.id
+	        ) AS is_following
+	        </if>
+	        <if test="follower == null">
+	        false AS is_following
+	        </if>
+        FROM communities c
         INNER JOIN users u ON u.`id` = c.`users`
         <where>
 	        <trim prefix="(" suffix=")" prefixOverrides="OR">
@@ -124,7 +138,6 @@
 		        <if test="categories != null">OR c.`categories` = #{categories}</if>
 		        <if test="title != null">OR c.`title` LIKE CONCAT('%',  #{title}, '%')</if>
 		        <if test="content != null">OR c.`content` LIKE CONCAT('%',  #{content}, '%')</if>
-		        <if test="count != null">OR c.`count` = #{count}</if>
 		        <if test="hash != null">OR c.`hash` = #{hash}</if>
 	        </trim>
 	    </where>

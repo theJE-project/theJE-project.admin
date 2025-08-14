@@ -17,6 +17,7 @@ public class CommentsDto {
     private LocalDateTime	created_at;
     private LocalDateTime	updated_at;
     private Boolean	is_delete;
-
+    
+    private String name;
 }
 

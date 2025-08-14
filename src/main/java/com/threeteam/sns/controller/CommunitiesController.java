@@ -1,13 +1,8 @@
 package com.threeteam.sns.controller;
 
-import com.threeteam.sns.service.*;
-import com.threeteam.sns.dto.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
@@ -21,10 +16,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.threeteam.sns.dto.*;
-import com.threeteam.sns.service.*;
+import com.threeteam.sns.dto.CommunitiesDto;
+import com.threeteam.sns.dto.CommunitiesResponsDto;
+import com.threeteam.sns.dto.FollowersDto;
+import com.threeteam.sns.dto.ImagesDto;
+import com.threeteam.sns.dto.MusicsDto;
+import com.threeteam.sns.dto.TracksDto;
+import com.threeteam.sns.dto.UsersDto;
+import com.threeteam.sns.dto.UsersResponsDto;
+import com.threeteam.sns.service.CommunitiesService;
+import com.threeteam.sns.service.FollowersService;
+import com.threeteam.sns.service.ImagesService;
+import com.threeteam.sns.service.MusicsService;
+import com.threeteam.sns.service.TracksService;
+import com.threeteam.sns.service.UsersService;
 
 import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/communities", produces = "application/json; charset=UTF-8")
@@ -44,9 +52,11 @@ public class CommunitiesController {
 	}
 
 	@GetMapping("/community/{id}")
-	public ResponseEntity<CommunitiesResponsDto> getByCId(@PathVariable int id, @RequestParam(value = "user", required = false) String follower) {
+	public ResponseEntity<CommunitiesResponsDto> getByCId(@PathVariable int id,
+														  @RequestParam(value = "user", required = false) String follower) {
 		CommunitiesDto dto = service.getById(id);
-		if (dto == null) return ResponseEntity.notFound().build();
+		if (dto == null)
+			return ResponseEntity.notFound().build();
 
 		UsersDto getUser = users.getById(dto.getUsers());
 		List<MusicsDto> getMusic = musics.getByBoards(1, dto.getId());
@@ -58,21 +68,15 @@ public class CommunitiesController {
 		if (follower != null && !follower.equals(getUser.getId())) {
 			isFollowing = followers.isFollowing(follower, getUser.getId());
 		}
-		CommunitiesResponsDto result = new CommunitiesResponsDto(
-				dto,
-				new UsersResponsDto(getUser, isFollowing),
-				images.getByBoards(1, dto.getId()),
-				track
-		);
+		CommunitiesResponsDto result = new CommunitiesResponsDto(dto, new UsersResponsDto(getUser, isFollowing),
+				images.getByBoards(1, dto.getId()), track);
 		return ResponseEntity.ok(result);
 	}
 
-	@GetMapping //전체검색
-	public ResponseEntity<List<CommunitiesResponsDto>> getAll(
-			@RequestParam("category") int category,
-			@RequestParam(value = "page", defaultValue = "0") int page,
-			@RequestParam(value = "size", defaultValue = "10") int size
-	) {
+	@GetMapping // 전체검색
+	public ResponseEntity<List<CommunitiesResponsDto>> getAll(@RequestParam("category") int category,
+															  @RequestParam(value = "page", defaultValue = "0") int page,
+															  @RequestParam(value = "size", defaultValue = "10") int size) {
 		System.out.println("communities getAll - category : " + category);
 		System.out.println("communities getAll - page : " + page);
 		System.out.println("communities getAll - size : " + size);
@@ -87,34 +91,31 @@ public class CommunitiesController {
 			for (MusicsDto music : getMusic) {
 				track.add(tracks.searchId(music.getUrl()));
 			}
-			System.out.println("================================================================================================");
+			System.out.println(
+					"================================================================================================");
 			System.out.println(dto.getId());
-			result.add(new CommunitiesResponsDto(
-					dto,
-					new UsersResponsDto(getUser),
-					images.getByBoards(1, dto.getId()),
-					track
-			));
+			result.add(new CommunitiesResponsDto(dto, new UsersResponsDto(getUser), images.getByBoards(1, dto.getId()),
+					track));
 		}
 
-		return result != null && !result.isEmpty()
-				? ResponseEntity.ok(result)
-				: ResponseEntity.notFound().build();
+		return result != null && !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
 	}
 
 	@GetMapping("/followee") // 팔로잉 검색
 	public ResponseEntity<List<CommunitiesResponsDto>> getByFollowee(
-			@RequestParam("user") String user,
-			@RequestParam("category") int category,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size
-	) {
+			// @RequestParam(name = "user") String user,
+			// @RequestParam(name = "category") int category,
+			@RequestParam(name = "category") int category, @RequestParam(name = "user", required = false) String user, // 내
+			// 아이디
+			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+		if (user == null) {
+			return ResponseEntity.badRequest().body(null);
+		}
+
 		// 1. 팔로잉한 사람들의 ID 리스트 가져오기
 		List<FollowersDto> followerList = followers.getFolloweesByUser(user);
 		// FollowersDto에서 팔로잉 대상(followee) ID만 뽑기
-		List<String> followeeIds = followerList.stream()
-				.map(FollowersDto::getFollowee)
-				.collect(Collectors.toList());
+		List<String> followeeIds = followerList.stream().map(FollowersDto::getFollowee).collect(Collectors.toList());
 
 		if (followeeIds.isEmpty()) {
 			return ResponseEntity.notFound().build();
@@ -130,23 +131,16 @@ public class CommunitiesController {
 			for (MusicsDto music : getMusic) {
 				track.add(tracks.searchId(music.getUrl()));
 			}
-			result.add(new CommunitiesResponsDto(
-					dto,
-					new UsersResponsDto(getUser),
-					images.getByBoards(1, dto.getId()),
-					track
-			));
+			result.add(new CommunitiesResponsDto(dto, new UsersResponsDto(getUser), images.getByBoards(1, dto.getId()),
+					track));
 		}
 		return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
 	}
 
 	@GetMapping("/user") // 유저아이디 검색
-	public ResponseEntity<List<CommunitiesResponsDto>> getByUser(
-			@RequestParam("user") String user,
-			@RequestParam("category") int category,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size
-	) {
+	public ResponseEntity<List<CommunitiesResponsDto>> getByUser(@RequestParam("user") String user,
+																 @RequestParam("category") int category, @RequestParam(defaultValue = "0") int page,
+																 @RequestParam(defaultValue = "10") int size) {
 		List<CommunitiesDto> dtos = service.getByUser(user, category, page * size, size);
 		List<CommunitiesResponsDto> result = new ArrayList<>();
 		for (CommunitiesDto dto : dtos) {
@@ -156,12 +150,8 @@ public class CommunitiesController {
 			for (MusicsDto music : getMusic) {
 				track.add(tracks.searchId(music.getUrl()));
 			}
-			result.add(new CommunitiesResponsDto(
-					dto,
-					new UsersResponsDto(getUser),
-					images.getByBoards(1, dto.getId()),
-					track
-			));
+			result.add(new CommunitiesResponsDto(dto, new UsersResponsDto(getUser), images.getByBoards(1, dto.getId()),
+					track));
 		}
 		return result != null && !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
 	}
@@ -179,6 +169,9 @@ public class CommunitiesController {
 		}
 		if (dto.getMusics() != null) {
 			for (MusicsDto music : dto.getMusics()) {
+				System.out.println();
+				System.out.println("music : " + music.toString());
+				System.out.println();
 				music.setBoard(id);
 				music.setBoard_types(1);
 				musics.insert(music);
@@ -187,13 +180,21 @@ public class CommunitiesController {
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/byUser") //전체검색(로그인한 유저 기준)
-	public ResponseEntity<List<CommunitiesResponsDto>> getAllByUser(
-			@RequestParam("category") int category,
-			@RequestParam(value = "user", required = false) String follower, // 내 아이디
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size
+	@GetMapping("/byUser") // 전체검색(로그인한 유저 기준)
+	public ResponseEntity<List<CommunitiesResponsDto>> getAllByUser(@RequestParam(name = "category") int category,
+																	@RequestParam(name = "follower", required = false) String follower, // 내 아이디
+																	@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size
+
 	) {
+		if (follower == null) {
+			// follower가 없으면 기본값 설정하거나, 에러 응답을 반환
+			return ResponseEntity.badRequest().body(null);
+		}
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
 		List<CommunitiesDto> dtos = service.getAll(category, page * size, size, null);
 		List<CommunitiesResponsDto> result = new ArrayList<>();
 		for (CommunitiesDto dto : dtos) {
@@ -208,19 +209,49 @@ public class CommunitiesController {
 				isFollowing = followers.isFollowing(follower, getUser.getId());
 			}
 
-			result.add(new CommunitiesResponsDto(
-					dto,
-					new UsersResponsDto(getUser, isFollowing), // <- 여기에 is_following 값 전달
-					images.getByBoards(1, dto.getId()),
-					track
-			));
+			result.add(new CommunitiesResponsDto(dto, new UsersResponsDto(getUser, isFollowing), // <- 여기에 is_following
+					// 값 전달
+					images.getByBoards(1, dto.getId()), track));
 		}
 		return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
 	}
 
+	/*
 	@PutMapping
 	public ResponseEntity<Void> update(@RequestBody CommunitiesDto dto) {
 		service.update(dto);
+		return ResponseEntity.ok().build();
+	}
+	*/
+	// playlist update(플레이리스트 수정)에서 사용
+	@PutMapping("/update/{id}")
+	public ResponseEntity<Void> update(@PathVariable int id, @RequestBody CommunitiesDto dto) {
+		dto.setId(id); // URL에서 받은 id를 DTO에 설정
+		//int id = dto.getId();
+
+		service.update(dto);
+
+		images.delete(id);
+		musics.delete(id);
+
+		if (dto.getImages() != null) {
+			for (ImagesDto image : dto.getImages()) {
+				image.setBoard(id);
+				image.setBoard_types(1);
+				images.insert(image);
+			}
+		}
+		if (dto.getMusics() != null) {
+			for (MusicsDto music : dto.getMusics()) {
+				System.out.println();
+				System.out.println("update : " + id + " music : " + music.toString());
+				System.out.println();
+				music.setBoard(id);
+				music.setBoard_types(1);
+				musics.insert(music);
+			}
+		}
+
 		return ResponseEntity.ok().build();
 	}
 
@@ -246,5 +277,40 @@ public class CommunitiesController {
 	@PostMapping("/search")
 	public List<CommunitiesDto> search(@RequestBody CommunitiesDto dto) {
 		return service.search(dto);
+	}
+
+	@PostMapping("/byUser") // 전체검색(로그인한 유저 기준)
+	public ResponseEntity<List<CommunitiesResponsDto>> postAllByUser(@RequestBody Map<String, Object> paramsMap
+
+	) {
+		if (paramsMap == null || paramsMap.get("category") == null) {
+			// follower가 없으면 기본값 설정하거나, 에러 응답을 반환
+			return ResponseEntity.badRequest().body(null);
+		}
+		Integer categories = (Integer) paramsMap.get("category");
+		String follower = paramsMap.get("follower") != null ? (String) paramsMap.get("follower") : null;
+		int page = paramsMap.get("page") != null ? (int) paramsMap.get("page") : 0;
+		int size = paramsMap.get("size") != null ? (int) paramsMap.get("size") : 10;
+
+		List<CommunitiesDto> dtos = service.getAll(categories, page * size, size, null);
+		List<CommunitiesResponsDto> result = new ArrayList<>();
+		for (CommunitiesDto dto : dtos) {
+			UsersDto getUser = users.getById(dto.getUsers());
+			List<MusicsDto> getMusic = musics.getByBoards(1, dto.getId());
+			List<TracksDto> track = new ArrayList<>();
+			for (MusicsDto music : getMusic) {
+				track.add(tracks.searchId(music.getUrl()));
+			}
+			boolean isFollowing = false;
+			if (follower != null && !follower.equals(getUser.getId())) {
+				System.out.println("follower : " + follower);
+				isFollowing = followers.isFollowing(follower, getUser.getId());
+			}
+
+			result.add(new CommunitiesResponsDto(dto, new UsersResponsDto(getUser, isFollowing), // <- 여기에 is_following
+					// 값 전달
+					images.getByBoards(1, dto.getId()), track));
+		}
+		return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
 	}
 }

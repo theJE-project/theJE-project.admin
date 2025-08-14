@@ -31,24 +31,39 @@ public class SearchService {
 	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "검색어가 존재하지 않습니다.");
 	    }
 		String searchStr = paramsMap.get("searchStr").toString();
+		String follower = paramsMap.get("follower") != null ? paramsMap.get("follower").toString() : null;
 		
 		// Search - Communities List
 		CommunitiesDto communitiesDto = new CommunitiesDto();
 		communitiesDto.setTitle(searchStr);
 		communitiesDto.setContent(searchStr);
+		communitiesDto.setFollower(follower);
 		List<Map<String, Object>> communitiesList = communitiesMapper.searchList(communitiesDto);
 		
 		// Search - hashTag List
 		CommunitiesDto hashTagDto = new CommunitiesDto();
 		hashTagDto.setHash(searchStr);
+		hashTagDto.setFollower(follower);
 		List<Map<String, Object>> hashTagList = communitiesMapper.searchList(hashTagDto);
 		
 		// Search - Users List
 		UsersDto usersDto = new UsersDto();
 		usersDto.setName(searchStr);
 		usersDto.setEmail(searchStr);
+		usersDto.setFollower(follower);
 		List<Map<String, Object>> userssList = usersMapper.searchList(usersDto);
+		if (follower != null) userssList.removeIf(map -> follower.equals(map.get("id"))); // 유저검색시 본인검색시 리스트에서 본인 삭제처리
 
+		for (Map<String, Object> map : communitiesList) {
+		//	System.out.println("communitiesList is_following : " + map.get("is_following"));
+		}
+		for (Map<String, Object> map : hashTagList) {
+		//	System.out.println("hashTagList is_following : " + map.get("is_following"));
+		}
+		for (Map<String, Object> map : userssList) {
+		//	System.out.println("userssList is_following : " + map.get("is_following"));
+		}
+		
 		Map<String, List<Map<String, Object>>> returnMap = new HashMap();
 		returnMap.put("communities", communitiesList);
 		returnMap.put("hashTag", hashTagList);

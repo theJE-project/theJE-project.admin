@@ -20,5 +20,8 @@ public class CommunitiesDto {
     private Boolean	is_visible = true;
     private List<ImagesDto> images;
     private List< MusicsDto> musics;
+    
+    private String follower;
+    private String followee;
 }
 

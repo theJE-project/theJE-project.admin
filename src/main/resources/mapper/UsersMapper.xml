@@ -25,6 +25,7 @@
         <if test="role != null">, `role`</if>
         <if test="name != null">, `name`</if>
         <if test="email != null">, `email`</if>
+        <if test="content != null">, `content` = #{content}</if>
         <if test="img != null">, `img`</if>
         <if test="is_alert != null">, `is_alert`</if>
         <if test="updated_at != null">, `updated_at`</if>
@@ -35,6 +36,7 @@
         <if test="role != null">, #{role}</if>
         <if test="name != null">, #{name}</if>
         <if test="email != null">, #{email}</if>
+        <if test="content != null">, `content` = #{content}</if>
         <if test="img != null">, #{img}</if>
         <if test="is_alert != null">, #{is_alert}</if>
         <if test="updated_at != null">, #{updated_at}</if>
@@ -48,6 +50,7 @@
         <if test="role != null">, `role` = #{role}</if>
         <if test="name != null">, `name` = #{name}</if>
         <if test="email != null">, `email` = #{email}</if>
+        <if test="content != null">, `content` = #{content}</if>
         <if test="img != null">, `img` = #{img}</if>
         <if test="is_alert != null">, `is_alert` = #{is_alert}</if>
          WHERE `id` = #{id}
@@ -58,14 +61,27 @@
 	</delete>
     	
     <select id="searchList" parameterType="com.threeteam.sns.dto.UsersDto" resultType="map">
-        SELECT * FROM users
+        SELECT 
+        	u.*,
+        	<if test="follower != null">
+        	EXISTS (
+	            SELECT 1 
+	            FROM followers f
+	            WHERE f.follower = #{follower} 
+	            AND f.followee = u.id
+	        ) AS is_following
+	        </if>
+	        <if test="follower == null">
+	        false AS is_following
+	        </if>
+        FROM users u
         <where>
 	        <trim prefix="(" suffix=")" prefixOverrides="OR">
-		        <if test="id != null">OR `id` = #{id}</if>
-		        <if test="role != null">OR `role` = #{role}</if>
-	            <if test="account != null">OR `account` LIKE CONCAT('%',  #{account}, '%')</if>
-	            <if test="name != null">OR `name` LIKE CONCAT('%',  #{name}, '%')</if>
-	            <if test="email != null">OR `email` LIKE CONCAT('%',  #{email}, '%')</if>
+		        <if test="id != null">OR u.`id` = #{id}</if>
+		        <if test="role != null">OR u.`role` = #{role}</if>
+	            <if test="account != null">OR u.`account` LIKE CONCAT('%',  #{account}, '%')</if>
+	            <if test="name != null">OR u.`name` LIKE CONCAT('%',  #{name}, '%')</if>
+	            <if test="email != null">OR u.`email` LIKE CONCAT('%',  #{email}, '%')</if>
 			</trim>
 		</where>
     </select>
