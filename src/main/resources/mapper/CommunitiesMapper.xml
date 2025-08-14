@@ -14,8 +14,9 @@
             <if test="isVisible != null and isVisible">
                 AND is_visible = true
             </if>
+
+            and is_delete=false
         </where>
-        and is_delete=false
         ORDER BY created_at DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
@@ -88,12 +89,12 @@
          WHERE `id` = #{id}
     </update>
 
-    <update id="updateView" parameterType="com.threeteam.sns.dto.CommunitiesDto">
+    <update id="updateView" parameterType="int">
         update communities set count = count+1 where id = #{id}
     </update>
     
 <!--  게시글 삭제  -->
-    <update id="isDelete" parameterType="com.threeteam.sns.dto.CommunitiesDto">
+    <update id="isDelete" parameterType="int">
         update communities set is_delete = true where id = #{id}
     </update>
     

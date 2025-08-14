@@ -51,6 +51,7 @@ public class CommunitiesController {
 		return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
 	}
 
+// 커뮤니티 상세 게시글
 	@GetMapping("/community/{id}")
 	public ResponseEntity<CommunitiesResponsDto> getByCId(@PathVariable int id,
 														  @RequestParam(value = "user", required = false) String follower) {
@@ -101,6 +102,7 @@ public class CommunitiesController {
 		return result != null && !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
 	}
 
+	// 팔로잉 탭
 	@GetMapping("/followee") // 팔로잉 검색
 	public ResponseEntity<List<CommunitiesResponsDto>> getByFollowee(
 			// @RequestParam(name = "user") String user,
@@ -180,10 +182,13 @@ public class CommunitiesController {
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/byUser") // 전체검색(로그인한 유저 기준)
-	public ResponseEntity<List<CommunitiesResponsDto>> getAllByUser(@RequestParam(name = "category") int category,
-																	@RequestParam(name = "follower", required = false) String follower, // 내 아이디
-																	@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size
+	// 유저 기준 전체검색(팔로우 여부 판별)
+	@GetMapping("/byUser") //전체검색(로그인한 유저 기준)
+	public ResponseEntity<List<CommunitiesResponsDto>> getAllByUser(
+			@RequestParam("category") int category,
+			@RequestParam(value = "user", required = false) String follower, // 내 아이디
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size
 
 	) {
 		if (follower == null) {
@@ -216,13 +221,6 @@ public class CommunitiesController {
 		return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
 	}
 
-	/*
-	@PutMapping
-	public ResponseEntity<Void> update(@RequestBody CommunitiesDto dto) {
-		service.update(dto);
-		return ResponseEntity.ok().build();
-	}
-	*/
 	// playlist update(플레이리스트 수정)에서 사용
 	@PutMapping("/update/{id}")
 	public ResponseEntity<Void> update(@PathVariable int id, @RequestBody CommunitiesDto dto) {
@@ -279,38 +277,4 @@ public class CommunitiesController {
 		return service.search(dto);
 	}
 
-	@PostMapping("/byUser") // 전체검색(로그인한 유저 기준)
-	public ResponseEntity<List<CommunitiesResponsDto>> postAllByUser(@RequestBody Map<String, Object> paramsMap
-
-	) {
-		if (paramsMap == null || paramsMap.get("category") == null) {
-			// follower가 없으면 기본값 설정하거나, 에러 응답을 반환
-			return ResponseEntity.badRequest().body(null);
-		}
-		Integer categories = (Integer) paramsMap.get("category");
-		String follower = paramsMap.get("follower") != null ? (String) paramsMap.get("follower") : null;
-		int page = paramsMap.get("page") != null ? (int) paramsMap.get("page") : 0;
-		int size = paramsMap.get("size") != null ? (int) paramsMap.get("size") : 10;
-
-		List<CommunitiesDto> dtos = service.getAll(categories, page * size, size, null);
-		List<CommunitiesResponsDto> result = new ArrayList<>();
-		for (CommunitiesDto dto : dtos) {
-			UsersDto getUser = users.getById(dto.getUsers());
-			List<MusicsDto> getMusic = musics.getByBoards(1, dto.getId());
-			List<TracksDto> track = new ArrayList<>();
-			for (MusicsDto music : getMusic) {
-				track.add(tracks.searchId(music.getUrl()));
-			}
-			boolean isFollowing = false;
-			if (follower != null && !follower.equals(getUser.getId())) {
-				System.out.println("follower : " + follower);
-				isFollowing = followers.isFollowing(follower, getUser.getId());
-			}
-
-			result.add(new CommunitiesResponsDto(dto, new UsersResponsDto(getUser, isFollowing), // <- 여기에 is_following
-					// 값 전달
-					images.getByBoards(1, dto.getId()), track));
-		}
-		return !result.isEmpty() ? ResponseEntity.ok(result) : ResponseEntity.notFound().build();
-	}
 }
