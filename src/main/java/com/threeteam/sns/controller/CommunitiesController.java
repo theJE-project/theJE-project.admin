@@ -195,7 +195,7 @@ public class CommunitiesController {
 			@RequestParam("category") int category,
 			@RequestParam(value = "user", required = false) String follower, // 내 아이디
 			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "100") int size
+			@RequestParam(defaultValue = "10") int size
 	) {
 		List<CommunitiesDto> dtos = service.getAll(category, page * size, size, null);
 		List<CommunitiesResponsDto> result = new ArrayList<>();
