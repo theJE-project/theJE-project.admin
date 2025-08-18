@@ -19,7 +19,7 @@ public interface UsersMapper {
 
 	void update(UsersDto dto);
 
-	void delete(int id);
+	void delete(String id);
 
 	List<UsersDto> search(UsersDto dto);
 	List<Map<String, Object>> searchList(UsersDto dto);
