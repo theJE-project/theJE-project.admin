@@ -45,7 +45,7 @@ public class UsersService {
 		mapper.update(dto);
 	}
 
-	public void delete(int id) {
+	public void delete(String id) {
 		mapper.delete(id);
 	}
 

@@ -82,7 +82,7 @@ public class UsersController {
 	}
 	
 	@DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") int id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") String id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
 	}

@@ -27,6 +27,7 @@
         <if test="email != null">, `email`</if>
         <if test="content != null">, `content` = #{content}</if>
         <if test="img != null">, `img`</if>
+        <if test="content != null">, `content`</if>
         <if test="is_alert != null">, `is_alert`</if>
         <if test="updated_at != null">, `updated_at`</if>
         ) VALUES ( NOW()
@@ -38,6 +39,7 @@
         <if test="email != null">, #{email}</if>
         <if test="content != null">, `content` = #{content}</if>
         <if test="img != null">, #{img}</if>
+        <if test="content != null">, #{content}</if>
         <if test="is_alert != null">, #{is_alert}</if>
         <if test="updated_at != null">, #{updated_at}</if>
         )
@@ -52,6 +54,7 @@
         <if test="email != null">, `email` = #{email}</if>
         <if test="content != null">, `content` = #{content}</if>
         <if test="img != null">, `img` = #{img}</if>
+        <if test="content != null">, `content` = #{content}</if>
         <if test="is_alert != null">, `is_alert` = #{is_alert}</if>
          WHERE `id` = #{id}
     </update>
