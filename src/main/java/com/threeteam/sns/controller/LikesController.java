@@ -37,7 +37,7 @@ public class LikesController {
 	
 	@PostMapping
     public ResponseEntity<String> create(@RequestBody LikesDto dto) {
-        service.insert(dto);
+		service.insert(dto);
         return ResponseEntity.ok("좋아요가 등록되었습니다.");
 	}
 	

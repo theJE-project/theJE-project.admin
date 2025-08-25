@@ -35,13 +35,16 @@ public class SearchService {
 		
 		// Search - Communities List
 		CommunitiesDto communitiesDto = new CommunitiesDto();
+		communitiesDto.setCategories(2);
 		communitiesDto.setTitle(searchStr);
-		communitiesDto.setContent(searchStr);
+		communitiesDto.setHash(null);
+//		communitiesDto.setContent(searchStr);
 		communitiesDto.setFollower(follower);
 		List<Map<String, Object>> communitiesList = communitiesMapper.searchList(communitiesDto);
 		
 		// Search - hashTag List
 		CommunitiesDto hashTagDto = new CommunitiesDto();
+		hashTagDto.setTitle(null);
 		hashTagDto.setHash(searchStr);
 		hashTagDto.setFollower(follower);
 		List<Map<String, Object>> hashTagList = communitiesMapper.searchList(hashTagDto);

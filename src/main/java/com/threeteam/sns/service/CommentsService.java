@@ -58,23 +58,23 @@ public class CommentsService {
 	        }
 	        
 	        // 알림 작성 - 원 게시글 및 원 댓글 작성자가 아닐경우만 알림 - 원 글에게 알림 전달
-	        if (!dto.getUsers().equals(communitiesDto.getUsers()) || commentsDto == null) {	// 원 댓글 작성자가 다를떄
-	            NotificationsDto notificationsDto = new NotificationsDto();
-	            notificationsDto.setSender(usersDto.getId());					// 보내는이
-	            if (commentsDto != null) {	// 원글이 댓글일 때
-	            	notificationsDto.setReceiver(commentsDto.getUsers());		// 받는이 댓글작성자에게
-	            } else {
-	            	notificationsDto.setReceiver(communitiesDto.getUsers());	// 받는이	 원 게시글작성자에게
-	            }
-	            notificationsDto.setBoard(communitiesDto.getId());				// 원 게시글
-	            notificationsDto.setBoard_types(1);								// 원 게시글 테이블 명	// board_types - 1 communities 2 notifications 3 comments 4 likes
-	            notificationsDto.setContent("\"" + dto.getContent() + "\"");	// 댓글 내용
-	            
-	            int notiResult = notificationsService.insert(notificationsDto);
-	            if (notiResult == 0) {
-		            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "댓글 등록에 실패했습니다.");
-		        }
-	        }
+//	        if (!dto.getUsers().equals(communitiesDto.getUsers()) || commentsDto == null) {	// 원 댓글 작성자가 다를떄
+//	            NotificationsDto notificationsDto = new NotificationsDto();
+//	            notificationsDto.setSender(usersDto.getId());					// 보내는이
+//	            if (commentsDto != null) {	// 원글이 댓글일 때
+//	            	notificationsDto.setReceiver(commentsDto.getUsers());		// 받는이 댓글작성자에게
+//	            } else {
+//	            	notificationsDto.setReceiver(communitiesDto.getUsers());	// 받는이	 원 게시글작성자에게
+//	            }
+//	            notificationsDto.setBoard(communitiesDto.getId());				// 원 게시글
+//	            notificationsDto.setBoard_types(1);								// 원 게시글 테이블 명	// board_types - 1 communities 2 notifications 3 comments 4 likes
+//	            notificationsDto.setContent("\"" + dto.getContent() + "\"");	// 댓글 내용
+//
+//	            int notiResult = notificationsService.insert(notificationsDto);
+//	            if (notiResult == 0) {
+//		            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "댓글 등록에 실패했습니다.");
+//		        }
+//	        }
             
             return result;
 	    } catch (Exception e) {

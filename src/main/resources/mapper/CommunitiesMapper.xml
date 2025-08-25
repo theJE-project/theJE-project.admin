@@ -136,11 +136,11 @@
 	        <trim prefix="(" suffix=")" prefixOverrides="OR">
 	            <if test="id != null">OR c.`id` = #{id}</if>
 		        <if test="users != null">OR c.`users` = #{users}</if>
-		        <if test="categories != null">OR c.`categories` = #{categories}</if>
 		        <if test="title != null">OR c.`title` LIKE CONCAT('%',  #{title}, '%')</if>
 		        <if test="content != null">OR c.`content` LIKE CONCAT('%',  #{content}, '%')</if>
 		        <if test="hash != null">OR c.`hash` = #{hash}</if>
 	        </trim>
+            <if test="categories != null">AND c.`categories` = #{categories}</if>
 	    </where>
     </select>
     

@@ -36,41 +36,45 @@ public class LikesService {
 	public int insert(LikesDto dto) {
 		int result = 0;
 	    try {
-	        // 1. 좋아요할 게시글 여부 확인
-	        CommunitiesDto communitiesDto = communitiesService.getById(dto.getBoard());
-	        if (communitiesDto == null) {
-	            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "좋아요할 게시글이 존재하지 않습니다. ID: " + dto.getBoard());
-	        }
-	        // 2. 좋아요 했는지 여부 확인
-	        List<LikesDto> existingList = mapper.search(dto);
-	        if (!existingList.isEmpty()) {
-	        	throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 좋아요한 게시글입니다.");
-	        }
-	        
-	        // 3. 좋아요 누른 사용자 정보 가져오기
-	        UsersDto usersDto = usersService.getById(dto.getUsers());
-	        if (usersDto == null) {
-	        	throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 사용자 입니다.");
-	        }
-	        // 4. 알림은 자기 글이 아닐 경우만 생성
-	        if (!dto.getUsers().equals(communitiesDto.getUsers())) {
-	        	result = mapper.insert(dto);
-		        if (result == 0) {
-		            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "좋아요 등록에 실패했습니다.");
-		        }
-		        
-	            NotificationsDto notificationsDto = new NotificationsDto();
-	            notificationsDto.setSender(usersDto.getId());					// 보내는이
-	            notificationsDto.setReceiver(communitiesDto.getUsers());		// 받는이
-	            notificationsDto.setBoard(communitiesDto.getId());				// 원 게시글
-	            notificationsDto.setBoard_types(4);								// 원 게시글 테이블 명	// board_types - 1 communities 2 notifications 3 comments 4 likes
-	            notificationsDto.setContent("\"" + communitiesDto.getTitle() + "\"을(를) 좋아요하였습니다.");
+//	        // 1. 좋아요할 게시글 여부 확인
+//	        CommunitiesDto communitiesDto = communitiesService.getById(dto.getBoard());
+//	        if (communitiesDto == null) {
+//	            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "좋아요할 게시글이 존재하지 않습니다. ID: " + dto.getBoard());
+//	        }
+//	        // 2. 좋아요 했는지 여부 확인
+//	        List<LikesDto> existingList = mapper.search(dto);
+//	        if (!existingList.isEmpty()) {
+//	        	throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 좋아요한 게시글입니다.");
+//	        }
+//
+//	        // 3. 좋아요 누른 사용자 정보 가져오기
+//	        UsersDto usersDto = usersService.getById(dto.getUsers());
+//	        if (usersDto == null) {
+//	        	throw new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 사용자 입니다.");
+//	        }
+//	        // 4. 알림은 자기 글이 아닐 경우만 생성
+//	        if (!dto.getUsers().equals(communitiesDto.getUsers())) {
+//	        	result = mapper.insert(dto);
+//		        if (result == 0) {
+//		            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "좋아요 등록에 실패했습니다.");
+//		        }
+//	            NotificationsDto notificationsDto = new NotificationsDto();
+//	            notificationsDto.setSender(usersDto.getId());					// 보내는이
+//	            notificationsDto.setReceiver(communitiesDto.getUsers());		// 받는이
+//	            notificationsDto.setBoard(communitiesDto.getId());				// 원 게시글
+//	            notificationsDto.setBoard_types(4);								// 원 게시글 테이블 명	// board_types - 1 communities 2 notifications 3 comments 4 likes
+//	            notificationsDto.setContent("\"" + communitiesDto.getTitle() + "\"을(를) 좋아요하였습니다.");
+//
+//	            int notiResult = notificationsService.insert(notificationsDto);
+//	            if (notiResult == 0) {
+//		            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "좋아요 등록에 실패했습니다.");
+//		        }
+//	        }
 
-	            int notiResult = notificationsService.insert(notificationsDto);
-	            if (notiResult == 0) {
-		            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "좋아요 등록에 실패했습니다.");
-		        }
-	        }
+			result = mapper.insert(dto);
+			if (result == 0) {
+				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "좋아요 등록에 실패했습니다.");
+			}
 	        return result;
 	    } catch (Exception e) {
 	        e.printStackTrace();

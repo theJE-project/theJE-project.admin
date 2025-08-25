@@ -46,20 +46,20 @@
         <if test="board != null">AND `board` = #{board}</if>
         <if test="board_types != null">AND `board_types` = #{board_types}</if>
     </select>
-    
+
     <select id="count" parameterType="com.threeteam.sns.dto.LikesDto" resultType="com.threeteam.sns.dto.LikesDto">
-		SELECT 
-			id,
-			COUNT(*) AS count,
-			EXISTS (
-		      SELECT 1 FROM likes 
-		      WHERE users = #{users} 
-		      AND board = #{board} 
-		      AND board_types = #{board_types}
-		    ) AS liked
-		FROM likes 
-		WHERE `board` = #{board}
-		AND `board_types` = #{board_types}
-	</select>
+        SELECT
+        id,
+        (SELECT COUNT(*) FROM likes WHERE board = #{board} AND board_types = #{board_types}) AS count,
+        EXISTS (
+        SELECT 1 FROM likes
+        WHERE users = #{users}
+        AND board = #{board}
+        AND board_types = #{board_types}
+        ) AS liked
+        FROM likes
+        WHERE `board` = #{board}
+        AND `board_types` = #{board_types}
+    </select>
     	
 </mapper>
