@@ -3,33 +3,119 @@
 <mapper namespace="com.threeteam.sns.mapper.CommunitiesMapper">
 
     <select id="getAll" resultType="com.threeteam.sns.dto.CommunitiesDto">
-        SELECT *
-        FROM communities
+        SELECT c.*
+        ,(
+            SELECT COUNT(*)
+            FROM likes l
+            WHERE l.board = c.id
+            AND l.board_types = 1
+        ) AS likesCount
+        ,(
+            SELECT COUNT(*)
+            FROM likes l
+            WHERE l.board = c.id
+            AND l.board_types = 1
+            AND l.users = #{users}
+        ) AS likesed
+        ,(
+            SELECT id
+            FROM likes l
+            WHERE l.board = c.id
+            AND l.board_types = 1
+            AND l.users = #{users}
+        ) AS likesId
+        ,(
+        	SELECT COUNT(*) > 0
+        	FROM followers
+        	WHERE follower = #{users} 
+        	AND followee = c.users
+        ) AS isFollowing
+        FROM communities c
         <where>
             <if test="category != null">
-                categories = #{category}
+                c.categories = #{category}
             </if>
 
             <!--  공개 여부-->
             <if test="isVisible != null and isVisible">
-                AND is_visible = true
+                AND c.is_visible = true
             </if>
-
-            and is_delete=false
+            AND c.is_delete=false
         </where>
-        ORDER BY created_at DESC
+        ORDER BY c.created_at DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
-    	
+
     <select id="getById" parameterType="int" resultType="com.threeteam.sns.dto.CommunitiesDto">
-		SELECT * FROM communities WHERE `id` = #{id} and is_delete=false
+		SELECT c.*
+        ,(
+	        SELECT COUNT(*)
+	        FROM likes l
+	        WHERE l.board = c.id
+	        AND l.board_types = 1
+        ) AS likesCount
+        ,(
+	        SELECT COUNT(*)
+	        FROM likes l
+	        WHERE l.board = c.id
+	        AND l.board_types = 1
+	        AND l.users = #{users}
+        ) AS likesed
+        ,(
+	        SELECT id
+	        FROM likes l
+	        WHERE l.board = c.id
+	        AND l.board_types = 1
+	        AND l.users = #{users}
+        ) AS likesId
+        ,(
+            SELECT COUNT(*) > 0
+            FROM followers
+            WHERE follower = #{users}
+            AND followee = c.users
+        ) AS isFollowing
+        FROM communities c
+        WHERE `id` = #{id}
+        AND is_delete = false
 	</select>
-	
+    <select id="getByDto" parameterType="com.threeteam.sns.dto.CommunitiesDto" resultType="com.threeteam.sns.dto.CommunitiesDto">
+		SELECT c.*
+        ,(
+	        SELECT COUNT(*)
+	        FROM likes l
+	        WHERE l.board = c.id
+	        AND l.board_types = 1
+        ) AS likesCount
+        ,(
+	        SELECT COUNT(*)
+	        FROM likes l
+	        WHERE l.board = c.id
+	        AND l.board_types = 1
+	        AND l.users = #{users}
+        ) AS likesed
+        ,(
+	        SELECT id
+	        FROM likes l
+	        WHERE l.board = c.id
+	        AND l.board_types = 1
+	        AND l.users = #{users}
+        ) AS likesId
+        ,(
+            SELECT COUNT(*) > 0
+            FROM followers
+            WHERE follower = #{users}
+            AND followee = c.users
+        ) AS isFollowing
+        FROM communities c
+        WHERE `id` = #{id}
+        AND is_delete = false
+	</select>
+
 	<select id="getByUser" parameterType="map" resultType="com.threeteam.sns.dto.CommunitiesDto">
         SELECT * FROM communities
         WHERE categories = #{category}
         AND users = #{user}
-        and is_delete=false
+        AND is_delete = false
         ORDER BY id DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
@@ -42,7 +128,7 @@
             #{userId}
         </foreach>
         AND categories = #{category}
-        and is_delete=false
+        AND is_delete = false
         ORDER BY created_at DESC
         LIMIT #{limit} OFFSET #{offset}
     </select>
@@ -52,30 +138,30 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         INSERT INTO communities (
-        created_at,
-        users,
-        categories,
-        title,
-        content,
-        count,
-        hash,
-        updated_at,
-        is_delete,
-        is_visible
+            created_at,
+            users,
+            categories,
+            title,
+            content,
+            count,
+            hash,
+            updated_at,
+            is_delete,
+            is_visible
         ) VALUES (
-        NOW(),
-        #{users},
-        #{categories},
-        #{title},
-        #{content},
-        #{count},
-        #{hash},
-        #{updated_at},
-        #{is_delete},
-        #{is_visible}
+            NOW(),
+            #{users},
+            #{categories},
+            #{title},
+            #{content},
+            #{count},
+            #{hash},
+            #{updated_at},
+            #{is_delete},
+            #{is_visible}
         )
     </insert>
-    	
+
     <update id="update" parameterType="com.threeteam.sns.dto.CommunitiesDto">
         UPDATE communities SET updated_at = NOW()
         <if test="users != null">, `users` = #{users}</if>
@@ -90,18 +176,18 @@
     </update>
 
     <update id="updateView" parameterType="int">
-        update communities set count = count+1 where id = #{id}
+        update communities SET count = count+1 WHERE id = #{id}
     </update>
-    
+
 <!--  게시글 삭제  -->
     <update id="isDelete" parameterType="int">
-        update communities set is_delete = true where id = #{id}
+        update communities SET is_delete = true WHERE id = #{id}
     </update>
-    
+
     <delete id="delete" parameterType="int">
 		DELETE FROM communities WHERE `id` = #{id}
 	</delete>
-    	
+
     <select id="search" parameterType="com.threeteam.sns.dto.CommunitiesDto" resultType="com.threeteam.sns.dto.CommunitiesDto">
         SELECT * FROM communities WHERE 1=1
         <if test="id != null">AND `id` = #{id}</if>
@@ -110,26 +196,52 @@
         <if test="title != null">AND `title` = #{title}</if>
         <if test="content != null">AND `content` = #{content}</if>
         <if test="count != null">AND `count` = #{count}</if>
-        <if test="hash != null">AND `hash` = #{hash}</if>
+        <if test="hash != null">AND `hash` LIKE CONCAT('%',  #{hash}, '%')</if>
         <if test="is_delete != null">AND `is_delete` = #{is_delete}</if>
         <if test="is_visible != null">AND `is_visible` = #{is_visible}</if>
     </select>
-    
+
     <select id="searchList" parameterType="com.threeteam.sns.dto.CommunitiesDto" resultType="map">
-        SELECT 
-        	c.*, 
+        SELECT
+        	c.*,
         	u.`account`, u.`name`, u.`img`,
         	<if test="follower != null">
         	EXISTS (
-	            SELECT 1 
+	            SELECT 1
 	            FROM followers f
-	            WHERE f.follower = #{follower} 
+	            WHERE f.follower = #{follower}
 	            AND f.followee = u.id
 	        ) AS is_following
 	        </if>
 	        <if test="follower == null">
 	        false AS is_following
 	        </if>
+            ,(
+                SELECT COUNT(*)
+                FROM likes l
+                WHERE l.board = c.id
+                AND l.board_types = 1
+            ) AS likesCount
+            ,(
+                SELECT COUNT(*)
+                FROM likes l
+                WHERE l.board = c.id
+                AND l.board_types = 1
+                AND l.users = #{users}
+            ) AS likesed
+            ,(
+                SELECT id
+                FROM likes l
+                WHERE l.board = c.id
+                AND l.board_types = 1
+                AND l.users = #{users}
+            ) AS likesId
+           ,(
+                SELECT COUNT(*) > 0
+                FROM followers
+                WHERE follower = #{users}
+                AND followee = c.users
+            ) AS isFollowing
         FROM communities c
         INNER JOIN users u ON u.`id` = c.`users`
         <where>
@@ -138,14 +250,14 @@
 		        <if test="users != null">OR c.`users` = #{users}</if>
 		        <if test="title != null">OR c.`title` LIKE CONCAT('%',  #{title}, '%')</if>
 		        <if test="content != null">OR c.`content` LIKE CONCAT('%',  #{content}, '%')</if>
-		        <if test="hash != null">OR c.`hash` = #{hash}</if>
+		        <if test="hash != null">OR c.`hash` LIKE CONCAT('%',  #{hash}, '%')</if>
 	        </trim>
             <if test="categories != null">AND c.`categories` = #{categories}</if>
 	    </where>
     </select>
-    
+
     <select id="selectByUserId" parameterType="string" resultType="com.threeteam.sns.dto.CommunitiesDto">
         SELECT * FROM communities WHERE users = #{userId}
     </select>
-    	
+
 </mapper>

@@ -88,7 +88,7 @@ public class UsersService {
 
     // 인증메일 보내기
     private void sendVerificationEmail(String email, String token) {
-        String link = "http://localhost:5173/#/login/redirect?token=" + token;
+        String link = "http://bjw-info.github.io/#/login/redirect?token=" + token;
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("이메일 인증");

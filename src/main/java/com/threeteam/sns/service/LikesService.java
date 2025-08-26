@@ -70,7 +70,6 @@ public class LikesService {
 //		            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "좋아요 등록에 실패했습니다.");
 //		        }
 //	        }
-
 			result = mapper.insert(dto);
 			if (result == 0) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "좋아요 등록에 실패했습니다.");
