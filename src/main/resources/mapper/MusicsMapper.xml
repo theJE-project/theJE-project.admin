@@ -15,7 +15,7 @@
         WHERE board_types = #{board_type} 
         AND board = #{board}
     </select>
-    	
+
     <insert id="insert" parameterType="com.threeteam.sns.dto.MusicsDto">
         <selectKey keyProperty="id" order="AFTER" resultType="int">SELECT LAST_INSERT_ID()</selectKey>
         INSERT INTO musics ( created_at

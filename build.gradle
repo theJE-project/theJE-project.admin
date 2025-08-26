@@ -15,10 +15,10 @@ java {
 }
 
 bootJar {
-    enabled = false
+    enabled = true
 }
 bootWar {
-    enabled = true
+    enabled = false
 }
 repositories {
 	mavenCentral()

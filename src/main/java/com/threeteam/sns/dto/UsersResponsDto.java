@@ -32,6 +32,7 @@ public class UsersResponsDto {
         this.content = user.getContent();
     }
 
+    // 팔로우 여부를 판단하기 위해 is_following을 추가한 생성자
     public UsersResponsDto(UsersDto user, boolean is_following) {
         this.id = user.getId();
         this.account = user.getAccount();

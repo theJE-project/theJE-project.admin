@@ -1,10 +1,10 @@
 package com.threeteam.sns.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import com.threeteam.sns.mapper.ImagesMapper;
+import com.threeteam.sns.mapper.UsersMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +32,8 @@ import com.threeteam.sns.service.TracksService;
 import com.threeteam.sns.service.UsersService;
 
 import lombok.RequiredArgsConstructor;
+
+import javax.sound.midi.Track;
 
 @RestController
 @RequiredArgsConstructor
