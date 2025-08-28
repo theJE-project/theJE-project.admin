@@ -1,7 +1,7 @@
 package com.threeteam.sns.service;
 
 import java.util.List
-;
+		;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,7 @@ public class LikesService {
 	@Transactional	// Exception 발생시, 자동 rollback
 	public int insert(LikesDto dto) {
 		int result = 0;
-	    try {
+		try {
 //	        // 1. 좋아요할 게시글 여부 확인
 //	        CommunitiesDto communitiesDto = communitiesService.getById(dto.getBoard());
 //	        if (communitiesDto == null) {
@@ -71,16 +71,18 @@ public class LikesService {
 //		        }
 //	        }
 			result = mapper.insert(dto);
+			System.out.println("INSERT dto : " + dto.toString());
+			System.out.println("INSERT dto user : " + dto.getUsers());
 			if (result == 0) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "좋아요 등록에 실패했습니다.");
 			}
-	        return result;
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        // 올바른 로그 출력 (System.out.printf로는 {} 안됨)
-	        System.out.println("좋아요 insert 중 예외 발생: " + e.getMessage());
-	        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "좋아요 insert 중 예외 발생: " + e.getMessage());
-	    }
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 올바른 로그 출력 (System.out.printf로는 {} 안됨)
+			System.out.println("좋아요 insert 중 예외 발생: " + e.getMessage());
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "좋아요 insert 중 예외 발생: " + e.getMessage());
+		}
 	}
 
 
@@ -95,7 +97,7 @@ public class LikesService {
 	public List<LikesDto> search(LikesDto dto) {
 		return mapper.search(dto);
 	}
-	
+
 	public List<LikesDto> count(LikesDto dto) {
 		return mapper.count(dto);
 	}

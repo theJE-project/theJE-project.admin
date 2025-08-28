@@ -4,32 +4,6 @@
 
     <select id="getAll" resultType="com.threeteam.sns.dto.CommunitiesDto">
         SELECT c.*
-        ,(
-            SELECT COUNT(*)
-            FROM likes l
-            WHERE l.board = c.id
-            AND l.board_types = 1
-        ) AS likesCount
-        ,(
-            SELECT COUNT(*)
-            FROM likes l
-            WHERE l.board = c.id
-            AND l.board_types = 1
-            AND l.users = #{users}
-        ) AS likesed
-        ,(
-            SELECT id
-            FROM likes l
-            WHERE l.board = c.id
-            AND l.board_types = 1
-            AND l.users = #{users}
-        ) AS likesId
-        ,(
-        	SELECT COUNT(*) > 0
-        	FROM followers
-        	WHERE follower = #{users} 
-        	AND followee = c.users
-        ) AS isFollowing
         FROM communities c
         <where>
             <if test="category != null">
@@ -48,64 +22,12 @@
 
     <select id="getById" parameterType="int" resultType="com.threeteam.sns.dto.CommunitiesDto">
 		SELECT c.*
-        ,(
-	        SELECT COUNT(*)
-	        FROM likes l
-	        WHERE l.board = c.id
-	        AND l.board_types = 1
-        ) AS likesCount
-        ,(
-	        SELECT COUNT(*)
-	        FROM likes l
-	        WHERE l.board = c.id
-	        AND l.board_types = 1
-	        AND l.users = #{users}
-        ) AS likesed
-        ,(
-	        SELECT id
-	        FROM likes l
-	        WHERE l.board = c.id
-	        AND l.board_types = 1
-	        AND l.users = #{users}
-        ) AS likesId
-        ,(
-            SELECT COUNT(*) > 0
-            FROM followers
-            WHERE follower = #{users}
-            AND followee = c.users
-        ) AS isFollowing
         FROM communities c
         WHERE `id` = #{id}
         AND is_delete = false
 	</select>
     <select id="getByDto" parameterType="com.threeteam.sns.dto.CommunitiesDto" resultType="com.threeteam.sns.dto.CommunitiesDto">
 		SELECT c.*
-        ,(
-	        SELECT COUNT(*)
-	        FROM likes l
-	        WHERE l.board = c.id
-	        AND l.board_types = 1
-        ) AS likesCount
-        ,(
-	        SELECT COUNT(*)
-	        FROM likes l
-	        WHERE l.board = c.id
-	        AND l.board_types = 1
-	        AND l.users = #{users}
-        ) AS likesed
-        ,(
-	        SELECT id
-	        FROM likes l
-	        WHERE l.board = c.id
-	        AND l.board_types = 1
-	        AND l.users = #{users}
-        ) AS likesId
-        ,(
-            SELECT COUNT(*) > 0
-            FROM followers
-            WHERE follower = #{users}
-            AND followee = c.users
-        ) AS isFollowing
         FROM communities c
         WHERE `id` = #{id}
         AND is_delete = false
@@ -216,32 +138,6 @@
 	        <if test="follower == null">
 	        false AS is_following
 	        </if>
-            ,(
-                SELECT COUNT(*)
-                FROM likes l
-                WHERE l.board = c.id
-                AND l.board_types = 1
-            ) AS likesCount
-            ,(
-                SELECT COUNT(*)
-                FROM likes l
-                WHERE l.board = c.id
-                AND l.board_types = 1
-                AND l.users = #{users}
-            ) AS likesed
-            ,(
-                SELECT id
-                FROM likes l
-                WHERE l.board = c.id
-                AND l.board_types = 1
-                AND l.users = #{users}
-            ) AS likesId
-           ,(
-                SELECT COUNT(*) > 0
-                FROM followers
-                WHERE follower = #{users}
-                AND followee = c.users
-            ) AS isFollowing
         FROM communities c
         INNER JOIN users u ON u.`id` = c.`users`
         <where>

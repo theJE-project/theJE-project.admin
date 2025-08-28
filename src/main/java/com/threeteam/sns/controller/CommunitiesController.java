@@ -162,6 +162,7 @@ public class CommunitiesController {
 
 	@PostMapping
 	public ResponseEntity<Void> create(@RequestBody CommunitiesDto dto) {
+		System.out.println("dto : " + dto.toString());
 		int id = service.insert(dto);
 
 		if (dto.getImages() != null) {
@@ -190,7 +191,7 @@ public class CommunitiesController {
 			@RequestParam("category") int category,
 			@RequestParam(value = "user", required = false) String follower, // 내 아이디
 			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size
+			@RequestParam(defaultValue = "100") int size
 
 	) {
 		if (follower == null) {
